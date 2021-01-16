@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/layout :: header">
+<title id="pageTitle" th:text="#{common.title}">Error</title>
+</head>
+
+<body>
+
+	<div th:replace="fragments/layout :: menu-nav"></div>
+
+	<main role="main">
+		<!-- lower main div below the fixed menu bar -->
+		<div class="jumbotron upper-space">
+			<div class="container"></div>
+		</div>
+
+		<div class="container">
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h2>TrainingTool Error Page</h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">Something went wrong or the page does not exist anymore...</div>
+			</div>
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12">
+					<a th:href="@{/home}" type="button" class="btn btn-outline-info">Back to Home</a>
+				</div>
+			</div>
+
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-hover table-sm">
+						<tbody>
+							<tr>
+								<th>Date</th>
+								<td><span th:text="${timestamp}"></span></td>
+							</tr>
+							<tr>
+								<th>Path</th>
+								<td><span th:text="${path}"></span></td>
+							</tr>
+							<tr>
+								<th>Error</th>
+								<td><span th:text="${error}"></span></td>
+							</tr>
+							<tr>
+								<th>Status</th>
+								<td><span th:text="${status}"></span></td>
+							</tr>
+							<tr>
+								<th>Message</th>
+								<td><span th:text="${message}"></span></td>
+							</tr>
+							<tr>
+								<th>Exception</th>
+								<td><span th:text="${exception}"></span></td>
+							</tr>
+							<tr>
+								<th>TT Version</th>
+								<td><span th:text="${@environment.getProperty('build.version')}"></span></td>
+							</tr>
+							<tr>
+								<th>TT Build Time</th>
+								<td><span
+									th:text="${#strings.replace(#strings.substring(@environment.getProperty('build.time'),0,16),'T',' ')}"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<span><b>Stacktrace</b></span>
+					<textarea class="form-control" disabled="disabled" rows="10" th:text="${trace}"></textarea>
+				</div>
+			</div>
+
+			<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
+		</div>
+	</main>
+
+	<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>

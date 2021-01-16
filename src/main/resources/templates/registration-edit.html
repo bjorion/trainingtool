@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/layout :: header">
+<title id="pageTitle" th:text="#{common.title}">Registration (Edit)</title>
+</head>
+
+<body>
+	<div th:replace="fragments/layout :: menu-nav"></div>
+
+	<main role="main">
+		<div class="jumbotron upper-space">
+			<div class="container"></div>
+		</div>
+
+		<div class="container">
+			<div class="row">&nbsp;</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<h4 th:if="${registration.id eq empty}">New training registration</h4>
+					<h4 th:if="${registration.id ne empty}">Edit training registration</h4>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 border">
+				
+					<div th:if="${#lists.size(errors) > 0}" class="form-control is-invalid invalid" style="margin-bottom: 1em; font-size: 100%">
+						Please correct the errors below before submitting the form.	
+					</div>
+
+					<form th:action="@{/saveRegistration}" th:object="${registration}" method="post" id="frmRegistration">
+						<!-- User -->
+						<fieldset>
+							<legend th:title="'id:'+${member.id}+', version:'+${member.version}">Member information</legend>
+							<div class="row">
+								<label class="col-sm-2">Fullname</label>
+								<div class="col-sm-8">
+									<input type="hidden" th:field="${member.username}" /> 
+									<span th:text="${member.fullname+' ('+member.username+') ('+member.pnr+')'}"> fullname </span>
+								</div>
+							</div>	
+							<!-- Title -->		
+							<div class="row">
+								<label class="col-sm-2">Title</label>
+								<div class="col-sm-8">
+									<span th:text="${member.function}"> function </span>
+								</div>
+							</div>	
+							<!-- Manager -->		
+							<div class="row">
+								<label class="col-sm-2">Manager</label>
+								<div class="col-sm-8">
+									<span th:text="'('+${member.managername}+')'"> manager </span>
+								</div>
+							</div>	
+							<!-- Phone Number -->
+							<div class="form-group row">
+								<label class="col-sm-2">Phone number</label>
+								<div class="col-sm-8">
+									<span th:text="${member.phoneNumber}"> phonenumber </span>
+								</div>
+							</div>
+							<!-- Sector -->
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'sector')}">
+								<label for="sector" class="col-sm-2 col-form-label">Sector *</label>
+								<div class="col-sm-4">
+									<select class="form-control" th:field="${member.sector}" th:classappend="${err} ? 'is-invalid' : ''" required>
+										<option selected value="">-- select a sector --</option>
+										<option th:each="elem : ${sectors}" th:value="${elem}" th:text="${elem}">-</option>
+									</select>
+									<div th:if="${err}" class="invalid-feedback">Mandatory field</div>
+								</div>
+							</div>	
+						</fieldset>
+						<div>&nbsp;</div>
+
+						<!-- Registration -->
+						<fieldset>
+							<legend th:title="'id:'+*{id}+', version:'+*{version}">Registration</legend>
+							
+							<div class="form-group row subtitle">
+								<label class="col-sm-12 col-form-label">Description</label>
+							</div>
+							
+							<!-- Title -->
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'title')}">
+								<label for="title" class="col-sm-2 col-form-label" >Title *</label>
+								<div class="col-sm-8">
+									<input type="hidden" th:field="*{id}" /> 
+									<input type="text" class="form-control" th:field="*{title}" th:classappend="${err} ? 'is-invalid' : ''" placeholder="(training title)" maxlength="200" required />
+									<div th:if="${err}" class="invalid-feedback">Mandatory field</div>
+								</div>
+							</div>
+							
+							<!-- Description -->
+							<div class="form-group row">
+								<label for="description" class="col-sm-2 col-form-label">Description</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" th:field="*{description}" maxlength="1000" />
+								</div>
+							</div>
+							
+							<!-- Provider -->
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'provider')}">
+								<label for="provider" class="col-sm-2 col-form-label">Provider *</label>
+								<div class="col-sm-4">
+									<select class="form-control" th:field="*{provider}" th:classappend="${err} ? 'is-invalid' : ''" required>
+										<option selected value="">-- select a provider --</option>
+										<option th:each="elem : ${T(org.jorion.trainingtool.types.Provider).values()}" 
+												th:value="${elem.name}" th:text="${elem.title}">-</option>
+									</select>
+									<div th:if="${err}" class="invalid-feedback">Mandatory field</div>
+								</div>
+							</div>
+							
+							<!-- Provider Other -->
+							<div id="div-providerOther" style="display: none;">
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>If Provider is <b>Other</b>, specify its name</span></div>
+							</div>							
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'provider.other')}">
+								<label for="providerOther" class="col-sm-2 col-form-label">Provider Name *</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" th:field="*{providerOther}" th:classappend="${err} ? 'is-invalid' : ''" maxlength="250">
+									<div th:if="${err}" class="invalid-feedback">Mandatory for the selected provider</div>
+								</div>
+							</div>
+							</div>	
+							
+							<!-- SSIN -->	
+							<div id="div-ssin" style="display: none;">	
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>The member must fill in this field</span></div>
+							</div>																	
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'ssin')}">
+								<label for="ssin" class="col-sm-2 col-form-label">Member SSIN <span th:if="${!user.supervisor}">*</span>	
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.ssin}"><img th:src="@{/img/qm.png}" width="25" height="25" /></span> 
+								</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" th:field="*{ssin}" th:classappend="${err} ? 'is-invalid' : ''" placeholder="00000000000" maxlength="11" />
+									<div th:if="${err}" class="invalid-feedback">SSIN is not valid</div>
+								</div>
+							</div>
+							</div>	
+											
+							<!-- URL -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>The URL of the page on the training site. For <b>Internal</b>, use http://www.microsoft.com</span></div>
+							</div>
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'url')}">
+								<label for="url" class="col-sm-2 col-form-label">URL *</label>
+								<div class="col-sm-8">
+									<input id="url" type="text" class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{url}" 
+										placeholder="http(s)://" maxlength="500" required pattern="^https?:\/\/.*" />
+									<div th:if="${err}" class="invalid-feedback">URL must start with http(s)://</div>
+								</div>
+							</div>	
+							
+							<!-- Price -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Fill in this value if you know the price. For ad hoc trainings (PRINCE 2...) leave it to Training.</span></div>
+							</div>							
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'price')}">
+								<label for="price" class="col-sm-2 col-form-label">Price (€)</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{price}" maxlength="50" />
+									<div th:if="${err}" class="invalid-feedback">Price is not valid (use only digits, ex: 123.89)</div>
+								</div>
+							</div>	
+							
+							<div class="form-group row subtitle">
+								<label class="col-sm-12 col-form-label">Date &amp; Place</label>
+							</div>		
+							
+							<!-- Start date -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Dates are mandatory for <b>Cevora, Coursera, Academia</b></span></div>
+							</div>							
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'startDate')}">
+								<label for="startDate" class="col-sm-2 col-form-label">Start date <span th:if="${user.training}">*</span></label>
+								<div class="col-sm-4">
+									<input type="date" class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{startDate}" min="2020-11-01" th:required="${user.training}"/>
+									<div th:if="${err}" class="invalid-feedback">Date must be today or in the future</div>
+								</div>
+							</div>
+							
+							<!-- End date -->
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'endDate')}">
+								<label for="endDate" class="col-sm-2 col-form-label">End date <span th:if="${user.training}">*</span></label>
+								<div class="col-sm-4">
+									<input type="date" class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{endDate}" min="2020-10-01" th:required="${user.training}"/>
+									<div th:if="${err}" class="invalid-feedback">End date must be posterior or equal to Start date</div>
+								</div>
+							</div>
+							
+							<!-- Period -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span th:text="#{tooltip.period}"></span></div>
+							</div>	
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'period')}">
+								<label for="period" class="col-sm-2 col-form-label">Period *</label>
+								<div class="col-sm-4">
+									<select class="form-control" th:field="*{period}" th:classappend="${err} ? 'is-invalid' : ''" required>
+										<option selected value="">-- select a period --</option>
+										<option th:each="elem : ${T(org.jorion.trainingtool.types.Period).values()}" 
+												th:value="${elem.name}" th:text="${elem.title}">-</option>
+									</select>
+									<div th:if="${err}" class="invalid-feedback">Mandatory for the selected provider</div>
+								</div>
+							</div>	
+							
+							<!-- Total hours -->	
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Mandatory for <b>Cevora, Coursera, Academia</b></span></div>
+							</div>					
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'totalHour')}">
+								<label for="totalHour" class="col-sm-2 col-form-label">Total Hours</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" th:field="*{totalHour}" th:classappend="${err} ? 'is-invalid' : ''" maxlength="50" />
+									<div th:if="${err}" class="invalid-feedback">Mandatory for the selected provider</div>
+								</div>
+							</div>		
+												
+							<!-- Location -->						
+							<div class="form-group row">
+								<label for="location" class="col-sm-2 col-form-label">Location</label>
+								<div class="col-sm-4">
+									<select class="form-control" th:field="*{location}" th:classappend="${err} ? 'is-invalid' : ''">
+										<option selected value="">-- select a location --</option>
+										<option th:each="elem : ${T(org.jorion.trainingtool.types.Location).values()}" 
+												th:value="${elem.name}" th:text="${elem.title}">-</option>
+									</select>
+								</div>
+							</div>
+							
+							<!-- SelfStudy -->
+							<div class="form-group row">
+								<label for="selfStudy" class="col-sm-2 col-form-label">Self Study</label>
+								<div class="col-sm-4">
+									<select th:field="*{selfStudy}" class="form-control">
+										<option selected value="">-- select a value --</option>
+										<option th:value="YES" th:text="Yes">Yes</option>
+										<option th:value="NO" th:text="No">No</option>
+									</select>
+								</div>
+							</div>	
+							
+							<div class="form-group row subtitle">
+								<label class="col-sm-12 col-form-label">Administration</label>
+							</div>	
+							
+							<!-- Mandatory -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Mandatory training</span></div>
+							</div>	
+							<div class="form-group row">
+								<label for="mandatory" class="col-sm-2 col-form-label">Mandatory</label>
+								<div class="col-sm-4">
+									<select th:field="*{mandatory}" class="form-control">
+										<option selected value="">-- select a value --</option>
+										<option th:value="YES" th:text="Yes">Yes</option>
+										<option th:value="NO" th:text="No">No</option>
+									</select>
+								</div>
+							</div>	
+							
+							<!-- Billability -->							
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>You can leave this to the manager</span></div>
+							</div>		
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'billable')}">
+								<label for="billable" class="col-sm-2 col-form-label">Affects billability <span th:if="${user.supervisor}">*</span>
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.billable}">
+										<img th:src="@{/img/qm.png}" width="25" height="25" />
+									</span> 								
+								</label>
+								<div class="col-sm-4">
+									<select th:field="*{billable}" class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:required="${user.supervisor}">
+										<option selected value="">-- select a value --</option>
+										<option th:value="YES" th:text="Yes">Yes</option>
+										<option th:value="NO" th:text="No">No</option>
+									</select>
+									<div class="invalid-feedback">Mandatory field</div>
+									<div class="warning" id="warningBillable">Warning: if within business hours, it could affect billability</div>
+								</div>
+							</div>
+							
+							<!-- CBA -->
+							<div class="form-group row tip" th:if="${user.supervisor}">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Training within working hours and contributing to the development of the member.</span></div>
+							</div>							
+							<div class="form-group row" th:if="${user.supervisor}">
+								<label for="billable" class="col-sm-2 col-form-label">CBA Compliant &nbsp;
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.cbaCompliant}">
+										<img th:src="@{/img/qm.png}" width="25" height="25" />
+									</span> 
+								</label>
+								<div class="col-sm-4">
+									<select th:field="*{cbaCompliant}" class="form-control">
+										<option th:value="YES" th:text="Yes">Yes</option>
+										<option th:value="NO" th:text="No">No</option>
+									</select>
+								</div>
+							</div>	
+							
+							<div class="form-group row subtitle">
+								<label class="col-sm-12 col-form-label">Miscellaneous</label>
+							</div>		
+												
+							<!-- Comment -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Comment from the Member</span></div>
+							</div>									
+							<div class="form-group row">
+								<label for="comment" class="col-sm-2 col-form-label">Comment</label>
+								<div class="col-sm-8">
+									<textarea class="form-control" th:field="*{comment}" maxlength="1000" rows="3"></textarea>
+								</div>
+							</div>
+							
+							<!-- Motivation -->
+							<div class="form-group row tip">
+								<label class="col-sm-2 col-form-label"></label>
+								<div class="col-sm-8"><span>Motivation from the supervisors (Manager, HR, Training)</span></div>
+							</div>								
+							<div class="form-group row" th:with="err=${#lists.contains(errors, 'motivation')}">
+								<label for="comment" class="col-sm-2 col-form-label">Motivation <span th:if="${user.supervisor}">*</span></label>
+								<div class="col-sm-8">
+									<textarea class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{motivation}" maxlength="1000" rows="3" th:disabled="${!user.supervisor}" required></textarea>
+								</div>
+								<div th:if="${err}" class="invalid-feedback">Mandatory field</div>
+							</div>							
+						</fieldset>
+
+						<!-- Assign OR Save -->
+						<div th:with="assign=${user.supervisor && (registration.id eq empty) && (user.username ne member.username)}">
+						<div class="row">
+							<div class="col-md-12">
+								<p th:if="${assign}">
+									By clicking <b>Assign</b> below, an email will be sent to the member.
+								</p>
+								<p th:if="${!assign}">&nbsp;</p>
+							</div>
+						</div>						
+						<div class="row">
+							<div class="col-sm-10">
+								<button th:if="${!assign}" type="submit" class="btn btn-outline-primary">Save</button>
+								<a th:if="${assign}" href="" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#assignModal">Assign</a> 
+								&nbsp; 
+								<a th:href="@{/home}" type="button" class="btn btn-outline-info">Cancel</a>
+							</div>
+						</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+
+			<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
+
+		</div>
+	</main>
+	
+	<!-- Assign by manager to member -->
+	<div class="modal fade" id="assignModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Assign</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span>Are you sure you want to assign this request to the member?<br> An email will be sent to the member.</span>
+				</div>
+				<div class="modal-footer">
+					<a href="" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a> 
+					<a href="#" type="button" onclick="submitRegistration()" class="btn btn-primary" id="btnAssignId">Assign</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="fragments/layout :: footer"></div>
+	<div th:replace="fragments/layout :: tooltip"></div>
+	
+	<script type="text/javascript">
+		$(function() {
+			let selectedProvider = $("#provider").children("option:selected").val();
+			toggleProviderOther(selectedProvider);
+			toggleSsin(selectedProvider);
+			toggleURL(selectedProvider);
+			toggleWarningBillability();
+		});
+		
+		// add a 'onChange' event handler on the provider element
+		$("#provider").change(function() {
+			let selectedProvider = $(this).children("option:selected").val();
+			toggleProviderOther(selectedProvider);
+			toggleSsin(selectedProvider);
+			toggleURL(selectedProvider);
+        });
+		
+		$("#period").change(function() {
+			toggleWarningBillability();
+		})
+		
+		$("#billable").change(function() {
+			toggleWarningBillability();
+		})
+		
+		// Warning if business hours and not billable
+		function toggleWarningBillability() {
+			let period = $("#period"); 
+			let billable = $("#billable");
+			let warn = (period.val() === 'DAY') && (billable.val() === 'NO');
+			let warning = $("#warningBillable"); 
+			if (warn) { warning.show(); } else { warning.hide(); }
+		}
+		
+		// if Provider == OTHER, display field 'other-name'
+		function toggleProviderOther(selectedProvider) {
+			let elem = $("#div-providerOther");
+			if (selectedProvider == 'OTHER') {
+				elem.show();
+			}
+			else {
+				elem.hide();
+			}
+		}
+		
+		// SSIN is request only for CEVORA
+		function toggleSsin(selectedProvider) {
+			let elem = $("#div-ssin");
+			if (selectedProvider == 'CEVORA') {
+				elem.show();
+			}
+			else {
+				elem.hide();
+			}
+		}
+		
+		// If Provider = INTERNAL, prefill URL value
+		function toggleURL(selectedProvider) {
+			let elem = $("#url");
+			if (selectedProvider == 'INTERNAL') {
+				elem.val('http://www.microsoft.com');
+			}
+		}
+		
+		// submit the form is validation is ok
+		function submitRegistration() {
+			$("#assignModal").modal('hide');
+			let frm = document.getElementById("frmRegistration");
+			frm.submit();
+		}
+		
+	</script>
+</body>
+
+</html>

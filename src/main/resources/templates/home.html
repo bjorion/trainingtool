@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/layout :: header">
+<title id="pageTitle" th:text="#{common.title}">Home</title>
+</head>
+
+<body>
+	<div th:replace="fragments/layout :: menu-nav"></div>
+
+	<main role="main">
+		<!-- lower main div below the fixed menu bar -->
+		<div class="jumbotron upper-space">
+			<div class="container"></div>
+		</div>
+
+		<div class="container">
+
+			<!-- User info -->
+			<div class="row small">&nbsp;</div>
+			<div class="row border border-small border-highlight">
+				<div class="col-md-6">
+					<span th:text="${user.fullname}" th:title="'id:'+${user.id}+', version:'+${user.version}" style="font-weight: bold;"> fullname </span> 
+				</div>
+				<div class="col-md-6">
+					Phone : <i><span th:text="${user.phoneNumber}"> PN </span></i>
+				</div>
+				<div class="col-md-6">
+					<span th:text="${user.function}"> function </span>
+				</div>		
+				<div class="col-md-6">
+					Manager : (<span th:text="${user.managername}"> manager </span>) 
+				</div>	
+				<div class="col-md-6">
+					<span th:text="${user.sector}"> sector </span>
+				</div>	
+			</div>
+
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12" style="padding: 0px 40px;">
+					Welcome <span th:text="${user.firstname}"></span>. 
+					What do you want to <span th:text="${user.supervisor ? 'review' : 'learn'}">do</span> today ?
+				</div>
+			</div>
+
+			<!-- Pending trainings -->
+			<div class="row" th:if="${user.supervisor}">&nbsp;</div>
+			<div class="row border" th:if="${user.supervisor}">
+				<div class="col-md-12">
+					<h4>Training requests to review</h4>
+					<table class="table table-hover xtable-striped table-sm">
+						<thead class="thead-dark">
+							<tr>
+								<th>Member</th>
+								<th>Title</th>
+								<th>Creation Date</th>
+								<th>Start Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${pendingRegistrations.empty}">
+								<td colspan="5">No request for trainings yet</td>
+							</tr>
+							<tr th:each="registration : ${pendingRegistrations}">
+								<td>
+									<span th:text="${registration.member.fullname}" th:title="${registration.member.username}"> Fullname </span>
+								</td>
+								<td>
+									<a th:href="@{/registration(id=${registration.id})}"><span th:text="${registration.title}"> Title </span></a>
+								</td>
+								<td>
+									<span th:text="${#temporals.format(registration.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+								</td>
+								<td>
+									<span th:text="${#temporals.format(registration.startDate, 'yyyy-MM-dd HH:mm')}"> StartDate </span>
+								</td>
+								<td>
+									<span th:text="${registration.status.title}"> Status </span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-12">
+					<a th:href="@{/report}" type="button" class="btn btn-outline-primary" th:text="'Report'"
+						title="Find a list of all registration requests" style="margin: 5px 0;">
+					</a>
+				</div>
+			</div>
+			
+			<div class="row small">&nbsp;</div>
+			<div class="row border" th:if="${user.supervisor}">
+				<div class="col-md-12">
+					<h4>Assign a Training</h4>
+				</div>
+				<div class="col-md-12">
+					<a th:href="@{/selectMember}" type="button" class="btn btn-outline-primary" th:text="'Assign to a member'"
+						title="Select any member and assign him a training" style="margin: 5px 0;">
+					</a>
+					<span style="margin: 0 10px;"></span>
+					<a th:href="@{/selectMembers}" type="button" class="btn btn-outline-primary" th:text="'Assign to your members'" 
+						title="Select members you're responsible for and assign them a training" style="margin: 5px 0;">
+					</a>
+				</div>
+			</div>
+
+			<!-- Registered Trainings -->
+			<div class="row small">&nbsp;</div>
+			<div class="row border">
+				<div class="col-md-12">
+					<h4>Your registered trainings</h4>
+					<table class="table table-hover xtable-striped table-sm">
+						<thead class="thead-dark">
+							<tr>
+								<th>Title</th>
+								<th>Provider</th>
+								<th>Creation Date</th>
+								<th>Start Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${registrations.empty}">
+								<td colspan="5">No trainings registered yet</td>
+							</tr>
+							<tr th:each="registration : ${registrations}">
+								<td>
+									<a th:href="@{/registration(id=${registration.id})}">
+										<span th:text="${registration.title}"> Title </span>
+									</a>
+								</td>
+								<td><span th:text="${registration.provider.title}"> Provider </span></td>
+								<td><span th:text="${#temporals.format(registration.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span></td>
+								<td><span th:text="${#temporals.format(registration.startDate, 'yyyy-MM-dd HH:mm')}"> StartDate </span></td>
+								<td><span th:text="${registration.status.title}"> Status </span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-12">
+					<a th:href="@{/editRegistration}" type="button" class="btn btn-outline-primary" title="Request a training for yourself">
+						Request a new training
+					</a>
+				</div>
+			</div>
+			
+			<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
+		</div>
+	</main>
+	
+	<!-- Display a temporary message to the user -->
+	<div class="modal fade modeless" id="msgBoxId" data-backdrop="false" tabindex="-1" role="dialog" th:if="${regEventLabel ne empty}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span th:text="#{${regEventLabel}}"> message </span>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(function() {
+			let msgBox = document.getElementById('msgBoxId');
+			if (!!msgBox) {
+				$("#msgBoxId").modal('show');
+				setTimeout(function(){ $("#msgBoxId").modal('hide'); }, 3000);
+			}
+		});
+	</script>
+
+	<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>

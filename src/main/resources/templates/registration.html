@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/layout :: header">
+<title id="pageTitle" th:text="#{common.title}">Registration</title>
+</head>
+
+<body>
+	<div th:replace="fragments/layout :: menu-nav"></div>
+
+	<main role="main">
+		<!-- lower main div below the fixed menu bar -->
+		<div class="jumbotron upper-space">
+			<div class="container"></div>
+		</div>
+
+		<div class="container">
+			<!-- Member info -->
+			<div class="row">&nbsp;</div>
+			<div class="row border border-small border-highlight">
+				<div class="col-md-12">
+					<h4 th:title="'id:'+${member.id}+', version:'+${member.version}">Member information</h4>
+				</div>
+				<div class="col-md-6">
+					<i> 
+						<span th:text="${member.fullname}"> fullname </span> 
+						(<span th:text="${member.username}"> username </span>)
+						(<span th:text="${member.pnr}"> pnr </span>)
+					</i>
+				</div>
+				<div class="col-md-6">
+					Phone : <i><span th:text="${member.phoneNumber}"> phonenumber </span></i>
+				</div>
+				<div class="col-md-6">
+					<i><span th:text="${member.function}"> function </span></i>
+				</div>
+				<div class="col-md-6">
+					Manager : <i>(<span th:text="${member.managername}"> manager </span>)</i>
+				</div>
+				<div class="col-md-6">
+					<i><span th:text="${member.sector}"> sector </span></i>
+				</div>
+			</div>
+
+			<!-- Horizontal Steppers -->
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="stepper stepper-horizontal">
+						<!-- step 1 -->
+						<li th:classappend="${registration.status.isGTE(1)} ? 'done' : 'todo'"><a>
+							<span class="circle">1</span>
+							<span class="label">Draft</span></a>
+						</li>
+						<!-- step 2 -->
+						<li th:classappend="${registration.status.isGTE(2)} ? 'done' : 'todo'"><a>
+							<span class="circle">2</span> 
+							<span class="label">Manager</span></a>
+						</li>
+						<!-- step 3 -->
+						<li th:classappend="${registration.status.isGTE(3)} ? 'done' : 'todo'"><a>
+							<span class="circle">3</span> 
+							<span class="label">HR</span></a>
+						</li>
+						<!-- step 4 -->
+						<li th:classappend="${registration.status.isGTE(4)} ? 'done' : 'todo'"><a>
+							<span class="circle">4</span> 
+							<span class="label">Training</span></a>
+						</li>
+						<!-- step 5 -->
+						<li th:classappend="${registration.status.isGTE(5)} ? 'done' : 'todo'"><a>
+							<span class="circle">5</span> 
+							<span class="label">Approved</span></a>
+						</li>													
+					</ul>
+				</div>
+			</div>
+			<!-- /.Horizontal Steppers -->
+			
+			<div class="border">
+			<div class="row">
+				<div class="col-md-6">
+					<span class="h4" th:title="'id:'+${registration.id}+', version:'+${registration.version}">Registration</span>
+				</div>
+				<div class="col-md-6 text-right">
+					<a th:if="${editable}" th:href="@{/editRegistration(id=${registration.id})}" type="button"	class="btn btn-outline-primary"> 
+						<span>Edit</span>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-borderless table-hover table-sm">
+						<tbody>
+							<!-- Description -->
+							<tr>
+								<td colspan="2" class="subtitle">Description</td>
+							</tr>	
+							<tr>
+								<td>Title *</td>
+								<td><span th:text="${registration.title}"> Title </span></td>
+							</tr>
+							<tr>
+								<td>Description</td>
+								<td><span th:text="${registration.description}"> Description </span></td>
+							</tr>
+							<tr>
+								<td>Provider *</td>
+								<td><span th:text="${registration.provider.title}"> Provider </span></td>
+							</tr>
+							<tr th:if="${registration.provider.name == 'OTHER'}">
+								<td>Other Provider Name *</td>
+								<td><span th:text="${registration.providerOther}"> Other </span></td>
+							</tr>
+							<tr th:if="${registration.provider.ssinMandatory}">
+								<td>Member SSIN *
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.ssin}">
+										<img th:src="@{/img/qm.png}" width="25" height="25" />
+									</span>
+								</td>
+								<td><span th:text="${registration.ssinFormatted}"> SSIN </span></td>
+							</tr>	
+							<tr>
+								<td>URL *</td>
+								<td><a th:href="${registration.url}" th:text="${registration.url}" target="_blank"> URL </a></td>
+							</tr>
+							<tr>
+								<td>Price (€)</td>
+								<td><span th:text="${registration.price}"> Price </span></td>
+							</tr>
+							<!-- Date & Place -->
+							<tr>
+								<td colspan="2" class="subtitle">Date &amp; Place</td>
+							</tr>	
+							<tr>
+								<td>Start Date <span th:if="${user.training}">*</span></td>
+								<td><span th:text="${registration.startDate}"> StartDate </span></td>
+							</tr>
+							<tr>
+								<td>End Date <span th:if="${user.training}">*</span></td>
+								<td><span th:text="${registration.endDate}"> Enddate </span></td>
+							</tr>
+							<tr>
+								<td>Period *</td>
+								<td><span th:if="${registration.period ne null}" th:text="${registration.period.title}"> Period </span></td>
+							</tr>
+							<tr>
+								<td>Total Hours</td>
+								<td><span th:text="${registration.totalHour}"> Total Hours </span></td>
+							</tr>
+							<tr>
+								<td>Location</td>
+								<td><span th:text="${(registration.location == null) ? '' : registration.location.title}"> Location </span></td>
+							</tr>
+							<tr>
+								<td>Self-Study</td>
+								<td><span th:text="${(registration.selfStudy == null) ? '' : registration.selfStudy.title}"> Self-Study </span></td>
+							</tr>		
+							<!-- Administration -->					
+							<tr>
+								<td colspan="2" class="subtitle">Administration</td>
+							</tr>
+							<tr>
+								<td>Mandatory</td>
+								<td><span th:text="${(registration.mandatory == null) ? '' : registration.mandatory.title}"> Mandatory training </span></td>
+							</tr>	
+							<tr>
+								<td>Affects Billability <span th:if="${user.supervisor}">*</span>							
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.billable}">
+										<img th:src="@{/img/qm.png}" width="25" height="25" />
+									</span>
+								</td>
+								<td><span th:text="${(registration.billable == null) ? '' : registration.billable.title}"> Billable </span></td>
+							</tr>
+							<tr>
+								<td>CBA Compliant
+									<span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.cbaCompliant}">
+										<img th:src="@{/img/qm.png}" width="25" height="25" />
+									</span>
+								</td>
+								<td><span th:text="${(registration.cbaCompliant == null) ? '' : registration.cbaCompliant.title}"> CBA </span></td>
+							</tr>	
+							<!-- Miscellaneous -->
+							<tr>
+								<td colspan="2" class="subtitle">Miscellaneous</td>
+							</tr>														
+							<tr>
+								<td>Member Comment</td>
+								<td><span th:text="${registration.comment}"> Comment </span></td>
+							</tr>
+							<tr>
+								<td>Motivation <span th:if="${user.supervisor}">*</span></td>
+								<td><span th:text="${registration.motivation}"> Motivation </span></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="padding: 0;"><hr /></td>
+							</tr>
+							<tr class="em">
+								<td>Created by</td>
+								<td>
+									<span th:text="${'('+registration.createdBy+')'}"> CreationBy </span> on
+									<span th:text="${#temporals.format(registration.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+								</td>
+							</tr>							
+							<tr class="em" th:if="${registration.modifiedBy ne empty}">
+								<td>Last modified by</td>
+								<td>
+									<span th:text="${'('+registration.modifiedBy+')'}"> ModifiedBy </span> on
+									<span th:text="${#temporals.format(registration.modifiedOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+								</td>
+							</tr>								
+							<tr class="em">
+								<td>Status</td>
+								<td><span th:text="${registration.status.title}"> Status </span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</div>
+
+			<div class="row border-big">
+			
+				<!-- Information for the user -->
+				<div class="col-md-12" th:if="${approvable}">
+					<p th:if="${submittable && !acceptable}">
+						By clicking <b>Submit</b> below, the training request will be sent to your manager.
+					</p>
+					<p th:if="${submittable && acceptable}">
+						By clicking <b>Accept</b> below, the training request will be sent to your manager.
+					</p>
+					<p th:if="${user.manager && registration.status.name == 'SUBMITTED_TO_MANAGER'}">
+						By clicking <b>Approve</b> below, the training request will be sent to the training team or to HR 
+						(if	it has an impact on billability)
+					</p>
+					<p th:if="${user.hr && registration.status.name == 'SUBMITTED_TO_HR'}">
+						By clicking <b>Approve</b> below, the training request will be sent to the training team.
+					</p>
+					<p th:if="${user.training && registration.status.name == 'SUBMITTED_TO_TRAINING'}">
+						By clicking <b>Approve</b> below, you approve the request. You are responsible for contacting, if necessary, the Provider.
+					</p>
+					<p th:if="${user.training && registration.status.name == 'SUBMITTED_TO_PROVIDER'}">
+						By clicking <b>Approve</b> below, you mark the request as approved by the Provider. A mail will be sent to the requesting member.
+					</p>					
+				</div>
+
+				<!-- Buttons -->
+				<div class="col-md-12">
+					<div class="inline">
+						<!-- Edit -->
+						<a th:if="${editable}" th:href="@{/editRegistration(id=${registration.id})}" type="button"	class="btn btn-outline-primary"> 
+							<span>Edit</span>
+						</a> 
+						<span th:if="${editable}">&nbsp;</span> 
+						
+						<!-- Accept / Submit / Approve -->
+						<a th:if="${approvable}" href="" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#submitModal"> 
+							<span th:text="${submittable} ? (${acceptable} ? 'Accept' : 'Submit') : 'Approve'" 
+								  th:title="${submittable} ? 'Submit this request' : 'Approve this request'">Approve</span>
+						</a> 
+						<span th:if="${approvable}">&nbsp;</span>
+						
+						<!-- Delete --> 
+						<a th:if="${deletable}" href="" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#deleteModal"> 
+							<span title="This request will be permanently deleted">Delete</span>
+						</a> 
+						<span th:if="${deletable}">&nbsp;</span>
+						
+						<!-- Reject --> 
+						<a th:if="${rejectable}" href="" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#rejectModal"> 
+							<span title="You send this request back to the member for a change">Send Back</span>
+						</a> 
+						<span th:if="${rejectable}">&nbsp;</span>
+						
+						<!-- Refuse --> 
+						<a th:if="${refusable}" href="" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#refuseModal"> 
+							<span title="You do NOT approve this request">Refuse</span>
+						</a> 
+						<span th:if="${refusable}">&nbsp;</span>
+					</div>
+					<div class="inline">
+						<a th:href="@{/}" type="button" class="btn btn-outline-info">Home</a>
+					</div>
+				</div>
+				
+			</div>
+			<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
+
+		</div>
+	</main>
+
+	<!-- Approve (for supervisor) OR submit (for member) -->
+	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" 
+	     th:with="label=${submittable} ? (${acceptable} ? 'Accept' : 'Submit') : 'Approve'">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						<span th:text="${label}">Submit/Approve</span>
+					</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span>Are you sure you want to <span th:text="${label}">Submit/Approve</span> this request ?<br/></span>  
+					<span th:if="${!sctrValid}" class="invalid">Member's sector is mandatory<br/></span>
+					<span th:if="${!mtvnValid}" class="invalid">A motivation is mandatory to confirm this action<br/></span>
+					<span th:if="${!ssinValid}" class="invalid">Make sure the SSIN is present and valid<br/></span>
+					<span th:if="${!dateValid}" class="invalid">Start and end dates are mandatory<br/></span>
+					<span th:if="${!billValid}" class="invalid">Billability is mandatory<br/></span>
+				</div>
+				<div class="modal-footer">
+					<a href="" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a> 
+					<a th:href="@{/editRegistration(id=${registration.id})}" type="button" class="btn btn-info" th:unless="${allValid}"> 
+						<span>Edit</span>
+					</a>					
+					<a th:href="@{/submitRegistration(id=${registration.id})}" type="button" class="btn btn-primary" th:if="${allValid}"> 
+						<span th:text="${label}">Submit/Approve</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Deletion by Member -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Deletion</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span>Are you sure you want to delete this request ?<br>This operation is <b>not</b> reversible.</span>
+				</div>
+				<div class="modal-footer">
+					<a href="" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a> 
+					<a th:href="@{/deleteRegistration(id=${registration.id})}" type="button" class="btn btn-warning">Delete</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Refusal by Supervisor -->
+	<div class="modal fade" id="refuseModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Refusal</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span>Are you sure you want to refuse this request ?</span> <br /> 
+					<span th:if="${!mtvnValid}" class="invalid">A motivation is mandatory to confirm this action.</span>
+				</div>
+				<div class="modal-footer">
+					<a href="" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a> 
+					<a th:href="@{/editRegistration(id=${registration.id})}" type="button" class="btn btn-info" th:unless="${mtvnValid}">Edit</a>
+					<a th:href="@{/refuseRegistration(id=${registration.id})}" type="button" class="btn btn-warning" th:if="${mtvnValid}">Refuse</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Send back by Manager -->
+	<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Send Back</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>
+						Are you sure you want to send back this request to the member ? 
+						This may be necessary if you want the member to complete or modify some data.
+					</p>
+					<span>You can add a motivation before confirming this action.</span>
+				</div>
+				<div class="modal-footer">
+					<a href="" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a> 
+					<a th:href="@{/editRegistration(id=${registration.id})}" type="button" class="btn btn-info">Edit</a>
+					<a th:href="@{/sendbackRegistration(id=${registration.id})}" type="button" class="btn btn-warning">Send Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments/layout :: footer"></div>
+	<div th:replace="fragments/layout :: tooltip"></div>
+</body>
+
+</html>

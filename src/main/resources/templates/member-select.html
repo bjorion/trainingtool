@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/layout :: header">
+<title id="pageTitle">Select Member</title>
+</head>
+
+<body>
+	<div th:replace="fragments/layout :: menu-nav"></div>
+
+	<main role="main">
+		<!-- lower main div below the fixed menu bar -->
+		<div class="jumbotron upper-space">
+			<div class="container"></div>
+		</div>
+
+		<div class="container">
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12 border">
+					<form th:action="@{/selectMemberSearch}" th:object="${member}" method="get">
+						<fieldset th:with="err=${errors ne empty && #lists.contains(errors, 'missing')}">
+							<legend>Member search</legend>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="firstname">Firstname</label> <input type="text" class="form-control" th:field="*{firstname}"
+										th:classappend="${err} ? 'is-invalid' : ''" placeholder="Firstname" maxlength="50">
+									<div th:if="${err}" class="invalid-feedback">Fields cannot be all empty</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="lastname">Lastname</label> <input type="text" class="form-control" th:field="*{lastname}"
+										th:classappend="${err} ? 'is-invalid' : ''" placeholder="Lastname" maxlength="50">
+								</div>
+							</div>
+						</fieldset>
+						<div class="">
+							<span> 
+								Please fill in at least one of the fields above. Search is case-insensitive. <br/>
+								Add * after the name if it is not complete (ex: 'Al*' will match both 'Albert' and 'Alan').
+							</span>
+						</div>
+						<div>&nbsp;</div>
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-outline-primary">Search</button>
+								&nbsp;
+								<a th:href="@{/home}" type="button" class="btn btn-outline-info">Cancel</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<div class="row small">&nbsp;</div>
+			<div class="row">
+				<div class="col-md-12" th:if="${#lists.isEmpty(members)}">
+					<span>No member was found. Please review your search criteria.</span>
+				</div>
+				<div class="col-md-12 border" th:unless="${#lists.isEmpty(members)}">
+					<form th:action="@{/selectMemberSelected}" method="get">
+						<fieldset>
+							<legend>Member selection</legend>
+							<div class="form-row">
+								<label for="provider" class="col-sm-2 col-form-label">Member *</label>
+								<div class="col-sm-8">
+									<select name="selectedMember" class="form-control" required>
+										<option th:if="${#lists.size(members) > 1}" value="">-- select a member --</option>
+										<option th:each="elem : ${members}" th:value="${elem.username}" 
+												th:text="${elem.fullname + ' (' + #strings.toLowerCase(elem.function) + ')'}">-</option>
+									</select>
+								</div>
+							</div>
+							<div>&nbsp;</div>
+							<div class="">
+								<span>Only the first 10 members corresponding to the given criteria are returned. 
+								Refine your search if you do not see the member you are looking for.</span>
+							</div>
+							<div>&nbsp;</div>
+							<div class="form-row">
+								<div class="col-sm-10">
+									<button type="submit" class="btn btn-outline-primary">Next</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	<div class="row">&nbsp;</div>
+
+	<div th:replace="fragments/layout :: footer"></div>
+</body>
