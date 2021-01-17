@@ -1,10 +1,10 @@
 # Training Tool Application
 
-### Pending
+### Start the application
 
-* investigate jira/jenkins
-* investigate 'second-level cache'
-* investigate 'roles' (new db tables)
+* java -Dspring.profiles.active=local -jar trainingtool-1.0.0.war
+
+.
 
 ### Vocabulary
 
@@ -16,8 +16,6 @@
 * **Admin**: a technical user who can see all requests
 * **Supervisor**: manager and above (Manager, HR, Training, Admin)  
 * **Office**: HR and above (HR, Training, Admin)
-
-Note that the members of the HR or TRAINING groups are defined in the properties files.
 
 .
 
