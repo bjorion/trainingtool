@@ -1,0 +1,11 @@
+Feature: test user functionality
+
+  # Scenario = concrete example of how the application should behave
+  Scenario: Check /REST/v1/users/{username}
+	Given user is logged 
+	When user calls users username
+	Then user info is retrieved
+
+  Examples: 
+    |username|password|
+    |john.doe|john|

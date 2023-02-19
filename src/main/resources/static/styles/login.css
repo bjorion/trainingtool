@@ -1,0 +1,51 @@
+/** Style applied to the login page only */
+body.login {
+	background: url(../img/Wallpaper_Global_Ice_ENG_4-3_Standard.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: rgb(108, 142, 152);
+}
+
+div.no-side-margin {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+/* change */
+:root {
+	--primary-hsl: 200, 100%, 50%;
+	--primary-dark-hsl: 200, 100%, 6%;
+	--primary-light-hsl: 200, 100%, 91%;
+}
+
+div.box-login {
+	--color: hsl(var(--primary-dark-hsl), .5);
+	background-color: var(--color);
+	box-shadow: 0 0 15px 0 var(--color);
+	border-radius: 20px;
+	color: white;
+	padding: 1.5em 2em;
+}
+
+div.box-login .form-control {
+	--color: hsl(var(--primary-light-hsl), .8);
+}
+
+div.box-login button#loginBtnId {
+	background-color: hsl(var(--primary-hsl), .25);
+	color: white;
+	font-size: 1.5em;
+	margin-bottom: .5em;
+}
+
+div.box-login button#loginBtnId:hover,
+div.box-login button#loginBtnId:focus {
+	background-color: hsl(var(--primary-hsl), .5);
+}
+
+div.box-login a.msg-info {
+	color: white;
+	font-style: italic;
+	padding-left: .5em;
+}

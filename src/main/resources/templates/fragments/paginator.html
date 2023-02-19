@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- header -->
+<head th:fragment="header">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title th:include=":: #pageTitle">Default Title</title>
+
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/styles/common.css}" type="text/css"/>
+</head>
+
+<body>
+<!-- Paginator (param: mylink => /report); -->
+<nav style="padding-bottom: 20px;"
+     th:fragment="paginator-registrations (mylink)"
+     th:if="${registrations.totalPages gt 0}" th:with="max=${registrations.number+1+4},min=${registrations.number+1-4}">
+    <ul class="pagination justify-content-center font-weight-medium">
+        <li class="page-item" th:classappend="${registrations.number eq 0} ? 'disabled'">
+            <a class="page-link svg-icon"
+               data-toggle="tooltip"
+               th:href="@{{link}?page=1(link=${mylink})}" title="First Page">
+                <span>&lt;&lt;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${registrations.number eq 0} ? 'disabled'">
+            <a class="page-link svg-icon"
+               data-toggle="tooltip"
+               th:href="@{{link}?page={id}(id=${registrations.number lt 2 ? 1 : registrations.number},link=${mylink})}" title="Previous Page">
+                <span>&lt;</span>
+            </a>
+        </li>
+
+        <li class="page-item disabled" th:if="${1 < min}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" height="20" width="20">...</span>
+            </a>
+        </li>
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence((1 < min) ? min : 1, registrations.number, 1)}">
+            <a class="page-link" rel="tooltip" th:href="@{{link}?page={id}(id=${i},link=${mylink})}"
+               th:text="${i}" th:title="${'Page '+ i}"></a>
+        </li>
+        <li class="page-item"
+            th:classappend="${i eq registrations.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( registrations.number + 1, (registrations.totalPages > max) ? max : (registrations.totalPages), 1)}">
+            <a class="page-link" rel="tooltip" th:href="@{{link}?page={id}(id=${i},link=${mylink})}"
+               th:text="${i}" th:title="${'Page '+ i}"></a>
+        </li>
+        <li class="page-item disabled" th:if="${max < registrations.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" height="20" width="20">...</span>
+            </a>
+        </li>
+
+        <li class="page-item" th:classappend="${registrations.number + 1 eq registrations.totalPages} ? 'disabled'">
+            <a class="page-link" data-toggle="tooltip"
+               th:href="@{{link}?page={id}(id=${registrations.number + 2},link=${mylink})}" title="Next Page">
+                <span>&gt;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${registrations.number + 1 eq registrations.totalPages} ? 'disabled'">
+            <a class="page-link" data-toggle="tooltip"
+               th:href="@{{link}?page={id}(id=${registrations.totalPages},link=${mylink})}" title="Last Page">
+                <span>&gt;&gt;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+
+</html>

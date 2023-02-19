@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle">Logout</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: empty-nav"></div>
+
+<main role="main">
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">&nbsp;</div>
+            <div class="col-md-6">
+                <div class="alert" style="margin-top: 10em;">
+                    <p>
+                        <b>You have successfully logged out of the application.</b> <br/>
+                    </p>
+                    <p>
+                        You can log in once again by <a th:href="@{/login}">clicking here</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

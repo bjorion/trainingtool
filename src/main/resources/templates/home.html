@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle" th:text="#{common.title}">Home</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <!-- lower main div below the fixed menu bar -->
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border border-small background-highlight">
+            <div class="col-md-6">
+                <span style="font-weight: bold;" th:text="${user.fullName}"
+                      th:title="'id '+${user.id}+', version '+${user.version}"> fullname </span>
+            </div>
+            <div class="col-md-6">
+                Phone : <span th:text="${user.phoneNumber}"> PN </span>
+            </div>
+            <div class="col-md-6">
+                <span th:text="${user.function}"> function </span>
+            </div>
+            <div class="col-md-6">
+                Manager : (<span th:text="${user.managerName}"> manager </span>)
+            </div>
+            <div class="col-md-6">
+                <span th:text="${user.sector}"> sector </span>
+            </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-md-12 hor-inside-padding">
+                Welcome <span th:text="${user.firstName}"></span>.
+                What do you want to <span th:text="${user.supervisor ? 'review' : 'learn'}">do</span> today ?
+            </div>
+        </div>
+
+        <!-- Pending registrations -->
+        <div class="row" th:if="${user.supervisor}">&nbsp;</div>
+        <div class="row border" th:if="${user.supervisor}">
+            <div class="col-md-12">
+                <h4>Registration requests to review</h4>
+                <table class="table table-hover xtable-striped table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Member</th>
+                        <th>Title</th>
+                        <th>Creation Date</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${pendingRegistrations.empty}">
+                        <td colspan="5">No request for trainings yet</td>
+                    </tr>
+                    <tr th:each="registration : ${pendingRegistrations}">
+                        <td>
+                            <span th:text="${registration.member.fullName}" th:title="${registration.member.userName}"> Fullname </span>
+                        </td>
+                        <td>
+                            <a th:href="@{/registration(id=${registration.id})}"><span th:text="${registration.title}"> Title </span></a>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(registration.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(registration.startDate, 'yyyy-MM-dd HH:mm')}"> StartDate </span>
+                        </td>
+                        <td>
+                            <span th:text="${registration.status.title}"> Status </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-md-12">
+                <a class="btn btn-outline-primary" th:href="@{/report}" type="button">
+                    <span th:replace="fragments/button :: report (title='Generate a report with registration requests')">Report</span>
+                </a>
+                <span style="margin: 0 10px;"></span>
+                <a class="btn btn-outline-primary" th:href="@{/trainings}" th:if="${user.office}" type="button">
+                    <span th:replace="fragments/button :: training (title='Manage trainings available to members')">Trainings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Assign a training to member(s) -->
+        <div class="row small">&nbsp;</div>
+        <div class="row border" th:if="${user.supervisor}">
+            <div class="col-md-12">
+                <h4>Assign a training</h4>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-md-12">
+                <a class="btn btn-outline-primary" th:href="@{/select-member}" th:text="'Assign to a member'"
+                   title="Select any member and assign him a training"
+                   type="button">
+                </a>
+                <span style="margin: 0 10px;"></span>
+                <a class="btn btn-outline-primary" th:href="@{/select-members}" th:text="'Assign to your members'"
+                   title="Select members you're responsible for and assign them the same training"
+                   type="button">
+                </a>
+            </div>
+        </div>
+
+        <!-- Upcoming trainings -->
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12 d-flex w-100 justify-content-between">
+                <h4>Upcoming trainings</h4>
+                <a class="" data-target="#trainings" data-toggle="collapse">
+                    <span th:replace="fragments/button :: toggle (title='open/close')"></span>
+                </a>
+            </div>
+            <div class="col-md-12 collapse show" id="trainings">
+                <div class="list-group" th:unless="${#lists.isEmpty(trainings)}">
+                    <div class="list-group-item list-group-item-action flex-column align-items-start"
+                         th:each="elem : ${trainings}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" th:text="${elem.title}"></h5>
+                            <span th:if="${elem.mandatory ne empty && elem.mandatory.name eq 'YES'}">mandatory</span>
+                            <a class="ext" target="new" th:href="${elem.url}">Visit the site</a>
+                        </div>
+                        <p class="mb-1 em" th:text="${elem.description}"></p>
+                        <p class="mb-1">
+                            <span th:text="${elem.provider}"></span> /
+                            From <span th:text="${elem.startDate}"></span> to <span th:text="${elem.endDate}"></span> /
+                            <span th:if="${elem.selfStudy ne empty && elem.selfStudy.name eq 'YES'}"
+                                  th:text="Self-Study"></span>
+                        </p>
+                        <p class="mb-1">
+                            <a th:href="@{/edit-registration(trainingId=${elem.id})}">Click here to register</a>
+                        </p>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(trainings)}">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-8 em">
+                            No training is currently available
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registrations -->
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12">
+                <h4>Your registered trainings</h4>
+                <table class="table table-hover xtable-striped table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Provider</th>
+                        <th>Creation Date</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${registrations.empty}">
+                        <td colspan="5">No registration yet</td>
+                    </tr>
+                    <tr th:each="registration : ${registrations}">
+                        <td>
+                            <a th:href="@{/registration(id=${registration.id})}">
+                                <span th:text="${registration.title}"> Title </span>
+                            </a>
+                        </td>
+                        <td><span th:text="${registration.provider.title}"> Provider </span></td>
+                        <td><span th:text="${#temporals.format(registration.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+                        </td>
+                        <td><span
+                                th:text="${#temporals.format(registration.startDate, 'yyyy-MM-dd HH:mm')}"> StartDate </span>
+                        </td>
+                        <td><span th:text="${registration.status.title}"> Status </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-md-12">
+                <a class="btn btn-outline-primary" th:href="@{/edit-registration}" type="button">
+                    <span th:replace="fragments/button :: create (title='Request a training for yourself', label='New Registration')">New Registration</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+    </div>
+</main>
+
+<!-- Display a temporary message to the user -->
+<div class="modal fade modeless" data-backdrop="false" id="msgBoxId" role="dialog" tabindex="-1"
+     th:if="${eventLabel ne empty}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <span th:text="#{${eventLabel}}"> message </span>
+                <button class="close" data-dismiss="modal" type="button"><span>&times;</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+		$(function() {
+			let msgBox = document.getElementById('msgBoxId');
+			if (!!msgBox) {
+				$("#msgBoxId").modal('show');
+				setTimeout(function(){ $("#msgBoxId").modal('hide'); }, 3000);
+			}
+		});
+
+</script>
+
+<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>

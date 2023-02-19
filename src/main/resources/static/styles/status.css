@@ -1,0 +1,25 @@
+/** CSS for the status page */
+
+text {
+	font-size: 12px;
+	font-weight: bold;
+	fill: #4f442b;
+	/* text-anchor: middle; */
+}
+
+rect {
+	stroke: #9A8B7A;
+	stroke-width: 1px;
+}
+
+g#xAxis>path {
+	stroke: #eee;
+}
+
+g#yAxis>g.tick:first-of-type>line {
+	stroke: black;
+}
+
+.tick>line {
+	stroke: #eee;
+}

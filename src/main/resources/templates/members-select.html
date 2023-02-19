@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle">Select Members</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <!-- lower main div below the fixed menu bar -->
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border" th:if="${#lists.isEmpty(members)}">
+            <div class="col-md-12">
+                <span>There is no member for which you are the manager.</span>
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-md-12">
+                <a class="btn btn-outline-info" th:href="@{/home}" type="button">Home</a>
+            </div>
+        </div>
+        <div class="row border" th:unless="${#lists.isEmpty(members)}">
+            <div class="col-md-12">
+                <h3>Select members for a training</h3>
+                <hr/>
+                <div>
+                    You can only see members for which you're the manager. Subcontractors are excluded from this list.
+                </div>
+                <div>&nbsp;</div>
+                <form method="post" th:action="@{/select-members-selected}">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            &nbsp;
+                            <button class="btn btn-outline-secondary" onclick="return selectAll(true);">
+                                <span th:replace="fragments/button :: selectAll (title='')">Select All</span>
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-outline-secondary" onclick="return selectAll(false);">
+                                Deselect All
+                            </button>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button class="btn btn-outline-primary" type="submit">Next</button>
+                            &nbsp;
+                            <a class="btn btn-outline-info" th:href="@{/home}" type="button">Home</a>
+                            &nbsp;
+                        </div>
+                    </div>
+                    <fieldset>
+                        <table class="table table-hover table-sm">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center">Select</th>
+                                <th>Name</th>
+                                <th>Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr name="tr_usernames" th:each="member : ${members}">
+                                <td class="text-center" style="width: 100px;">
+                                    <input name="usernames" th:id="${member.userName}" th:value="${member.userName}"
+                                           type="checkbox"/>
+                                </td>
+                                <td>
+                                    <span th:text="${member.fullName}" th:title="${member.userName}"></span>
+                                </td>
+                                <td>
+                                    <em th:text="${#strings.toLowerCase(member.function)}"></em>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            &nbsp;
+                            <button class="btn btn-outline-secondary" onclick="return selectAll(true);">
+                                <span th:replace="fragments/button :: selectAll (title='')">Select All</span>
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-outline-secondary" onclick="return selectAll(false);">
+                                Deselect All
+                            </button>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button class="btn btn-outline-primary" type="submit">Next</button>
+                            &nbsp;
+                            <a class="btn btn-outline-info" th:href="@{/home}" type="button">Home</a>
+                            &nbsp;
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="row">&nbsp;</div>
+
+<div th:replace="fragments/layout :: footer"></div>
+
+<script type="text/javascript">
+		// select or deselect all checkboxes
+		function selectAll(arg)
+		{
+			let elems = document.getElementsByName("usernames");
+			for (let i = 0; i < elems.length; i++) {
+				if (elems[i].type == 'checkbox') {
+					elems[i].checked = arg;
+				}
+			}
+			return false;
+		}
+		
+		// click on a row => click on its checkbox
+		$(function() {
+			$('input[name="usernames"]').click(function(event) {
+				// we do not want to event to be propagated up
+				event.stopPropagation();
+			});
+			
+			$('tr[name="tr_usernames"]').click(function(event) {
+				let cbs = $(this).find('input:checkbox');
+				cbs.prop("checked", !cbs.prop("checked"));
+			});
+		});
+		
+
+</script>
+</body>

@@ -1,0 +1,43 @@
+app:
+  server:
+    domain: http://localhost:8080/
+  local: 'true'
+  mail:
+    address:
+      from: DONOTREPLY@example.org
+      hr: bernard.jorion@example.org
+      training: bernard.jorion@example.org
+    sendMail: 'false'
+  role:
+    admin: ''
+    manager: jorionb
+    hr: ''
+  users:
+    ldap: 'false'
+    inMemory: 'true'
+
+spring:
+  mail:
+    username: support.trainingtool@example.org
+    host: 162.70.14.76
+    password: xxxxxxxxxxx
+  datasource:
+    data: classpath:dbcr/h2-data.sql
+    driver-class-name: org.h2.Driver
+    password: sa
+    username: sa
+    schema: classpath:dbcr/h2-schema.sql
+    url: jdbc:h2:mem:testdb
+    initialize: 'true'
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: 'false'
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+
+server:
+  port: '8080'
+ldap:
+  url: ldap://158.234.116.153:389

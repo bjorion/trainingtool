@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle">Access Denied</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12 text-center">
+                <p>&nbsp;</p>
+                <h2 style="font-size: 34px; font-weight: 100;">
+                    Sorry, you do not have the rights to view this page.
+                </h2>
+                <p style="font-weight: 200; font-size: 20px;">
+                    (nice try, though)
+                </p>
+                <p>&nbsp;</p>
+                <p>
+                    <a th:href="@{/home}">click here</a> to go to the main page.
+                </p>
+                <p>
+                    <a th:href="@{/logout}">click here</a> to log out.
+                </p>
+                <p>
+                    <span th:text="${#strings.replace(#strings.substring(#temporals.createNow(),0,19),'T',' ')}"></span>
+                </p>
+                <p th:if="${message != null}">
+                    <span th:text="${message}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

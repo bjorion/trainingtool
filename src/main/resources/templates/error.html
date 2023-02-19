@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle" th:text="#{common.title}">Error</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <!-- lower main div below the fixed menu bar -->
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12">
+                <h3>Error Page</h3>
+                <hr/>
+                <div th:with="mail=${@environment.getProperty('app.mail.address.support')}">
+                    Well, we are sorry but something went wrong.<br/>
+                    Please contact us at <a th:href="'mailto:'+${mail}"><span th:text="${mail}"></span></a> with the
+                    information below.
+                </div>
+                <div>&nbsp;</div>
+                <table class="table table-sm table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Date</th>
+                        <td><span th:text="${timestamp}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Path</th>
+                        <td><span th:text="${path}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Error</th>
+                        <td><span th:text="${error}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td><span th:text="${status}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Message</th>
+                        <td><span th:text="${message}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Exception</th>
+                        <td><span th:text="${exception}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Stacktrace</th>
+                        <td><span th:text="${trace ne empty}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Version</th>
+                        <td><span th:text="${@environment.getProperty('build.version')}"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Build Time</th>
+                        <td><span
+                                th:text="${#strings.replace(#strings.substring(@environment.getProperty('build.time'),0,16),'T',' ')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row small">&nbsp;</div>
+        <div class="row border" th:if="${trace ne empty}">
+            <div class="col-md-12">
+                <div class="accordion">Click to open/close the stacktrace</div>
+                <div id="stacktrace" style="display: none;">
+                    <textarea class="form-control" disabled="disabled" rows="10" th:text="${trace}"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+    </div>
+</main>
+
+<script type="text/javascript">
+		// same as $(document).ready(function() { ... })
+		$(function() {
+			$(".accordion").each(
+				function() {
+					console.log(this);
+					$(this).click(
+						function() {
+							$(this).next().toggle();
+						}
+					);
+				}
+			)
+			//$("#stacktrace").toggle();
+		});
+
+</script>
+
+<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>

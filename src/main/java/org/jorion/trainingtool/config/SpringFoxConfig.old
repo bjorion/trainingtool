@@ -1,0 +1,124 @@
+package com.cgi.trainingtool.config;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RestController;
+
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.BasicAuth;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.Server;
+import springfox.documentation.service.ServerVariable;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+
+/**
+ * Swagger configuration class.
+ * <p>
+ * See
+ * <ul>
+ * <li>https://springfox.github.io/springfox/docs/current/
+ * <li>https://swagger.io/docs/specification/api-host-and-base-path/
+ * <li>https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+ * </ul>
+ * <p>
+ * This application JSON file:
+ * <ul>
+ * <li>v2 (Swagger 2): http://localhost:8080/trainingtool/v2/api-docs
+ * <li>v3 (OpenApi 3): http://localhost:8080/trainingtool/v3/api-docs
+ * </ul>
+ */
+@Configuration
+public class SpringFoxConfig
+{
+    // --- Variables ---
+    @Value("${build.name}")
+    private String buildName;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    // --- Methods ---
+    /**
+     * Configure the Swagger documentation: only the rest controller classes are concerned.
+     *
+     * @return An object containing the configuration for Swagger
+     */
+    @Bean
+    public Docket swaggerConfig()
+    {
+        // URL: "{protocol}://{serverId}:{port}/{context}/REST/v1"
+        Server first = new Server("name", "http://localhost:8080/trainingtool/REST/v1", "TrainingTool Server", new ArrayList<ServerVariable>(),
+                new ArrayList<>());
+
+        // @formatter:off
+        // DocumentationType: SWAGGER_2 or OAS_30
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                    .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                    .paths(PathSelectors.any())
+                    .build()
+                .pathMapping("/")
+                .servers(first) // not used ?
+                .apiInfo(apiInfo())
+                .securitySchemes(Arrays.asList(securityScheme()))
+                .securityContexts(Arrays.asList(securityContext()))
+                ;
+        // @formatter:on
+        return docket;
+    }
+
+    /**
+     * Customize the Swagger documentation.
+     */
+    private ApiInfo apiInfo()
+    {
+        // @formatter:off
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title(buildName)
+                .description("Rest API for TrainingTool data")
+                .version(buildVersion)
+                .build();
+        // @formatter:on
+        return apiInfo;
+    }
+
+    /**
+     * For Basic Authentication: https://swagger.io/docs/specification/authentication/basic-authentication/
+     *
+     * @return a security scheme
+     */
+    private static SecurityScheme securityScheme()
+    {
+        return new BasicAuth("basicAuth");
+    }
+
+    private static SecurityReference basicAuthReference()
+    {
+        return new SecurityReference("basicAuth", new AuthorizationScope[0]);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static SecurityContext securityContext()
+    {
+        // @formatter:off
+        SecurityContext sc = SecurityContext.builder()
+                .securityReferences(Arrays.asList(basicAuthReference()))
+                .forPaths(PathSelectors.any())
+                //.forPaths(PathSelectors.ant("/trainingtool/REST/v1/**"))
+                // .operationSelector(oc -> { return true; })
+                .build();
+        // @formatter:on
+        return sc;
+    }
+}

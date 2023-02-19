@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+
+<body>
+<p>
+    Hello <span th:text="${recipient}"> recipient </span>,
+</p>
+<p>
+    We would like to inform you that a training request was <b>refused</b> by <span th:text="${dto.actorName}"></span>.
+</p>
+<p>
+    <span><b>Request title</b></span>: <span th:text="${dto.regTitle}"></span><br/>
+    <span><b>Request current status</b></span>: <span th:text="${dto.regStatus.title}"></span><br/>
+    <span><b>Request link</b></span>: <a target="_blank" th:href="${reqLink}">Click here</a>.
+    You need to be connected to the  network to access it.
+</p>
+<p>
+    <b>Justification</b>: <span th:text="${dto.regJustification}"></span><br>
+</p>
+<p>&nbsp;</p>
+<div>
+    <span>The TrainingTool application</span><br/>
+    <span><em>Please do not reply to this message.</em></span>
+</div>
+</body>
+
+</html>

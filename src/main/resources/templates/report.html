@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle" th:text="#{common.title}">Report</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12">
+                <h3>Report Generation</h3>
+                <hr/>
+                Manager will find here the registrations of the members they are responsible for.
+                HR and Training teams will see all registrations.<br/>
+                You will be able to generate a report and export it as a CSV file.
+            </div>
+            <div>&nbsp;</div>
+            <div class="col-md-12">
+                <form method="get" th:action="@{/select-report}" th:object="${report}">
+                    <fieldset>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="lastname">Lastname</label>
+                                <input class="form-control" maxlength="50" placeholder="Lastname" th:field="*{lastName}"
+                                       type="text">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="lastname">Start date after</label>
+                                <input class="form-control" min="2020-01-01" placeholder="" th:field="*{startDate}"
+                                       type="date">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="lastname">Status</label>
+                                <select class="form-control" th:field="*{status}">
+                                    <option selected value="">-- select a status --</option>
+                                    <option th:each="elem : ${T(org.jorion.trainingtool.type.RegistrationStatus).values()}"
+                                            th:text="${elem.title}" th:value="${elem.name}">-
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <span th:replace="fragments/button :: filter (title='Apply the filter')">Filter</span>
+                            </button>
+                            &nbsp;
+                            <a class="btn btn-outline-primary" th:href="@{/report}" type="button">
+                                Reset
+                            </a>
+                            &nbsp;
+                            <a class="btn btn-outline-primary" data-target="#exportModal" data-toggle="modal" href=""
+                               type="button">
+                                <span th:replace="fragments/button :: export (title='Export to CSV')">Export</span>
+                            </a>
+                            &nbsp;
+                            <a class="btn btn-outline-info" th:href="@{/home}" type="button">
+                                Home
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row small">&nbsp;</div>
+
+        <!-- Registered Trainings -->
+        <div class="row border">
+            <div class="col-md-12">
+                <table class="table table-hover table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Member</th>
+                        <th>Title</th>
+                        <th>Creation Date</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${registrations.empty}">
+                        <td colspan="5">No training request found</td>
+                    </tr>
+                    <tr th:each="reg : ${registrations}">
+                        <td><span th:text="${reg.member.fullName}" th:title="${reg.member.userName}"> Member </span>
+                        </td>
+                        <td><a th:href="@{/registration(id=${reg.id})}"> <span th:text="${reg.title}"> Title </span></a>
+                        </td>
+                        <td><span
+                                th:text="${#temporals.format(reg.createdOn, 'yyyy-MM-dd HH:mm')}"> CreationDate </span>
+                        </td>
+                        <td><span th:text="${#temporals.format(reg.startDate, 'yyyy-MM-dd HH:mm')}"> StartDate </span>
+                        </td>
+                        <td><span th:text="${reg.status.title}"> Status </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12">
+                Number of requests found: <span th:text="${registrations.totalElements}">-</span>
+            </div>
+
+        </div>
+    </div>
+    <div th:replace="fragments/paginator :: paginator-registrations (mylink='report')"></div>
+</main>
+
+<!-- Export -->
+<div class="modal fade" id="exportModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span>Export training requests to CSV</span>
+                </h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span>Export the selected trainings to a CSV file ?</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" href="" type="button">Cancel</a>
+                <input id="exportReportUrl" th:value="@{/export-report}" type="hidden"/>
+                <a class="btn btn-primary" href="#" onclick="exportToCsv();" type="button">
+                    <span>Export</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+		function exportToCsv() {
+			$("#exportModal").modal('hide');
+			var link = document.getElementById('exportReportUrl').value;
+			window.location.href = link;
+		}
+
+</script>
+
+<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>

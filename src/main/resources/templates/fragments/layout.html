@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- header -->
+<head th:fragment="header">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title th:include=":: #pageTitle">Default Title</title>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/dist/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.6.1/js/bootstrap.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js" type="text/JavaScript"></script>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/styles/common.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/styles/login.css}" type="text/css"/>
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+</head>
+
+<body>
+-    <!-- nav: simple menu bar -->
+-
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-indigo" id="empty-nav" th:fragment="empty-nav">
+    <span class="navbar-brand mr-auto" th:text="#{common.title}"></span>
+    <span class="navbar-nav ml-auto white" th:text="'v'+${@environment.getProperty('build.version')}"></span>
+    -
+</nav>
+
+<!-- nav: fixed menu bar -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-indigo" id="menu-nav" th:fragment="menu-nav">
+    <a class="navbar-brand" th:href="@{/home}"><span th:text="#{common.title}"></span></a>
+    <!-- M button -->
+    <button class="navbar-toggler" data-target="#navbarsExampleDefault" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <!-- left-side links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/home}">Home</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','HR','TRAINING','ADMIN')">
+                <a class="nav-link" th:href="@{/report}">Report</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('HR','TRAINING','ADMIN')">
+                <a class="nav-link" th:href="@{/trainings}">Trainings</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link" th:href="@{/actuator}">(Actuator)</a>
+            </li>
+        </ul>
+
+        <!-- right-side links -->
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li>
+                <a class="nav-link white" style="font-style: italic;">
+                    <!-- role names must correspond to the enum Role -->
+                    <span sec:authentication="name"></span> -
+                    <span sec:authorize="hasRole('ADMIN')">Admin</span>
+                    <span sec:authorize="hasRole('TRAINING')">Training</span>
+                    <span sec:authorize="hasRole('HR')">HR</span>
+                    <span sec:authorize="hasRole('MANAGER')">Manager</span>
+                    <span sec:authorize="!hasRole('TRAINING') && !hasRole('HR') && !hasRole('MANAGER') && hasRole('MEMBER')">Member</span>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle white" data-toggle="dropdown">
+                    <!-- <i class="fas fa-user"> </i> -->
+                    <svg class="bi bi-person-fill" fill="currentColor" height="1.2em" viewBox="0 0 16 16" width="1.2em"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+                              fill-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-default">
+                    <a class="dropdown-item" th:href="@{/logout}">
+                        <span th:replace="fragments/button :: logout (title='Exit the application')">Logout</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- footer -->
+<footer th:fragment="footer">
+</footer>
+
+<!-- Tooltip -->
+<div th:fragment="tooltip">
+    <script>
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip();
+		})
+
+    </script>
+</div>
+
+</body>
+
+</html>

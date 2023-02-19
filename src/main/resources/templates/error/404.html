@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle" th:text="#{common.title}">404 - Error</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <!-- lower main div below the fixed menu bar -->
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12 text-center">
+                <p>&nbsp;</p>
+                <h2 style="font-weight: 100; font-size: 34px;">
+                    We are sorry, the page you requested cannot be found.
+                </h2>
+                <p>&nbsp;</p>
+                <p style="font-weight: 200; font-size: 20px;">
+                    The URL may be misspelled or the page you're looking for is no longer available.
+                    <br>
+                    (Yes, we do sometimes rename pages, because we're evil ;-)
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+</body>
+
+</html>

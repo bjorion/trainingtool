@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Registration Status</title>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/dist/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/styles/common.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/styles/status.css}" type="text/css"/>
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <!-- lower main div below the fixed menu bar -->
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row">&nbsp;</div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Registration Status</h4>
+            </div>
+        </div>
+
+        <div class="row border">
+            <svg id="status" style="width: 100%; height: 620px; border: 1px lightgray solid;">
+            </svg>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript">
+		$(function() {
+			d3.json("/trainingtool/REST/v1/stats", data => showValues(data.items));
+		});
+		
+		function showValues(values) 
+		{
+			const colWidth = 60;
+			const colGap = colWidth / 5;
+			
+			const items = values.filter(item => item.registrations.length > 0);
+			const xMaxUser = items.length + 1;
+			const xMax = xMaxUser * colWidth;
+			const yMax = 500; // cf. svg#status.height
+			const yMaxReg = findMaxRegPerUser(items) + 1; 
+			
+			const xScale = d3.scaleLinear().domain([0, xMaxUser]).range([0, xMax]);
+			const yScale = d3.scaleLinear().domain([0, yMaxReg]).range([yMax, 0]);
+			const heightScale = d3.scaleLinear().domain([0, yMaxReg]).range([0, yMax]);
+			
+			const statuses = ["DRAFT","SUBMITTED_TO_MANAGER","SUBMITTED_TO_HR","SUBMITTED_TO_TRAINING","SUBMITTED_TO_PROVIDER","APPROVED_BY_PROVIDER","REFUSED"];
+			const labels   = [ "Draft", "@Manager", "@HR", "@Training", "@Provider", "Accepted", "Refused"]
+			const colors   = ["#d9d9d9","#edc949","#ff9da7","#76b7b2","#4e79a7","#59a14f","#b2182b"];
+			
+			// color definition, cf. https://observablehq.com/@d3/color-schemes
+			const fillScale = d3.scaleOrdinal()
+				.domain(statuses)
+				.range(colors);
+			
+			// container
+			let svg = d3.select("svg#status");
+			
+			svg
+			    .append("g")
+			    .attr("id", "container")
+			    .attr("transform", "translate(10,10)");
+		
+			// x-Axis
+			const xAxis = d3.axisBottom()
+		      .scale(xScale)
+		      .tickSize(yMax + 10)
+		      .tickValues(d3.range(xMaxUser + 1))
+			  .tickFormat(function(d) {
+			  	return (d > 0 && d <= items.length) ? getFirstname(items[d - 1].userName) : "";
+			  });
+			
+			d3.select("#container")
+				.append("g")
+				.attr("id", "xAxis")
+				.call(xAxis);
+			
+			// y-Axis
+			const yAxis = d3.axisRight()
+				.scale(yScale)
+				.ticks(yMaxReg)
+				.tickSize(xMax + 10);
+			
+			d3.select("#container")
+				.append("g")
+				.attr("id", "yAxis")
+				.call(yAxis);
+			
+			const stackLayout = d3.stack()
+				.keys(statuses);
+			
+			let data = parseData(statuses, items);
+			
+			// draw the diagram
+			d3.select("#container")
+				.selectAll("g.bar")
+				.data(stackLayout(data))
+				.enter()
+				.append("g")
+				.attr("class", "bar")
+				.each(function(d) {
+	  				d3.select(this)
+					  	.selectAll("rect")
+						.data(d)
+						.enter()
+						.append("rect")
+						  .attr("x", (p,index) => { return xScale(index) + (colWidth + colGap) / 2; })
+						  .attr("y", yMax)
+						  .attr("height", 0)
+						  .attr("width", colWidth - colGap)
+						  .style("fill", fillScale(d.key))
+						.transition()
+						   .duration(500)
+						   .attr("y", p => yScale(p[1]) )
+						   .attr("height", p => heightScale(p[1] - p[0]))
+		    	});
+			
+			// legend
+			svg.append("g")
+		    	.attr("id", "legend")
+		    	.attr("transform", "translate(50,560)");
+			
+			var legend = d3.legendColor()
+				  // .title("legend")
+			    .labels(labels)
+			    .scale(fillScale)
+			    .shapeHeight(20)
+			    .shapeWidth(80)
+			    .shapePadding(10)
+			    .ascending(false)
+			    .orient("horizontal");
+			
+			d3.select("#legend")
+				.call(legend);
+		}
+		
+		// compute the max value of the total number of registrations for each user 
+		function findMaxRegPerUser(items) 
+		{
+			let max = 0;
+			items.forEach(item => {
+				let total = 0;
+				item.registrations.forEach(reg => {
+					total += reg.count;
+				});
+				max = Math.max(max, total);
+			});
+			return max;
+		}
+		
+		// Return an array of objects
+		// Each object contains for a user the registration status with the number of occurrences
+		// ex: Object { DRAFT: 1, SUBMITTED_TO_MANAGER: 0, SUBMITTED_TO_HR: 0, SUBMITTED_TO_TRAINING: 0, ... }
+		function parseData(statuses, items) 
+		{
+			const refused = "REFUSED";
+			let data = [];
+			items.forEach(e => {
+				let obj = {};
+				statuses.forEach(st => (obj[st] = 0));
+				e.registrations.forEach(e2 => {
+					let status = e2.status;
+					if (status.indexOf(refused) == 0) {
+						status = refused;
+					}
+					let count = e2.count;
+					obj[status] = obj[status] + count;
+				});
+				data.push(obj);
+			});
+			return data;
+		}
+		
+		function getFirstname(name)
+		{
+			let firstname = name;
+			let pos = name.indexOf('.');
+			if (pos > 0) {
+				firstname = name.substr(0, pos);
+			}
+			return firstname;
+		}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:include="fragments/layout :: header">
+    <title id="pageTitle" th:text="#{common.title}">Trainings</title>
+</head>
+
+<body>
+<div th:replace="fragments/layout :: menu-nav"></div>
+
+<main role="main">
+    <div class="jumbotron upper-space">
+        <div class="container"></div>
+    </div>
+
+    <div class="container">
+        <div class="row small">&nbsp;</div>
+        <div class="row border">
+            <div class="col-md-12">
+                <h3>Trainings</h3>
+                <hr/>
+                <div>
+                    On this page, you can create / edit / delete trainings.<br/>
+                    A training is <i>available</i> to a member if the flag <i>Enabled</i> is set to Yes.<br/>
+                    Additionally, if enabling dates are given (<i>Enabled from</i>, <i>Enabled until</i>), the <i>current</i>
+                    date must be also be included between them.
+                </div>
+                <div>&nbsp;</div>
+                <table class="table table-hover table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Start date</th>
+                        <th class="text-center">Enabled</th>
+                        <th class="text-center">Enabled from</th>
+                        <th class="text-center">Enabled until</th>
+                        <th class="text-center">Available</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${trainings.empty}">
+                        <td colspan="6">No training found</td>
+                    </tr>
+                    <tr th:each="tr : ${trainings}">
+                        <td>
+                            <a th:href="@{/edit-training(id=${tr.id})}"><span th:text="${tr.title}"
+                                                                              th:title="${tr.description}"> Title </span></a>
+                        </td>
+                        <td class="text-center"><span th:text="${#temporals.format(tr.startDate, 'yyyy-MM-dd')}"> StartDate </span>
+                        </td>
+                        <td class="text-center" style="width: 100px;"><span
+                                th:text="${tr.enabled ? 'Yes':''}"> Enabled </span></td>
+                        <td class="text-center"><span th:text="${#temporals.format(tr.enabledFrom, 'yyyy-MM-dd')}"> EnabledFrom </span>
+                        </td>
+                        <td class="text-center"><span th:text="${#temporals.format(tr.enabledUntil, 'yyyy-MM-dd')}"> EnabledUntil </span>
+                        </td>
+                        <td class="text-center" style="width: 100px;"><span th:text="${tr.available ? 'Yes':''}"> Available </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>&nbsp;</div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <a class="btn btn-outline-primary" th:href="@{/edit-training}" type="button">
+                            <span th:replace="fragments/button :: create (title='', label='New training')">New training</span>
+                        </a>
+                        <span>&nbsp;</span>
+                        <a class="btn btn-outline-info" th:href="@{/}" type="button">Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+    </div>
+</main>
+
+<div th:replace="fragments/layout :: footer"></div>
+</body>
+
+</html>
