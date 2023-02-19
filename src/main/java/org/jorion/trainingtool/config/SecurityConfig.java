@@ -13,16 +13,22 @@ import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.authentication.SpringSecurityAuthenticationSource;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.jorion.trainingtool.type.Role.*;
 
 /**
  * Security configuration class.
@@ -42,7 +48,7 @@ public class SecurityConfig {
     @Value("${ldap.url}")
     private String ldapUrl;
 
-    @Value("${ldap.basedn}")
+    @Value("${ldap.baseDn}")
     private String ldapBaseDn;
 
     @Autowired
@@ -55,58 +61,53 @@ public class SecurityConfig {
         http
                 // necessary to display the H2 console
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 // enable form login
                 .formLogin(form -> form.loginPage("/login").permitAll());
 
-        http.authorizeRequests()
-                // everyone
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/done").permitAll()
-                .requestMatchers("/access-denied").permitAll()
-                .requestMatchers("/styles/**").permitAll()
-                .requestMatchers("/img/**").permitAll()
-                .requestMatchers("/webjars/**").permitAll()
-                .requestMatchers("/favicon.ico").permitAll()
-                
-                // REST
-                .requestMatchers("/swagger-ui/**").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/v2/api-docs").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/v3/api-docs").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/REST/v1/**").hasAnyRole(Role.getSupervisors())
-                
-                // managers and above
-                .requestMatchers("/report/**").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/export-report/**").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/select-member**").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/save-registrations").hasAnyRole(Role.getSupervisors())
-                .requestMatchers("/actuator/**").hasAnyRole(Role.getSupervisors())
-                
-                // trainings
-                .requestMatchers("/trainings/**").hasAnyRole(Role.getOffices())
-                .requestMatchers("/edit-training/**").hasAnyRole(Role.getOffices())
-                .requestMatchers("/save-training/**").hasAnyRole(Role.getOffices())
-                .requestMatchers("/delete-training/**").hasAnyRole(Role.getOffices())
-                
-                // admin only
-                .requestMatchers("/h2-console/**").hasAnyRole(Role.getOffices())
-                
-                // logged users
-                .anyRequest().authenticated()
-                .and()
-                
+        http.authorizeHttpRequests(req -> req
+                        // everyone
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/done").permitAll()
+                        .requestMatchers("/access-denied").permitAll()
+                        .requestMatchers("/styles/**").permitAll()
+                        .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/webjars/**").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
+
+                        // REST
+                        .requestMatchers("/swagger-ui/**").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/v2/api-docs").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/v3/api-docs").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/REST/v1/**").hasAnyRole(Role.getSupervisors())
+
+                        // managers and above
+                        .requestMatchers("/report/**").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/export-report/**").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/select-member**").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/save-registrations").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/actuator/**").hasAnyRole(Role.getSupervisors())
+
+                        // trainings
+                        .requestMatchers("/trainings/**").hasAnyRole(Role.getOffices())
+                        .requestMatchers("/edit-training/**").hasAnyRole(Role.getOffices())
+                        .requestMatchers("/save-training/**").hasAnyRole(Role.getOffices())
+                        .requestMatchers("/delete-training/**").hasAnyRole(Role.getOffices())
+
+                        // admin only
+                        .requestMatchers("/h2-console/**").hasAnyRole(Role.getOffices())
+
+                        // logged users
+                        .anyRequest().authenticated())
+
                 // error page if access is denied
-                .exceptionHandling().accessDeniedPage("/access-denied");
+                .exceptionHandling(e -> e.accessDeniedPage("/access-denied"));
 
         // enable default logout mechanism
-        http.logout()
-                // define logout url
-                .logoutUrl("/logout")
-                // define redirect url after logout
+        http.logout(out -> out.logoutUrl("/logout")
                 .logoutSuccessUrl("/done")
-                // invalidate http session after logout (true by default)
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID"));
 
         if (usersLdap) {
             log.debug("LDAP enabled");
@@ -115,37 +116,50 @@ public class SecurityConfig {
             // http.eraseCredentials(false);
         }
 
-        // Additional authentication providers
-        // For testing purposes only
         if (usersInMem) {
-            log.debug("LDAP InMemory enabled");
-            // TODO solve this
-            /*
-            http.inMemoryAuthentication()
-                    .withUser("admin")
-                    .password("{noop}admin")
-                    .roles(Role.MEMBER.toString(), Role.ADMIN.toString())
-                    .and()
-                    .withUser("hr")
-                    .password("{noop}hr")
-                    .roles(Role.MEMBER.toString(), Role.MANAGER.toString(), Role.HR.toString())
-                    .and()
-                    .withUser("training")
-                    .password("{noop}training")
-                    .roles(Role.MEMBER.toString(), Role.TRAINING.toString())
-                    .and()
-                    .withUser("manager")
-                    .password("{noop}manager")
-                    .roles(Role.MEMBER.toString(), Role.MANAGER.toString())
-                    .and()
-                    .withUser("john.doe")
-                    .password("{noop}john")
-                    .roles(Role.MEMBER.toString())
-            ;
-            */
+            log.debug("InMemory enabled");
+            http.userDetailsService(inMemoryUsers());
         }
 
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService inMemoryUsers() {
+
+        // TODO check this
+        log.debug("Add InMemory users");
+
+        @SuppressWarnings("deprecation")
+        User.UserBuilder userBuilder = User.withDefaultPasswordEncoder();
+
+        UserDetails admin = userBuilder
+                .username("admin")
+                .password("{noop}admin")
+                .roles(MEMBER.toString(), ADMIN.toString())
+                .build();
+        UserDetails hr = userBuilder
+                .username("hr")
+                .password("{noop}hr")
+                .roles(MEMBER.toString(), MANAGER.toString(), Role.HR.toString())
+                .build();
+        UserDetails training = userBuilder
+                .username("hr")
+                .password("{noop}training")
+                .roles(MEMBER.toString(), TRAINING.toString())
+                .build();
+        UserDetails manager = userBuilder
+                .username("hr")
+                .password("{noop}manager")
+                .roles(MEMBER.toString(), MANAGER.toString())
+                .build();
+        UserDetails john = userBuilder
+                .username("john.doe")
+                .password("{noop}john")
+                .roles(MEMBER.toString())
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, hr, training, manager, john);
     }
 
     /**
@@ -154,7 +168,7 @@ public class SecurityConfig {
      * rights of the Principal. For this to work, the flag {@code eraseCredentials} needs to be set to false in the
      * {@link AuthenticationManagerBuilder}.
      * <p>
-     * See https://docs.spring.io/spring-ldap/docs/2.3.3.RELEASE/reference/#configuration
+     * See <a href="https://docs.spring.io/spring-ldap/docs/2.3.3.RELEASE/reference/#configuration">...</a>
      */
     @Bean
     public AuthenticationSource authenticationSource() {
@@ -170,8 +184,7 @@ public class SecurityConfig {
                 String dn;
                 if (principal instanceof LdapUserDetails) {
                     dn = super.getPrincipal();
-                } else if (principal instanceof User) {
-                    User user = (User) principal;
+                } else if (principal instanceof User user) {
                     dn = user.getUsername();
                 } else {
                     dn = null;
@@ -198,8 +211,7 @@ public class SecurityConfig {
             public String getPrincipal() {
 
                 log.warn("Use of the alternate authentication source. Use it only locally for testing purposes.");
-                String dn = "CN=" + username + "," + baseDn;
-                return dn;
+                return "CN=" + username + "," + baseDn;
             }
 
             @Override
@@ -220,7 +232,7 @@ public class SecurityConfig {
         ctx.setBase(ldapBaseDn);
         ctx.setAuthenticationSource(authenticationSource());
         ctx.afterPropertiesSet();
-        log.debug("ContextSource URL {}, baseDn [{}]", new Object[]{ctx.getUrls(), ctx.getBaseLdapName()});
+        log.debug("ContextSource URL {}, baseDn [{}]", ctx.getUrls(), ctx.getBaseLdapName());
         return ctx;
     }
 
@@ -239,8 +251,7 @@ public class SecurityConfig {
 
         BindAuthenticator authenticator = new BindAuthenticator(contextSource());
         authenticator.setUserDnPatterns(new String[]{"cn={0}"});
-        LdapAuthenticationProvider provider = new LdapAuthenticationProvider(authenticator, this.ldapAuthoritiesPopulator);
-        return provider;
+        return new LdapAuthenticationProvider(authenticator, this.ldapAuthoritiesPopulator);
     }
 
 }

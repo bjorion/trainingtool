@@ -93,7 +93,7 @@ app:
     hrIfBillable: 'true'
 
 ldap:
-  basedn: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com
+  baseDn: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com
   url: ldap://fr-ldap.resultinfra.com:389
 
 
