@@ -1,20 +1,6 @@
-app:
-  server:
-    domain: http://localhost:8080/
-  local: 'true'
-  mail:
-    address:
-      from: DONOTREPLY@example.org
-      hr: bernard.jorion@example.org
-      training: bernard.jorion@example.org
-    sendMail: 'false'
-  role:
-    admin: ''
-    manager: jorionb
-    hr: ''
-  users:
-    ldap: 'false'
-    inMemory: 'true'
+
+server:
+  port: '8080'
 
 spring:
   mail:
@@ -37,7 +23,24 @@ spring:
       path: /h2-console
       enabled: 'true'
 
-server:
-  port: '8080'
-ldap:
-  url: ldap://158.234.116.153:389
+app:
+  server:
+    domain: http://localhost:8080/
+  local: 'true'
+  mail:
+    address:
+      from: DONOTREPLY@example.org
+      hr: bernard.jorion@example.org
+      training: bernard.jorion@example.org
+    sendMail: 'false'
+  role:
+    admin: ''
+    manager: jorionb
+    hr: ''
+  users:
+    ldap: 'false'
+    inMemory: 'true'
+
+
+
+

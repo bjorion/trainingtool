@@ -1,18 +1,10 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      status:
-        http-mapping:
-          DOWN: '200'
-      show-details: ALWAYS
 
-ldap:
-  basedn: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com
-  url: ldap://fr-ldap.resultinfra.com:389
+server:
+  servlet:
+    session:
+      timeout: '1800'
+    application-display-name: Training Tool
+    context-path: /trainingtool
 
 spring:
   mail:
@@ -55,13 +47,34 @@ spring:
     initialize: 'false'
     driver-class-name: org.postgresql.Driver
 
+springdoc:
+  swagger-ui:
+    displayOperationId: 'true'
+    disable-swagger-default-url: 'true'
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  packages-to-scan: org.jorion.trainingtool.controller
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      status:
+        http-mapping:
+          DOWN: '200'
+      show-details: ALWAYS
+
 app:
   local: 'false'
   reg:
     sectors: Financial Services (FS),Energy & Utilities (E&U),Government (GOV),Health
       & Manufacturing (H&M),Management (MGT),Other
   date:
-    weeksToSubstract: '24'
+    weeksToSubtract: '24'
     min: '2021-07-01'
   mail:
     address:
@@ -79,18 +92,9 @@ app:
   workflow:
     hrIfBillable: 'true'
 
-springdoc:
-  swagger-ui:
-    displayOperationId: 'true'
-    disable-swagger-default-url: 'true'
-    path: /swagger-ui.html
-    operations-sorter: alpha
-    tags-sorter: alpha
-  packages-to-scan: org.jorion.trainingtool.controller
+ldap:
+  basedn: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com
+  url: ldap://fr-ldap.resultinfra.com:389
 
-server:
-  servlet:
-    session:
-      timeout: '1800'
-    application-display-name: Training Tool
-    context-path: /trainingtool
+
+

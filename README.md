@@ -8,7 +8,7 @@
 * **Member**: the person taking the training, normally a simple employee
 * **Manager**: any member with people reporting to him
 * **HR**: the management who, under some conditions, has to approve the request after the manager
-* **Training Team**: a member of the BeTraining team who has to approve the request and contact the provider for the actual registration
+* **Training Team**: a member of the Training team who has to approve the request and contact the provider for the actual registration
 * **Admin**: a technical user who can see all requests
 * **Supervisor**: manager and above (Manager, HR, Training Team, Admin)  
 * **Office**: HR and above (HR, Training Team, Admin)
@@ -17,7 +17,7 @@ Note that the members of the HR or TRAINING TEAM groups are defined in the prope
 
 **Business Entities**
 
-* **User**: a user logged in the application, or a member with a registration associated; source = CGI LDAP
+* **User**: a user logged in the application, or a member with a registration associated; source = LDAP
 * **Training**: a predefined template for a cursus; only office people can create or edit them
 * **Registration**: a request to follow a training, predefined or not; usually taken by an employee
 
@@ -47,8 +47,8 @@ Anyway, you should always be able to compile via Maven.
 * PROD: https://be-cvengine.resultinfra.com/trainingtool/login
 
 
-* You can log in using a pre-defined user (see below) if the flag `app.users.inmemory` is true
-* You can also log in by giving your cgi username and password if the flag `app.users.ldap` is true
+* You can log in using a pre-defined user (see below) if the flag `app.users.inMemory` is true
+* You can also log in by giving your username and password if the flag `app.users.ldap` is true
 
 
 ### How to login with pre-defined users

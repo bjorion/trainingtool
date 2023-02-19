@@ -206,7 +206,8 @@ public class EmailService {
      *
      * @throws MessagingException Failure to send the mail
      */
-    protected void doSendEmailWithAttachment(String from, String to, String subject, String htmlTemplate, String attachmentFileName, String attachmentFilePath)
+    protected void doSendEmailWithAttachment(String from, String to, String subject, String htmlTemplate,
+                                             String attachmentFileName, String attachmentFilePath)
             throws MessagingException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();

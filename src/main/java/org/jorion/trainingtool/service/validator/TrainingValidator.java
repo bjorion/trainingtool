@@ -12,10 +12,8 @@ import java.util.List;
 
 @AllArgsConstructor
 public class TrainingValidator {
-    // --- Constants ---
-    private final Training training;
 
-    // --- Methods ---
+    private final Training training;
 
     /**
      * Business rules for the fields:
@@ -41,6 +39,7 @@ public class TrainingValidator {
      * </dl>
      */
     public List<String> validate() {
+
         List<String> errors = new ArrayList<>();
 
         // Enabling dates

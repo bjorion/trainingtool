@@ -19,11 +19,9 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 public class RegistrationValidator {
-    // --- Variables ---
-    @Value("${app.date.weeksToSubstract}")
-    private int weeksToSubtract;
 
-    // --- Methods ---
+    @Value("${app.date.weeksToSubtract}")
+    private int weeksToSubtract;
 
     /**
      * Justification is mandatory for a supervisor.
@@ -31,6 +29,7 @@ public class RegistrationValidator {
      * @return False if role = supervisor and justification is empty, true otherwise
      */
     public static boolean isJustificationValid(User user, Registration registration) {
+
         boolean flag = true;
         if (user.isSupervisor() && StringUtils.isBlank(registration.getJustification())) {
             flag = false;
@@ -42,6 +41,7 @@ public class RegistrationValidator {
      * @return True if SSIN is mandatory and given, or not mandatory
      */
     public static boolean isSsinValid(User user, Registration registration) {
+
         return (!StringUtils.isBlank(registration.getSsin())) || !isSsinMandatory(user, registration);
     }
 
@@ -54,6 +54,7 @@ public class RegistrationValidator {
      * @return True if the SSIN is mandatory
      */
     public static boolean isSsinMandatory(User user, Registration registration) {
+
         boolean ssinMandatory = !user.isSupervisor() && (registration.getProvider() != null) && registration.getProvider().isSsinMandatory();
         return ssinMandatory;
     }
@@ -64,6 +65,7 @@ public class RegistrationValidator {
      * @return True if the both startDate/endDate are given, or if registration status is before SUBMITTED_TO_TRAINING
      */
     public static boolean isDateValid(User user, Registration registration) {
+
         boolean flag = true;
         RegistrationStatus status = registration.getStatus();
         if (status.isGTE(RegistrationStatus.SUBMITTED_TO_TRAINING)) {
@@ -76,6 +78,7 @@ public class RegistrationValidator {
      * @return True if billability is set, or if user = member
      */
     public static boolean isBillabilityValid(User user, Registration registration) {
+
         return registration.getBillable() != null || !user.isSupervisor();
     }
 
@@ -106,7 +109,7 @@ public class RegistrationValidator {
      *
      * <dt>DATES
      * <dd>mandatory when provider = Cevora, Coursera, Academia. Always mandatory when user = be-training. Start date
-     * must be gte today - "weeksToSubstract" weeks, end date gte start date
+     * must be gte today - "weeksToSubtract" weeks, end date gte start date
      *
      * <dt>PERIOD
      * <dd>mandatory
@@ -139,6 +142,7 @@ public class RegistrationValidator {
      * @return A collection of errors in case of business errors, or an empty collection otherwise.
      */
     public List<String> validate(User user, User member, Registration registration) {
+
         List<String> errors = new ArrayList<>();
         boolean ssinMandatory = isSsinMandatory(user, registration);
         boolean fieldMandatory = (registration.getProvider() != null) && registration.getProvider().isFieldMandatory();

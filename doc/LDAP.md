@@ -6,7 +6,7 @@ LDAP Connection information
 * Open a LDAP Connection (File > Connect) with the following parameters:
 
 ```
-Host: 158.234.116.153  (alt: ldap://fr-ldap.resultinfra.com:389)
+Host: 000.000.000.000  (alt: ldap://fr-ldap.resultinfra.com:389)
 Port: 389
 Protocol: LDAP v3
 Base DN: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com

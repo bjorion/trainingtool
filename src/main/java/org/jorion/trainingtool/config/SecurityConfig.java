@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Value("${app.users.inMemory:false}")
     private boolean usersInMem;
 
-    @Value("${ldap.org.jorion.url}")
+    @Value("${ldap.url}")
     private String ldapUrl;
 
     @Value("${ldap.basedn}")
