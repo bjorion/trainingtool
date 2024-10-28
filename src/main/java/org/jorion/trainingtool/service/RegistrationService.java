@@ -101,11 +101,7 @@ public class RegistrationService {
         if (isSubmittable(user, registration)) {
             return true;
         }
-        RegistrationStatus status = registration.getStatus();
-        if (status.isPendingNotDraft() && status.isResponsible(user.getRoles()) && !registration.belongsTo(user.getUserName())) {
-            return true;
-        }
-        return false;
+        return isApprovableOrRefusable(user, registration);
     }
 
     /**
@@ -115,6 +111,11 @@ public class RegistrationService {
      * @return true if the registration can be refused by the current user
      */
     public static boolean isRefusable(User user, Registration registration) {
+
+        return isApprovableOrRefusable(user, registration);
+    }
+
+    private static boolean isApprovableOrRefusable(User user, Registration registration) {
 
         RegistrationStatus status = registration.getStatus();
         return status.isPendingNotDraft() && status.isResponsible(user.getRoles()) && !registration.belongsTo(user.getUserName());
@@ -156,7 +157,7 @@ public class RegistrationService {
      */
     public Registration findById(User user, Long regId) {
 
-        Optional<Registration> registration = null;
+        Optional<Registration> registration;
         if (user.isOffice()) {
             registration = registrationRepository.findById(regId);
         } else if (user.isManager()) {
@@ -164,7 +165,7 @@ public class RegistrationService {
         } else {
             registration = registrationRepository.findRegistrationByIdAndUser(regId, user.getUserName());
         }
-        return registration.orElseGet(() -> null);
+        return registration.orElse(null);
     }
 
     /**
@@ -214,8 +215,7 @@ public class RegistrationService {
                 report.getManagerName()
         );
 
-        Page<Registration> page = new PageImpl<>(registrations);
-        return page;
+        return new PageImpl<>(registrations);
     }
 
     // static methods
@@ -235,11 +235,10 @@ public class RegistrationService {
     public List<Registration> findPendingByUser(User user) {
 
         List<Registration> results = new ArrayList<>();
-        String manager = null;
 
         // As a manager, you can only see registrations for member you're responsible of
         if (user.isManager()) {
-            manager = user.getUserName();
+            String manager = user.getUserName();
             EnumSet<RegistrationStatus> statuses = EnumSet.of(RegistrationStatus.SUBMITTED_TO_MANAGER);
             results = registrationRepository.findRegistrationsByStatusesAndManager(statuses, manager);
         }
@@ -247,16 +246,13 @@ public class RegistrationService {
         // As HR, training or admin, you can see registrations for all members (for the given status)
         EnumSet<RegistrationStatus> statuses = EnumSet.noneOf(RegistrationStatus.class);
         if (user.isHr()) {
-            manager = null;
             statuses.add(RegistrationStatus.SUBMITTED_TO_HR);
         }
         if (user.isTraining()) {
-            manager = null;
             statuses.add(RegistrationStatus.SUBMITTED_TO_TRAINING);
             statuses.add(RegistrationStatus.SUBMITTED_TO_PROVIDER);
         }
         if (user.isAdmin()) {
-            manager = null;
             statuses.addAll(RegistrationStatus.PENDING_SET);
         }
         if (!statuses.isEmpty()) {
@@ -273,9 +269,7 @@ public class RegistrationService {
 
         List<Registration> regs = registrationRepository.findAll();
         Map<RegistrationStatus, Integer> map = new HashMap<>();
-        regs.stream().forEach(e -> {
-            map.compute(e.getStatus(), (key, value) -> value == null ? 1 : value + 1);
-        });
+        regs.forEach(e -> map.compute(e.getStatus(), (key, value) -> value == null ? 1 : value + 1));
         return map;
     }
 
@@ -327,7 +321,7 @@ public class RegistrationService {
 
         if (!ok) {
             log.warn("Cannot execute the action [{}] on registration [{}] for user [{}]",
-                    new Object[]{regEvent.name(), registration.getId(), user.getUserName()});
+                    regEvent.name(), registration.getId(), user.getUserName());
             return registration;
         }
 

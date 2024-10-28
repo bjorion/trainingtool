@@ -14,14 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.jorion.trainingtool.type.RegistrationEvent.SUBMIT;
 import static org.jorion.trainingtool.type.RegistrationStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -35,22 +34,20 @@ public class EmailServiceTest {
     /**
      * Utility method that pre-fills the {@link UpdateEventDTOBuilder} object.
      */
-    private static UpdateEventDTOBuilder buildUpdateEventDTO(RegistrationStatus status, RegistrationEvent event) {
+    private static UpdateEventDTOBuilder buildUpdateEventDTO(RegistrationStatus status) {
 
-        UpdateEventDTOBuilder builder = UpdateEventDTO.builder()
+        return UpdateEventDTO.builder()
                 .regId(1L)
                 .regTitle("title")
                 .regStatus(status)
-                .regEvent(event)
+                .regEvent(RegistrationEvent.SUBMIT)
                 .memberEmail("john.doe@example.org")
                 .memberFirstname("John")
                 .memberLastname("Doe");
-
-        return builder;
     }
 
     public static SpringTemplateEngine buildTemplateEngine() {
-        
+
         FileTemplateResolver templateResolver = new FileTemplateResolver();
         templateResolver.setPrefix("src/main/resources/templates/");
         // templateResolver.setCharacterEncoding(config.getTemplateEncoding());
@@ -68,14 +65,11 @@ public class EmailServiceTest {
     @Test
     void testSendEmailUpdateEventDTO()
             throws MessagingException {
-        
+
         StringBuilder sbFilename = new StringBuilder();
         MutableObject<Map<String, Object>> ctnModel = new MutableObject<>();
         MutableBoolean ctnBool = new MutableBoolean();
 
-        /**
-         * Custom version of EmailService that will override some methods.
-         */
         EmailService service = new EmailService() {
 
             @Override
@@ -86,8 +80,7 @@ public class EmailServiceTest {
             }
 
             @Override
-            public void doSendEmail(String from, String to, String subject, String htmlTemplate)
-                    throws MessagingException {
+            public void doSendEmail(String from, String to, String htmlTemplate) {
                 ctnBool.setTrue();
             }
         };
@@ -98,7 +91,7 @@ public class EmailServiceTest {
         service.setServerContext("/trainingtool");
 
         // execute the test
-        service.sendEmail(buildUpdateEventDTO(DRAFT, SUBMIT).build());
+        service.sendEmail(buildUpdateEventDTO(DRAFT).build());
 
         // check the results
         Map<String, Object> model = ctnModel.getValue();
@@ -114,7 +107,7 @@ public class EmailServiceTest {
      */
     @Test
     void testBuildMail() {
-        
+
         final String link = "http://www.example.org/trainingtool/registration?id=1";
 
         EmailService service = new EmailService();
@@ -122,8 +115,8 @@ public class EmailServiceTest {
         ReflectionTestUtils.setField(service, "templateEngine", templateEngine);
 
         // test "req-assigned"
-        UpdateEventDTO dto = buildUpdateEventDTO(DRAFT, SUBMIT).actorName("Manager").regJustification("Requested").build();
-        Map<String, Object> model = new HashMap<String, Object>();
+        UpdateEventDTO dto = buildUpdateEventDTO(DRAFT).actorName("Manager").regJustification("Requested").build();
+        Map<String, Object> model = new HashMap<>();
         model.put("recipient", "John");
         model.put("reqLink", link);
         model.put("dto", dto);
@@ -134,8 +127,8 @@ public class EmailServiceTest {
         assertTrue(mail.contains("Justification"));
 
         // test "req-submitted"
-        dto = buildUpdateEventDTO(DRAFT, SUBMIT).actorName("Manager").build();
-        model = new HashMap<String, Object>();
+        dto = buildUpdateEventDTO(DRAFT).actorName("Manager").build();
+        model = new HashMap<>();
         model.put("recipient", "John");
         model.put("reqLink", link);
         model.put("dto", dto);
@@ -147,7 +140,7 @@ public class EmailServiceTest {
 
     @Test
     void testGetServerContextPath() {
-        
+
         assertEquals("http://www.example.org/trainingtool/", EmailService.getServerContextPath("http://www.example.org", "/trainingtool"));
         assertEquals("http://www.example.org/trainingtool/", EmailService.getServerContextPath("http://www.example.org/", "/trainingtool"));
         assertEquals("http://www.example.org/trainingtool/", EmailService.getServerContextPath("http://www.example.org", "/trainingtool/"));
@@ -158,7 +151,7 @@ public class EmailServiceTest {
 
     @Test
     void testGetTemplate() {
-        
+
         assertEquals("mails/req-assigned.html", EmailService.getTemplate(RegistrationEvent.ASSIGN, null));
         assertEquals("mails/req-submitted.html", EmailService.getTemplate(RegistrationEvent.SUBMIT, null));
         assertEquals("mails/req-approved-by-provider.html", EmailService.getTemplate(RegistrationEvent.SUBMIT, RegistrationStatus.APPROVED_BY_PROVIDER));
@@ -169,7 +162,7 @@ public class EmailServiceTest {
 
     @Test
     void testGetMailInfos() {
-        
+
         String[] results;
         EmailService service = new EmailService();
         ReflectionTestUtils.setField(service, "ldapService", mockLdapService);
@@ -182,42 +175,42 @@ public class EmailServiceTest {
         builder.lastName("manager");
         when(mockLdapService.searchByName("manager")).thenReturn(builder.build());
 
-        UpdateEventDTO dto = buildUpdateEventDTO(DRAFT, SUBMIT).build();
+        UpdateEventDTO dto = buildUpdateEventDTO(DRAFT).build();
         results = service.getMailInfo(dto);
         assertEquals("John", results[0]);
         assertEquals("john.doe@example.org", results[1]);
 
-        dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER, SUBMIT).manager("manager").build();
+        dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER).manager("manager").build();
         results = service.getMailInfo(dto);
         assertEquals("my MANAGER", results[0]);
         assertEquals("my.manager@example.org", results[1]);
 
-        dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER, SUBMIT).manager(null).build();
+        dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER).manager(null).build();
         results = service.getMailInfo(dto);
         assertNull(results[0]);
         assertNull(results[1]);
 
-        dto = buildUpdateEventDTO(SUBMITTED_TO_HR, SUBMIT).build();
+        dto = buildUpdateEventDTO(SUBMITTED_TO_HR).build();
         results = service.getMailInfo(dto);
         assertEquals("Management", results[0]);
         assertEquals("mgt@example.org", results[1]);
 
-        dto = buildUpdateEventDTO(SUBMITTED_TO_TRAINING, SUBMIT).build();
+        dto = buildUpdateEventDTO(SUBMITTED_TO_TRAINING).build();
         results = service.getMailInfo(dto);
         assertEquals("BeTraining Team", results[0]);
         assertEquals("training@example.org", results[1]);
 
-        dto = buildUpdateEventDTO(SUBMITTED_TO_PROVIDER, SUBMIT).build();
+        dto = buildUpdateEventDTO(SUBMITTED_TO_PROVIDER).build();
         results = service.getMailInfo(dto);
         assertEquals("Provider", results[0]);
         assertNull(results[1]);
 
-        dto = buildUpdateEventDTO(APPROVED_BY_PROVIDER, SUBMIT).build();
+        dto = buildUpdateEventDTO(APPROVED_BY_PROVIDER).build();
         results = service.getMailInfo(dto);
         assertEquals("John", results[0]);
         assertEquals("john.doe@example.org", results[1]);
 
-        dto = buildUpdateEventDTO(REFUSED_BY_MANAGER, SUBMIT).build();
+        dto = buildUpdateEventDTO(REFUSED_BY_MANAGER).build();
         results = service.getMailInfo(dto);
         assertEquals("John", results[0]);
         assertEquals("john.doe@example.org", results[1]);

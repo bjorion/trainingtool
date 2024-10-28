@@ -1,15 +1,18 @@
 package org.jorion.trainingtool.entity.base;
 
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+
 import java.time.LocalDateTime;
 
 /**
  * Declares the fields version, createdOn and modifiedOn.
  */
+@Getter
 @MappedSuperclass
 public abstract class AbstractTimeTrackingEntity extends AbstractOptimisticLockingEntity {
 
@@ -25,13 +28,5 @@ public abstract class AbstractTimeTrackingEntity extends AbstractOptimisticLocki
      */
     @UpdateTimestamp
     private LocalDateTime modifiedOn;
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public LocalDateTime getModifiedOn() {
-        return modifiedOn;
-    }
 
 }

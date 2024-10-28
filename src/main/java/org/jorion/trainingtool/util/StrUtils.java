@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -88,7 +89,7 @@ public class StrUtils {
 
         // invalid values
         float f = NumberUtils.toFloat(str, -1);
-        if (f == -1.0f || f < 0) {
+        if (f < 0) {
             return defValue;
         }
 

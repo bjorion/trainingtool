@@ -11,7 +11,6 @@ import org.jorion.trainingtool.service.TrainingService;
 import org.jorion.trainingtool.service.UserService;
 import org.jorion.trainingtool.service.validator.RegistrationValidator;
 import org.jorion.trainingtool.type.RegistrationEvent;
-import org.jorion.trainingtool.type.SessionEvent;
 import org.jorion.trainingtool.util.StrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +55,7 @@ public class RegistrationController extends AbstractController {
         Registration registration = registrationService.findById(user, regId);
         if (registration == null) {
             log.warn("Cannot show registration [{}] for user [{}]", regId, user.getUserName());
-            setSessionEvent(session, SessionEvent.UNAUTHORIZED);
+            setSessionEvent(session);
             return "redirect:home";
         }
         User member = registration.getMember();
@@ -126,7 +126,7 @@ public class RegistrationController extends AbstractController {
             training = trainingService.findAvailableTrainingById(trainingId);
             if (training == null) {
                 log.warn("Cannot find training [{}]. Is it enabled?", trainingId);
-                setSessionEvent(session, SessionEvent.UNAUTHORIZED);
+                setSessionEvent(session);
                 return "redirect:home";
             }
         }

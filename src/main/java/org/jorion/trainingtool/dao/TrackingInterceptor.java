@@ -2,13 +2,11 @@ package org.jorion.trainingtool.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.EmptyInterceptor;
+import org.hibernate.Interceptor;
 import org.hibernate.type.Type;
 import org.jorion.trainingtool.entity.base.AbstractTrackingEntity;
 import org.jorion.trainingtool.service.UserService;
 import org.jorion.trainingtool.util.StrUtils;
-
-import java.io.Serializable;
 
 /**
  * Hibernate custom interceptor used for record tracking.
@@ -16,13 +14,13 @@ import java.io.Serializable;
  * Improvement: replace this by Spring annotations
  */
 @Slf4j
-public class TrackingInterceptor extends EmptyInterceptor {
+public class TrackingInterceptor implements Interceptor {
 
     private static final String CREATED_BY = "createdBy";
     private static final String MODIFIED_BY = "modifiedBy";
 
     @Override
-    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+    public boolean onSave(Object entity, Object id, Object[] state, String[] propertyNames, Type[] types) {
 
         boolean change = false;
         if (entity instanceof AbstractTrackingEntity) {
@@ -40,7 +38,7 @@ public class TrackingInterceptor extends EmptyInterceptor {
     }
 
     @Override
-    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
+    public boolean onFlushDirty(Object entity, Object id, Object[] currentState, Object[] previousState,
                                 String[] propertyNames, Type[] types) {
 
         boolean change = false;

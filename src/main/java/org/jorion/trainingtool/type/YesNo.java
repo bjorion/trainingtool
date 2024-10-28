@@ -23,7 +23,7 @@ public enum YesNo {
      * @return True if the given enumeration is not null and is YES.
      */
     public static boolean isYes(YesNo yn) {
-        return (yn != null) && (yn == YES);
+        return (yn == YES);
     }
 
     public String getName() {

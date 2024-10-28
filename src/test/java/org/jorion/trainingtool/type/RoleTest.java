@@ -76,11 +76,11 @@ public class RoleTest {
     @Test
     public void testFindByValue() {
 
-        assertTrue(Role.MEMBER == Role.findByValue(null));
-        assertTrue(Role.MEMBER == Role.findByValue("abc"));
-        assertTrue(Role.MEMBER == Role.findByValue(Role.MEMBER.name()));
-        assertTrue(Role.MANAGER == Role.findByValue(Role.MANAGER.name()));
-        assertTrue(Role.MANAGER == Role.findByValue(Role.MANAGER.getRoleName()));
+        assertSame(Role.MEMBER, Role.findByValue(null));
+        assertSame(Role.MEMBER, Role.findByValue("abc"));
+        assertSame(Role.MEMBER, Role.findByValue(Role.MEMBER.name()));
+        assertSame(Role.MANAGER, Role.findByValue(Role.MANAGER.name()));
+        assertSame(Role.MANAGER, Role.findByValue(Role.MANAGER.getRoleName()));
     }
 
 }

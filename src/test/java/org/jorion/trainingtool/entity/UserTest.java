@@ -34,12 +34,11 @@ public class UserTest {
         User user2 = EntityUtils.createUser("dummy");
         User user3 = EntityUtils.createUser(USERNAME);
 
-        assertFalse(user1.equals(null));
-        assertFalse(user1.equals(new Object()));
-        assertTrue(user1.equals(user1));
-        assertFalse(user1.equals(user2));
-        assertTrue(user1 != user3);
-        assertTrue(user1.equals(user3));
+        assertNotEquals(null, user1);
+        assertNotEquals(user1, new Object());
+        assertNotEquals(user1, user2);
+        assertNotSame(user1, user3);
+        assertEquals(user1, user3);
     }
 
     @Test

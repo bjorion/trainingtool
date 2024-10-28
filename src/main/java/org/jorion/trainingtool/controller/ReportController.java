@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -125,15 +126,12 @@ public class ReportController extends AbstractController {
         String csv = exportService.exportRegistrationsToCSV(report, ExportService.CSV_DELIM);
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(csv.getBytes(StandardCharsets.ISO_8859_1)));
 
-
-        ResponseEntity<Resource> response = ResponseEntity
+        return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=registrations.csv")
                 .contentType(MediaType.TEXT_PLAIN)
                 .contentLength(csv.length())
                 .body(resource);
-
-        return response;
     }
 
     /**

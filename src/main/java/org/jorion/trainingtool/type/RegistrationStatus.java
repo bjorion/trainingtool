@@ -43,7 +43,7 @@ public enum RegistrationStatus {
 
     public static final EnumSet<RegistrationStatus> PENDING_SET =
             EnumSet.of(DRAFT, SUBMITTED_TO_MANAGER, SUBMITTED_TO_HR, SUBMITTED_TO_TRAINING,
-            SUBMITTED_TO_PROVIDER);
+                    SUBMITTED_TO_PROVIDER);
 
     /**
      * Human-readable name.
@@ -107,25 +107,13 @@ public enum RegistrationStatus {
             return null;
         }
 
-        RegistrationStatus nextStatus;
-        switch (this) {
-            case SUBMITTED_TO_MANAGER:
-                nextStatus = REFUSED_BY_MANAGER;
-                break;
-            case SUBMITTED_TO_HR:
-                nextStatus = REFUSED_BY_HR;
-                break;
-            case SUBMITTED_TO_TRAINING:
-                nextStatus = REFUSED_BY_TRAINING;
-                break;
-            case SUBMITTED_TO_PROVIDER:
-                nextStatus = REFUSED_BY_PROVIDER;
-                break;
-            default:
-                nextStatus = null;
-                break;
-        }
-        return nextStatus;
+        return switch (this) {
+            case SUBMITTED_TO_MANAGER -> REFUSED_BY_MANAGER;
+            case SUBMITTED_TO_HR -> REFUSED_BY_HR;
+            case SUBMITTED_TO_TRAINING -> REFUSED_BY_TRAINING;
+            case SUBMITTED_TO_PROVIDER -> REFUSED_BY_PROVIDER;
+            default -> null;
+        };
     }
 
     /**
@@ -138,27 +126,13 @@ public enum RegistrationStatus {
             return null;
         }
 
-        RegistrationStatus nextStatus;
-        switch (this) {
-            case DRAFT:
-                nextStatus = SUBMITTED_TO_MANAGER;
-                break;
-            case SUBMITTED_TO_MANAGER:
-                nextStatus = hrWorkflow ? SUBMITTED_TO_HR : SUBMITTED_TO_TRAINING;
-                break;
-            case SUBMITTED_TO_HR:
-                nextStatus = SUBMITTED_TO_TRAINING;
-                break;
-            case SUBMITTED_TO_TRAINING:
-                nextStatus = SUBMITTED_TO_PROVIDER;
-                break;
-            case SUBMITTED_TO_PROVIDER:
-                nextStatus = APPROVED_BY_PROVIDER;
-                break;
-            default:
-                nextStatus = null;
-                break;
-        }
-        return nextStatus;
+        return switch (this) {
+            case DRAFT -> SUBMITTED_TO_MANAGER;
+            case SUBMITTED_TO_MANAGER -> hrWorkflow ? SUBMITTED_TO_HR : SUBMITTED_TO_TRAINING;
+            case SUBMITTED_TO_HR -> SUBMITTED_TO_TRAINING;
+            case SUBMITTED_TO_TRAINING -> SUBMITTED_TO_PROVIDER;
+            case SUBMITTED_TO_PROVIDER -> APPROVED_BY_PROVIDER;
+            default -> null;
+        };
     }
 }

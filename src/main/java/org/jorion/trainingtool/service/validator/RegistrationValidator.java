@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.service.validator;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.entity.Registration;
 import org.jorion.trainingtool.entity.User;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 @Component
 @NoArgsConstructor
 public class RegistrationValidator {
@@ -30,11 +32,7 @@ public class RegistrationValidator {
      */
     public static boolean isJustificationValid(User user, Registration registration) {
 
-        boolean flag = true;
-        if (user.isSupervisor() && StringUtils.isBlank(registration.getJustification())) {
-            flag = false;
-        }
-        return flag;
+        return !user.isSupervisor() || !StringUtils.isBlank(registration.getJustification());
     }
 
     /**
@@ -55,8 +53,7 @@ public class RegistrationValidator {
      */
     public static boolean isSsinMandatory(User user, Registration registration) {
 
-        boolean ssinMandatory = !user.isSupervisor() && (registration.getProvider() != null) && registration.getProvider().isSsinMandatory();
-        return ssinMandatory;
+        return !user.isSupervisor() && (registration.getProvider() != null) && registration.getProvider().isSsinMandatory();
     }
 
     /**
@@ -88,50 +85,36 @@ public class RegistrationValidator {
      * <dl>
      * <dt>SECTOR
      * <dd>mandatory
-     *
      * <dt>TITLE
      * <dd>mandatory
-     *
      * <dt>DESCRIPTION
      * <dd>not mandatory
-     *
      * <dt>PROVIDER
      * <dd>mandatory
      * <dt>PROVIDER NAME
      * <dd>only available if provider = Other. Mandatory if available.
-     *
      * <dt>SSIN
      * <dd>mandatory when provider = Cevora and user = member (not mandatory for a Manager creating a request for a
      * member). Value must be valid.
-     *
      * <dt>URL
-     * <dd>mandatory. Value must be valid (start with http:// or https://)
-     *
+     * <dd>mandatory. Value must be valid (start with http: or https:)
      * <dt>DATES
      * <dd>mandatory when provider = Cevora, Coursera, Academia. Always mandatory when user = be-training. Start date
      * must be gte today - "weeksToSubtract" weeks, end date gte start date
-     *
      * <dt>PERIOD
      * <dd>mandatory
-     *
      * <dt>TOTAL HOURS
      * <dd>mandatory when provider = Cevora, Coursera, Academia mandatory when provider = Other and user = betraining
-     *
      * <dt>LOCATION
      * <dd>not mandatory
-     *
      * <dt>PRICE
      * <dd>not mandatory value must be a positive number
-     *
      * <dt>BILLABILITY
      * <dd>mandatory for Manager and above
-     *
      * <dt>CBA COMPLIANT
      * <dd>Only available for Manager and above not mandatory (but 'no' by default)
-     *
      * <dt>COMMENT
      * <dd>not mandatory
-     *
      * <dt>JUSTIFICATION
      * <dd>mandatory for Manager (and above) not available for members
      * </dl>
@@ -212,7 +195,4 @@ public class RegistrationValidator {
         return errors;
     }
 
-    public void setWeeksToSubtract(int weeksToSubtract) {
-        this.weeksToSubtract = weeksToSubtract;
-    }
 }

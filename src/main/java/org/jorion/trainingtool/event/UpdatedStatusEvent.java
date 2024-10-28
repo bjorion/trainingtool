@@ -1,14 +1,16 @@
 package org.jorion.trainingtool.event;
 
+import lombok.Getter;
 import org.jorion.trainingtool.dto.UpdateEventDTO;
 import org.springframework.context.ApplicationEvent;
 
 /**
  * Event to be published when a registration status is modified.
  */
+@Getter
 public class UpdatedStatusEvent extends ApplicationEvent {
 
-    private UpdateEventDTO content;
+    private final UpdateEventDTO content;
 
     public UpdatedStatusEvent(Object source, UpdateEventDTO message) {
 
@@ -16,7 +18,4 @@ public class UpdatedStatusEvent extends ApplicationEvent {
         this.content = message;
     }
 
-    public UpdateEventDTO getContent() {
-        return content;
-    }
 }

@@ -3,7 +3,6 @@ package org.jorion.trainingtool.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.entity.Training;
 import org.jorion.trainingtool.service.TrainingService;
-import org.jorion.trainingtool.type.SessionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class TrainingController extends AbstractController {
             training = trainingService.findTrainingById(trainingId);
             if (training == null) {
                 log.error("Training [{}] not found", trainingId);
-                setSessionEvent(session, SessionEvent.UNAUTHORIZED);
+                setSessionEvent(session);
                 return "redirect:home";
             }
         }
@@ -69,8 +69,6 @@ public class TrainingController extends AbstractController {
     /**
      * Save or update the given training.
      *
-     * @param frmTraining
-     * @param model       the attribute holder for the page
      * @return "trainings"
      */
     @PostMapping("/save-training")

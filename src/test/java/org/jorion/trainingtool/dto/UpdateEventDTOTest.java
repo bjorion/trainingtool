@@ -27,10 +27,10 @@ public class UpdateEventDTOTest {
                 .regStatus(RegistrationStatus.DRAFT)
                 .regEvent(RegistrationEvent.SAVE)
                 .build();
-        assertTrue(dto.getRegId() == 1L);
+        assertEquals(1L, (long) dto.getRegId());
         assertEquals("title", dto.getRegTitle());
-        assertTrue(dto.getRegStatus() == RegistrationStatus.DRAFT);
-        assertTrue(dto.getRegEvent() == RegistrationEvent.SAVE);
+        assertSame(dto.getRegStatus(), RegistrationStatus.DRAFT);
+        assertSame(dto.getRegEvent(), RegistrationEvent.SAVE);
     }
 
     @Test
@@ -55,10 +55,10 @@ public class UpdateEventDTOTest {
                 .build();
 
 
-        assertTrue(dto.getRegId() == 1L);
+        assertEquals(1L, (long) dto.getRegId());
         assertEquals("title", dto.getRegTitle());
-        assertTrue(dto.getRegStatus() == RegistrationStatus.DRAFT);
-        assertTrue(dto.getRegEvent() == RegistrationEvent.SAVE);
+        assertSame(dto.getRegStatus(), RegistrationStatus.DRAFT);
+        assertSame(dto.getRegEvent(), RegistrationEvent.SAVE);
         assertEquals("justification", dto.getRegJustification());
         assertEquals(now, dto.getRegStartDate());
 
@@ -66,7 +66,7 @@ public class UpdateEventDTOTest {
         assertEquals("actor", dto.getActorName());
 
         assertEquals("manager", dto.getManager());
-        assertTrue(dto.getMemberId() == 2L);
+        assertEquals(2L, (long) dto.getMemberId());
         assertEquals("john", dto.getMemberFirstname());
         assertEquals("doe", dto.getMemberLastname());
         assertEquals("john.doe@example.org", dto.getMemberEmail());

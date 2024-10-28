@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CollectionResource<T> {
 
-    private List<T> items;
+    private final List<T> items;
 
     public CollectionResource(List<T> items) {
         this.items = items;

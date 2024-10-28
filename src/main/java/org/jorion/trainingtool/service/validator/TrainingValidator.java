@@ -21,21 +21,16 @@ public class TrainingValidator {
      * <dl>
      * <dt>TITLE
      * <dd>mandatory
-     *
      * <dt>DESCRIPTION
      * <dd>mandatory
-     *
      * <dt>PROVIDER
      * <dd>mandatory
      * <dt>PROVIDER NAME
      * <dd>only available if provider = Other. Mandatory if available.
-     *
      * <dt>DATES
      * <dd>end date must be after or equal to start date
-     *
      * <dt>PRICE
      * <dd>not mandatory value must be a positive number
-     *
      * </dl>
      */
     public List<String> validate() {

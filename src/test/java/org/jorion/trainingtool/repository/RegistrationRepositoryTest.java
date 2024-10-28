@@ -72,7 +72,7 @@ public class RegistrationRepositoryTest {
     void testFindAllByExample() {
 
         List<Registration> registrations = repo.findAllByExample("doe", null, RegistrationStatus.DRAFT, null, null);
-        assertTrue(!registrations.isEmpty());
+        assertFalse(registrations.isEmpty());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class RegistrationRepositoryTest {
 
         Pageable p = Pageable.ofSize(25);
         Page<Registration> registrations = repo.findByManagerName(MANAGER_NAME, p);
-        assertTrue(!registrations.isEmpty());
+        assertFalse(registrations.isEmpty());
     }
 
     @Test
@@ -88,6 +88,6 @@ public class RegistrationRepositoryTest {
 
         Pageable p = Pageable.ofSize(25);
         Page<Registration> registrations = repo.findByUserName(USER_NAME, p);
-        assertTrue(!registrations.isEmpty());
+        assertFalse(registrations.isEmpty());
     }
 }

@@ -48,11 +48,8 @@ public class ExportServiceTest {
         Arrays.asList(RegistrationCsvHeaders.values())
                 .stream()
                 .map(e -> (ExportService.RegistrationCsvHeaders) e)
-                .map(e -> e.name()).forEach(e -> {
-                            assertTrue(csv.contains(e), "Missing header: " + e);
-                        }
+                .map(Enum::name).forEach(e -> assertTrue(csv.contains(e), "Missing header: " + e)
                 );
-
     }
 
     @Test

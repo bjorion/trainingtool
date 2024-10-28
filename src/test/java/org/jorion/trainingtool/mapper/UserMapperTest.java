@@ -75,7 +75,7 @@ public class UserMapperTest {
         assertNotNull(target.getRegistrations());
 
         // modified
-        assertEquals(false, target.isSubContractor());
+        assertFalse(target.isSubContractor());
         assertEquals("1-lastname", target.getLastName());
         assertEquals("1-firstname", target.getFirstName());
         assertEquals("1-email", target.getEmail());

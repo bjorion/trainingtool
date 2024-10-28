@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 /**
@@ -173,10 +174,7 @@ public class Registration extends AbstractTrackingEntity {
     public void addJustification(String justification) {
 
         if (!StringUtils.isBlank(justification)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(justification.trim()).append("\n");
-            // sb.append(this.getJustification());
-            this.setJustification(sb.toString());
+            this.setJustification(justification.trim() + "\n");
         }
     }
 }

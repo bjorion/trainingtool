@@ -2,10 +2,14 @@ package org.jorion.trainingtool.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Declares the fields version, createdOn, createdBy, modifiedOn and modifiedBy.
  */
+@Setter
+@Getter
 @MappedSuperclass
 public abstract class AbstractTrackingEntity extends AbstractTimeTrackingEntity {
 
@@ -13,21 +17,5 @@ public abstract class AbstractTrackingEntity extends AbstractTimeTrackingEntity 
     private String createdBy;
 
     private String modifiedBy;
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
 
 }

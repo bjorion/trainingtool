@@ -39,7 +39,7 @@ public class LdapServiceTest {
     void testSearchByName() {
 
         LdapService service = new LdapService();
-        List<GroupInfraIdentityDTO> dtos = null;
+        List<GroupInfraIdentityDTO> dtos;
         ReflectionTestUtils.setField(service, "ldap", true);
         ReflectionTestUtils.setField(service, "ldapTemplate", mockLdapTemplate);
         ReflectionTestUtils.setField(service, "identityAttributeMapper", mockMapper);
@@ -75,7 +75,7 @@ public class LdapServiceTest {
     void testSearchByExample() {
 
         LdapService service = new LdapService();
-        List<GroupInfraIdentityDTO> dtos = null;
+        List<GroupInfraIdentityDTO> dtos;
         ReflectionTestUtils.setField(service, "ldap", true);
         ReflectionTestUtils.setField(service, "ldapTemplate", mockLdapTemplate);
         ReflectionTestUtils.setField(service, "identityAttributeMapper", mockMapper);
@@ -99,8 +99,8 @@ public class LdapServiceTest {
         when(mockLdapTemplate.search("", filter.encode(), mockMapper)).thenReturn(dtos);
         List<User> users = service.searchByExample(srcUser);
         assertNotNull(users);
-        assertTrue(users.size() == 1);
-        User user = users.get(0);
+        assertEquals(1, users.size());
+        User user = users.getFirst();
         assertEquals(USERNAME, user.getUserName());
         verify(mockLdapTemplate, times(1)).search("", filter.encode(), mockMapper);
 

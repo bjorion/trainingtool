@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -31,7 +32,7 @@ public class TrainingRepositoryTest {
 
         LocalDate date = LocalDate.of(2021, 6, 1);
         List<Training> list = repo.findAvailableTrainings(date);
-        assertTrue(!list.isEmpty());
+        assertFalse(list.isEmpty());
         for (Training t : list) {
             assertTrue(t.isEnabled());
             assertTrue(t.getEnabledFrom() == null || t.getEnabledFrom().isBefore(date));

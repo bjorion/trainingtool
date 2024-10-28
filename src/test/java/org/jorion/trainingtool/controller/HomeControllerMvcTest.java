@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>
  * See
  * <ul>
- * <li>https://newbedev.com/spring-test-security-how-to-mock-authentication
+ * <li><a href="https://newbedev.com/spring-test-security-how-to-mock-authentication">...</a>
  * <li>https://www.baeldung.com/spring-security-integration-tests
  * </ul>
  */

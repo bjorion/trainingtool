@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -107,10 +108,9 @@ public class User extends AbstractTimeTrackingEntity {
         if (other == this) {
             return true;
         }
-        if (other instanceof User == false) {
+        if (!(other instanceof User that)) {
             return false;
         }
-        User that = (User) other;
         return new EqualsBuilder().append(userName, that.userName).isEquals();
     }
 
@@ -188,13 +188,6 @@ public class User extends AbstractTimeTrackingEntity {
     }
 
     /**
-     * @throws UnsupportedOperationException
-     */
-    protected void setRolesAsStr(String rolesAsStr) {
-        throw new UnsupportedOperationException("This value cannot be set directly, use addRole()");
-    }
-
-    /**
      * @return an unmodifiable set of roles
      */
     public Set<Role> getRoles() {
@@ -205,6 +198,7 @@ public class User extends AbstractTimeTrackingEntity {
      * Set the given roles to the user.
      */
     public void setRoles(Set<Role> roles) {
+
         this.roles.clear();
         this.roles.addAll(roles);
         this.rolesAsStr = getRolesAsStr();
@@ -214,6 +208,7 @@ public class User extends AbstractTimeTrackingEntity {
      * Add the given role to the user.
      */
     public User addRole(Role role) {
+
         this.roles.add(role);
         this.rolesAsStr = getRolesAsStr();
         return this;
@@ -228,11 +223,11 @@ public class User extends AbstractTimeTrackingEntity {
      * @return the registration, null if not found or if regId is null
      */
     public Registration findRegistrationById(Long regId) {
+
         if (regId == null) {
             return null;
         }
-        Registration r = registrations.stream().filter(e -> regId.equals(e.getId())).findFirst().orElseGet(() -> null);
-        return r;
+        return registrations.stream().filter(e -> regId.equals(e.getId())).findFirst().orElse(null);
     }
 
     /**

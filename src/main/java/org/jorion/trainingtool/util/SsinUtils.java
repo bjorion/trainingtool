@@ -19,14 +19,14 @@ public class SsinUtils {
     public static boolean isSsinValid(String ssin, boolean mandatory) {
 
         String newSsin = StringUtils.trimToEmpty(ssin);
-        if (newSsin.length() == 0 && !mandatory) {
+        if (newSsin.isEmpty() && !mandatory) {
             return true;
         }
         if (newSsin.length() != SSIN_LEN) {
             return false;
         }
 
-        Long value = NumberUtils.toLong(newSsin);
+        long value = NumberUtils.toLong(newSsin);
 
         // First, check positive number, but not too big.
         if ((value <= 0) || (value > 999999_999_99L)) {
@@ -45,9 +45,8 @@ public class SsinUtils {
         if (97 - (radix % 97) != suffix) { // problem
             // 3.2.1) Let's try the second case: born after year 2000
             // The convention is to add a "2" in front of the radix for checksum verification
-            if (97 - ((2_00_00_00_000 + radix) % 97) != suffix) { // problem
-                return false;
-            }
+            // problem
+            return 97 - ((2_00_00_00_000 + radix) % 97) == suffix;
         }
         return true;
     }

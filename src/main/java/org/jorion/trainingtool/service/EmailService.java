@@ -2,6 +2,7 @@ package org.jorion.trainingtool.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.dto.UpdateEventDTO;
@@ -16,7 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class EmailService {
     private static final String MAIL_REFUSED = "req-refused.html";
     private static final String MAIL_SENT_BACK = "req-sent-back.html";
 
+    @Setter
     @Value("${app.mail.sendMail}")
     private boolean sendMail;
 
@@ -42,12 +44,15 @@ public class EmailService {
     @Value("${app.mail.address.hr}")
     private String mgtMailAddress;
 
+    @Setter
     @Value("${app.mail.address.from}")
     private String fromAddress;
 
+    @Setter
     @Value("${app.server.domain}")
     private String serverDomain;
 
+    @Setter
     @Value("${server.servlet.context-path}")
     private String serverContext;
 
@@ -87,14 +92,13 @@ public class EmailService {
     /**
      * Method to prepare email with attachment.
      */
-    private static MimeMessageHelper prepareEmailWithAttachment(
+    private static void prepareEmailWithAttachment(
             MimeMessageHelper msgHelper, String from, String to, String subject, String htmlTemplate,
             String attachmentFileName, String attachmentFilePath)
             throws MessagingException {
 
-        MimeMessageHelper msgHelperWithAttachment = prepareEmail(msgHelper, from, to, subject, htmlTemplate);
+        prepareEmail(msgHelper, from, to, subject, htmlTemplate);
         msgHelper.addAttachment(attachmentFileName, new ClassPathResource(attachmentFilePath));
-        return msgHelperWithAttachment;
     }
 
     static String getTemplate(RegistrationEvent regEvent, RegistrationStatus regStatus) {
@@ -125,10 +129,10 @@ public class EmailService {
     }
 
     /**
-     * return the full application path (eg. <i>http://localhost:8080/</i> or <i>https://www.example.org/trainingtool/</i>).
+     * return the full application path (eg. <i><a href="http://localhost:8080/">...</a></i> or <i>https://www.example.org/trainingtool/</i>).
      * This method takes care of the trailing slashes.
      *
-     * @param domain  the application domain - trailing slash is optional (ex: https://www.example.org)
+     * @param domain  the application domain - trailing slash is optional (ex: <a href="https://www.example.org">...</a>)
      * @param context the application context - should start with a slash (ex: /trainingtool)
      * @return the full application path, ending with a slash
      */
@@ -184,20 +188,19 @@ public class EmailService {
 
         String mail = this.buildMail(template, model);
         log.info("Send mail from [{}] to [{}], template [{}]", fromAddress, toAddress, template);
-        this.doSendEmail(fromAddress, toAddress, "TrainingTool registration request", mail);
-        return;
+        this.doSendEmail(fromAddress, toAddress, mail);
     }
 
     /**
      * Send email.
      */
-    protected void doSendEmail(String from, String to, String subject, String htmlTemplate)
+    protected void doSendEmail(String from, String to, String htmlTemplate)
             throws MessagingException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
         // true = multipart message
         MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true);
-        prepareEmail(msgHelper, from, to, subject, htmlTemplate);
+        prepareEmail(msgHelper, from, to, "TrainingTool registration request", htmlTemplate);
         javaMailSender.send(msg);
     }
 
@@ -252,7 +255,6 @@ public class EmailService {
                 break;
             case SUBMITTED_TO_PROVIDER:
                 recipient = "Provider";
-                toAddress = null; // we don't send a mail to the provider
                 break;
             case APPROVED_BY_PROVIDER:
                 recipient = dto.getMemberFirstname();
@@ -268,19 +270,4 @@ public class EmailService {
         return new String[]{recipient, toAddress};
     }
 
-    public void setSendMail(boolean sendMail) {
-        this.sendMail = sendMail;
-    }
-
-    public void setFromAddress(String fromAddress) {
-        this.fromAddress = fromAddress;
-    }
-
-    public void setServerDomain(String serverDomain) {
-        this.serverDomain = serverDomain;
-    }
-
-    public void setServerContext(String serverContext) {
-        this.serverContext = serverContext;
-    }
 }

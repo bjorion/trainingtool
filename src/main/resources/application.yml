@@ -45,7 +45,7 @@ spring:
     name: trainingtool
   datasource:
     initialize: 'false'
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.h2.Driver
 
 springdoc:
   swagger-ui:

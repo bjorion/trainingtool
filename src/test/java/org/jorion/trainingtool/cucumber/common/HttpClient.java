@@ -12,7 +12,7 @@ public class HttpClient {
     private static final String REST_ENDPOINT = "/trainingtool/REST/v1";
 
     private int port;
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     private String endpoint() {
         return SERVER_URL + ":" + port + REST_ENDPOINT;

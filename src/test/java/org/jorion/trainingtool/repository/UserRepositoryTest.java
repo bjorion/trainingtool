@@ -29,7 +29,8 @@ public class UserRepositoryTest {
     void testFindUserByUsername() {
 
         final String name = "john.doe";
-        User user = userRepository.findUserByUserName(name).orElseGet(() -> null);
+        User user = userRepository.findUserByUserName(name).orElse(null);
+        assert user != null;
         assertEquals(name, user.getUserName());
     }
 

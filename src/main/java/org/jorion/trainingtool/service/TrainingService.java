@@ -69,10 +69,9 @@ public class TrainingService {
      * Update or Create a training.
      *
      * @param dtoTraining the training to update/create
-     * @return The training updated or inserted
      */
     @Transactional
-    public Training saveTraining(Training dtoTraining) {
+    public void saveTraining(Training dtoTraining) {
 
         log.debug("Saving training id [{}]", dtoTraining.getId());
 
@@ -86,21 +85,18 @@ public class TrainingService {
 
         Training savedTraining = trainingRepository.save(training);
         log.debug("Saved training id [{}]", savedTraining.getId());
-        return savedTraining;
     }
 
     /**
      * Delete a training (for good).
      *
      * @param training the training to delete
-     * @return true if the registration was deleted
      */
-    public boolean deleteTraining(Training training) {
+    public void deleteTraining(Training training) {
 
         trainingRepository.delete(training);
         trainingRepository.flush();
         log.info("Registration deleted [{}]", training.getId());
-        return true;
     }
 
 }

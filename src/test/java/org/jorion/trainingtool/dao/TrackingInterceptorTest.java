@@ -27,7 +27,7 @@ public class TrackingInterceptorTest {
         Registration r = new Registration(1L);
         Object[] regStates = {now, null, now, null};
         TrackingInterceptor ti = new TrackingInterceptor();
-        change = ti.onSave(r, 1L, regStates, names, null);
+        change = ti.onSave(r, (Object) 1L, regStates, names, null);
         assertTrue(change);
         assertEquals(USERNAME, regStates[1]);
 
@@ -36,7 +36,7 @@ public class TrackingInterceptorTest {
         user.setId(1L);
         Object[] userStates = {now, null, now, null};
         ti = new TrackingInterceptor();
-        change = ti.onSave(user, 1L, userStates, names, null);
+        change = ti.onSave(user, (Object) 1L, userStates, names, null);
         assertFalse(change);
         assertNull(userStates[1]);
     }
@@ -55,7 +55,7 @@ public class TrackingInterceptorTest {
         Object[] prevStates = {now, null, now, null};
         Object[] currStates = {now, null, now, null};
         TrackingInterceptor ti = new TrackingInterceptor();
-        change = ti.onFlushDirty(r, 1L, currStates, prevStates, names, types);
+        change = ti.onFlushDirty(r, (Object) 1L, currStates, prevStates, names, types);
         assertTrue(change);
         assertEquals(USERNAME, currStates[3]);
 
@@ -64,7 +64,7 @@ public class TrackingInterceptorTest {
         Object[] prevStates2 = {now, null, now, USERNAME};
         Object[] currStates2 = {now, null, now, USERNAME};
         ti = new TrackingInterceptor();
-        change = ti.onFlushDirty(r, 1L, currStates2, prevStates2, names, types);
+        change = ti.onFlushDirty(r, (Object) 1L, currStates2, prevStates2, names, types);
         assertFalse(change);
     }
 

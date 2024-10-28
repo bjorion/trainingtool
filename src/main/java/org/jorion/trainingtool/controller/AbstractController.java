@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
+
 import java.security.Principal;
 
 /**
@@ -46,7 +47,7 @@ public abstract class AbstractController {
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleException(AccessDeniedException e, Principal principal) {
 
-        log.error("AccessDeniedException [{}] for Principal {}", new Object[]{e.getMessage(), principal});
+        log.error("AccessDeniedException [{}] for Principal {}", e.getMessage(), principal);
         ModelAndView mav = new ModelAndView();
         mav.setStatus(HttpStatus.FORBIDDEN);
         mav.setViewName("error/403");
@@ -114,9 +115,9 @@ public abstract class AbstractController {
         session.setAttribute(SESSION_EVENT, event.name());
     }
 
-    protected void setSessionEvent(HttpSession session, SessionEvent event) {
+    protected void setSessionEvent(HttpSession session) {
 
-        session.setAttribute(SESSION_EVENT, event.name());
+        session.setAttribute(SESSION_EVENT, SessionEvent.UNAUTHORIZED.name());
     }
 
     protected String getSessionEvent(HttpSession session) {

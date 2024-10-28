@@ -63,9 +63,8 @@ public class LdapService {
             log.warn("LDAP list size greater than 1. Size: [{}]", dtos.size());
         }
 
-        GroupInfraIdentityDTO dto = dtos.get(0);
-        User user = UserMapper.INSTANCE.toUser(dto);
-        return user;
+        GroupInfraIdentityDTO dto = dtos.getFirst();
+        return UserMapper.INSTANCE.toUser(dto);
     }
 
     /**
