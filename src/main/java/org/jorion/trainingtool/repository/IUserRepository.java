@@ -13,11 +13,12 @@ import java.util.Optional;
  */
 public interface IUserRepository extends JpaRepository<User, Long> {
 
-    String SQL_USER_BY_EXAMPLE = "SELECT u FROM User u "
-            + " WHERE lower(u.firstName) LIKE lower(:firstName) "
-            + " AND lower(u.lastName) LIKE lower(:lastName) "
-            + " ORDER BY u.lastName ASC, u.firstName ASC ";
-
+    String SQL_USER_BY_EXAMPLE = """
+            SELECT u FROM User u
+            WHERE lower(u.firstName) LIKE lower(:firstName)
+            AND lower(u.lastName) LIKE lower(:lastName)
+            ORDER BY u.lastName ASC, u.firstName ASC
+            """;
 
     /**
      * Retrieve a user given his username.

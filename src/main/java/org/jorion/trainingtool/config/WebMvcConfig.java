@@ -55,7 +55,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Description("Spring Message Resolver")
     public ResourceBundleMessageSource messageSource() {
 
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        var messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         return messageSource;
     }

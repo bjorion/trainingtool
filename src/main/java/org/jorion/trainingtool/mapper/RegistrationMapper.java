@@ -7,7 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+import static org.mapstruct.ReportingPolicy.IGNORE;
+
+@Mapper(unmappedTargetPolicy = IGNORE)
 public interface RegistrationMapper {
 
     RegistrationMapper INSTANCE = Mappers.getMapper(RegistrationMapper.class);

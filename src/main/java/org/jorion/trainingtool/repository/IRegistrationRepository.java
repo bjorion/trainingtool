@@ -18,34 +18,47 @@ import java.util.Optional;
  */
 public interface IRegistrationRepository extends JpaRepository<Registration, Long> {
 
-    String SQL_REG_BY_ID_AND_USERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (r.id = :id) AND (u.userName = :userName) ";
+    String SQL_REG_BY_ID_AND_USERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (r.id = :id) AND (u.userName = :userName)
+            """;
 
-    String SQL_REG_BY_ID_AND_MANAGERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (r.id = :id) AND (u.userName = :managerName OR u.managerName = :managerName) ";
+    String SQL_REG_BY_ID_AND_MANAGERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (r.id = :id) AND (u.userName = :managerName OR u.managerName = :managerName)
+            """;
 
-    String SQL_REGS_BY_STATUSES = "SELECT r FROM Registration r "
-            + "WHERE r.status IN :statuses "
-            + "ORDER BY r.id DESC ";
+    String SQL_REGS_BY_STATUSES = """
+            SELECT r FROM Registration r
+            WHERE r.status IN :statuses
+            ORDER BY r.id DESC
+            """;
 
-    String SQL_REGS_BY_STATUSES_AND_MANAGERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (r.status IN :statuses) "
-            + "AND (:managerName IS NULL OR u.managerName = :managerName) "
-            + "ORDER BY r.id DESC ";
+    String SQL_REGS_BY_STATUSES_AND_MANAGERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (r.status IN :statuses)
+            AND (:managerName IS NULL OR u.managerName = :managerName)
+            ORDER BY r.id DESC
+            """;
 
-    String SQL_REGS_BY_EXAMPLE_AND_MANAGERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (:status IS null OR r.status = :status) "
-            + "AND (lower(u.lastName) LIKE :lastName) "
-            + "AND (:startDate IS NULL OR (r.startDate >= :startDate)) "
-            + "AND (:managerName IS NULL OR u.managerName = :managerName OR u.userName = :userName) "
-            + "ORDER BY r.id DESC ";
+    String SQL_REGS_BY_EXAMPLE_AND_MANAGERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (:status IS null OR r.status = :status)
+            AND (lower(u.lastName) LIKE :lastName)
+            AND (:startDate IS NULL OR (r.startDate >= :startDate))
+            AND (:managerName IS NULL OR u.managerName = :managerName OR u.userName = :userName)
+            ORDER BY r.id DESC
+            """;
 
-    String SQL_REGS_BY_MANAGERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (u.managerName = :managerName OR u.userName = :managerName)";
+    String SQL_REGS_BY_MANAGERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (u.managerName = :managerName OR u.userName = :managerName)
+            """;
 
-    String SQL_REGS_BY_USERNAME = "SELECT r FROM Registration r LEFT JOIN User u ON r.member = u.id "
-            + "WHERE (u.userName = :userName)";
-
+    String SQL_REGS_BY_USERNAME = """
+            SELECT r FROM Registration r LEFT JOIN User u ON r.member.id = u.id
+            WHERE (u.userName = :userName)
+            """;
 
     @Query(SQL_REG_BY_ID_AND_USERNAME)
     Optional<Registration> findRegistrationByIdAndUser(@Param("id") Long id, @Param("userName") String userName);

@@ -6,11 +6,7 @@
 --   use 255 by default
 --   use 1000 for free texts
 
--- drop tables
--- DROP TABLE trainingtool_test.user;
--- DROP TABLE trainingtool_test.registration;
-
-CREATE SCHEMA trainingtool;
+CREATE SCHEMA IF NOT EXISTS trainingtool;
 
 -- User
 CREATE TABLE trainingtool.user (

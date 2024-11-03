@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("local")
 public class UserRepositoryTest {
 
-    @Autowired
-    @SuppressWarnings("unused")
-    private TestEntityManager em;
+//    @Autowired
+//    @SuppressWarnings("unused")
+//    private TestEntityManager em;
 
     @Autowired
     private IUserRepository userRepository;

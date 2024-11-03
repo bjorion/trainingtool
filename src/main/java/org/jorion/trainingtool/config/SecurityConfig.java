@@ -39,10 +39,10 @@ import static org.jorion.trainingtool.type.Role.*;
 // @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
 
-    @Value("${app.users.ldap:true}")
+    @Value("${app.users.ldap:false}")
     private boolean usersLdap;
 
-    @Value("${app.users.inMemory:false}")
+    @Value("${app.users.inMemory:true}")
     private boolean usersInMem;
 
     @Value("${ldap.url}")
@@ -144,12 +144,12 @@ public class SecurityConfig {
                 .roles(MEMBER.toString(), MANAGER.toString(), Role.HR.toString())
                 .build();
         UserDetails training = userBuilder
-                .username("hr")
+                .username("training")
                 .password("{noop}training")
                 .roles(MEMBER.toString(), TRAINING.toString())
                 .build();
         UserDetails manager = userBuilder
-                .username("hr")
+                .username("manager")
                 .password("{noop}manager")
                 .roles(MEMBER.toString(), MANAGER.toString())
                 .build();
@@ -187,7 +187,7 @@ public class SecurityConfig {
                 } else if (principal instanceof User user) {
                     dn = user.getUsername();
                 } else {
-                    dn = null;
+                    dn = "";
                 }
                 return dn;
             }

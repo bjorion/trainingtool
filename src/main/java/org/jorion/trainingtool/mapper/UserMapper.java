@@ -3,13 +3,13 @@ package org.jorion.trainingtool.mapper;
 import org.jorion.trainingtool.dto.GroupInfraIdentityDTO;
 import org.jorion.trainingtool.dto.json.UserDTO;
 import org.jorion.trainingtool.entity.User;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+
+import static org.mapstruct.CollectionMappingStrategy.TARGET_IMMUTABLE;
+import static org.mapstruct.ReportingPolicy.*;
 
 /**
  * Mapper for User objects.
@@ -17,7 +17,7 @@ import java.util.List;
  * Collection Mapping Strategy is set to IMMUTABLE because user's collections (roles, registrations) are unmodifiable,
  * and we don't want the implementation to clear them.
  */
-@Mapper(uses = RegistrationMapper.class, collectionMappingStrategy = CollectionMappingStrategy.TARGET_IMMUTABLE)
+@Mapper(uses = RegistrationMapper.class, collectionMappingStrategy = TARGET_IMMUTABLE, unmappedTargetPolicy = IGNORE)
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);

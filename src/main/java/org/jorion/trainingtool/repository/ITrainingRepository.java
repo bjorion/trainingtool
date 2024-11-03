@@ -13,12 +13,13 @@ import java.util.List;
  */
 public interface ITrainingRepository extends JpaRepository<Training, Long> {
 
-    String SQL_AVAILABLE_TRAININGS = "SELECT t FROM Training t "
-            + " WHERE t.enabled = true "
-            + " AND (t.enabledFrom  IS NULL OR :currentDate >= t.enabledFrom)  "
-            + " AND (t.enabledUntil IS NULL OR :currentDate <= t.enabledUntil) "
-            + " ORDER BY t.startDate ";
-
+    String SQL_AVAILABLE_TRAININGS = """
+            SELECT t FROM Training t
+            WHERE t.enabled = true
+            AND (t.enabledFrom  IS NULL OR :currentDate >= t.enabledFrom)
+            AND (t.enabledUntil IS NULL OR :currentDate <= t.enabledUntil)
+            ORDER BY t.startDate
+            """;
 
     @Query(SQL_AVAILABLE_TRAININGS)
     List<Training> findAvailableTrainings(@Param("currentDate") LocalDate currentDate);

@@ -31,8 +31,8 @@
         <thymeleaf-extras-springsecurity.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity.version>
 
         <!-- versions below must match those in layout.html -->
-        <webjar-bootstrap.version>4.6.1</webjar-bootstrap.version>
-        <webjar-jquery.version>3.6.0</webjar-jquery.version>
+        <webjar-bootstrap.version>5.3.3</webjar-bootstrap.version>
+        <webjar-jquery.version>3.7.1</webjar-jquery.version>
         <webjar-popper.version>1.16.1</webjar-popper.version>
 
         <!-- plugin versions -->
@@ -49,14 +49,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>io.cucumber</groupId>
-                <artifactId>cucumber-bom</artifactId>
-                <version>${cucumber.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -131,12 +123,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- See https://howtodoinjava.com/spring-boot2/developer-tools-module-tutorial/ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -197,6 +183,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- 2nd level cache -->
@@ -233,6 +220,14 @@
         </dependency>
 
         <!-- TEST -->
+        <!-- https://mvnrepository.com/artifact/org.xmlunit/xmlunit-core -->
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+            <version>2.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -254,19 +249,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Cucumber -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.platform</groupId>
@@ -279,13 +261,11 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <!-- Build -->
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -324,7 +304,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-plugin.version}</version>
+                <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>org.jorion.trainingtool.TrainingToolApp</mainClass>
                 </configuration>
@@ -374,12 +354,11 @@
     <!-- Reporting -->
     <reporting>
         <plugins>
-
             <!-- javadoc (mvn javadoc:javadoc) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>3.10.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <show>private</show>
@@ -388,5 +367,4 @@
             </plugin>
         </plugins>
     </reporting>
-
 </project>

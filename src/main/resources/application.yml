@@ -7,32 +7,42 @@ server:
     context-path: /trainingtool
 
 spring:
+  application:
+    name: trainingtool
   mail:
     username: support.trainingtool@example.org
     properties:
       mail:
         smtp:
-          auth: 'true'
-          connectiontimeout: '5000'
-          writetimeout: '5000'
+          auth: true
+          connection-timeout: '5000'
+          write-timeout: '5000'
           timeout: '5000'
     host: fr-smtp.resultinfra.com
     protocol: smtp
     password: ''
     port: '25'
+  datasource:
+    url: "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"
+    driver-class-name: "org.h2.Driver"
+    platform: h2
+    username: sa
+    password:
+    initialize-mode: embedded
   jpa:
     hibernate:
-      ddl-auto: none
-    database-platform: org.hibernate.dialect.PostgreSQL82Dialect
-    show-sql: 'false'
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
     properties:
-      javax:
+      jakarta:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
       hibernate:
+        default_schema: trainingtool
         cache:
-          use_second_level_cache: 'true'
+          use_second_level_cache: true
           region:
             factory_class: jcache
         javax:
@@ -40,17 +50,16 @@ spring:
             provider: org.ehcache.jsr107.EhcacheCachingProvider
         session_factory:
           interceptor: org.jorion.trainingtool.dao.TrackingInterceptor
-    open-in-view: 'false'
-  application:
-    name: trainingtool
-  datasource:
-    initialize: 'false'
-    driver-class-name: org.h2.Driver
+    open-in-view: false
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
 
 springdoc:
   swagger-ui:
-    displayOperationId: 'true'
-    disable-swagger-default-url: 'true'
+    displayOperationId: true
+    disable-swagger-default-url: true
     path: /swagger-ui.html
     operations-sorter: alpha
     tags-sorter: alpha
@@ -69,7 +78,7 @@ management:
       show-details: ALWAYS
 
 app:
-  local: 'false'
+  local: false
   reg:
     sectors: Financial Services (FS),Energy & Utilities (E&U),Government (GOV),Health
       & Manufacturing (H&M),Management (MGT),Other
@@ -82,15 +91,15 @@ app:
       hr: training.tool@example.org
       support: training.tool@example.org
       training: training.tool@example.org
-    sendMail: 'true'
+    sendMail: true
   role:
     manager: jorionb
     training: john.smith
     hr: john.smith
   msg:
-    info: 'false'
+    info: false
   workflow:
-    hrIfBillable: 'true'
+    hrIfBillable: true
 
 ldap:
   baseDn: OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com
