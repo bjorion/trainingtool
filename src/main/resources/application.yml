@@ -28,19 +28,19 @@ spring:
     platform: h2
     username: sa
     password:
-    initialize-mode: embedded
+    initialize: true
   jpa:
-    hibernate:
-      ddl-auto: create-drop
+    open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
+    hibernate:
+      ddl-auto: create-drop
     properties:
       jakarta:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
       hibernate:
-        default_schema: trainingtool
         cache:
           use_second_level_cache: true
           region:
@@ -50,11 +50,10 @@ spring:
             provider: org.ehcache.jsr107.EhcacheCachingProvider
         session_factory:
           interceptor: org.jorion.trainingtool.dao.TrackingInterceptor
-    open-in-view: false
   h2:
     console:
-      path: /h2-console
       enabled: true
+      path: /h2-console
 
 springdoc:
   swagger-ui:
