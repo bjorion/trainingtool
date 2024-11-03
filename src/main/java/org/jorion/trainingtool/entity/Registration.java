@@ -22,7 +22,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "registration", schema = "trainingtool")
+@Table(name = "registration")
 public class Registration extends AbstractTrackingEntity {
 
     @Id

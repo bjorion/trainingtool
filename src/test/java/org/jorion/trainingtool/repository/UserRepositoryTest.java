@@ -5,22 +5,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("local")
 public class UserRepositoryTest {
-
-//    @Autowired
-//    @SuppressWarnings("unused")
-//    private TestEntityManager em;
 
     @Autowired
     private IUserRepository userRepository;
@@ -30,7 +26,7 @@ public class UserRepositoryTest {
 
         final String name = "john.doe";
         User user = userRepository.findUserByUserName(name).orElse(null);
-        assert user != null;
+        assertNotNull(user);
         assertEquals(name, user.getUserName());
     }
 

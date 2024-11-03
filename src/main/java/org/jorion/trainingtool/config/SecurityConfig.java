@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -95,7 +94,7 @@ public class SecurityConfig {
                         .requestMatchers("/delete-training/**").hasAnyRole(Role.getOffices())
 
                         // admin only
-                        .requestMatchers("/h2-console/**").hasAnyRole(Role.getOffices())
+                        .requestMatchers("/h2-console/**").permitAll()
 
                         // logged users
                         .anyRequest().authenticated())
@@ -112,7 +111,7 @@ public class SecurityConfig {
         if (usersLdap) {
             log.debug("LDAP enabled");
             http.authenticationProvider(authenticationProvider());
-            // TODO solve this
+            // TODO deprecated ?
             // http.eraseCredentials(false);
         }
 
@@ -179,15 +178,15 @@ public class SecurityConfig {
             @Override
             public String getPrincipal() {
 
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                Object principal = authentication.getPrincipal();
+                var authentication = SecurityContextHolder.getContext().getAuthentication();
+                var principal = authentication.getPrincipal();
                 String dn;
                 if (principal instanceof LdapUserDetails) {
                     dn = super.getPrincipal();
                 } else if (principal instanceof User user) {
                     dn = user.getUsername();
                 } else {
-                    dn = "";
+                    dn = null;
                 }
                 return dn;
             }

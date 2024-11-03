@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "user", schema = "trainingtool")
+@Table(name = "myuser")
 public class User extends AbstractTimeTrackingEntity {
 
     @Id
@@ -80,6 +80,7 @@ public class User extends AbstractTimeTrackingEntity {
 
     @PostLoad
     protected void postLoad() {
+
         String[] arr = rolesAsStr.split(":");
         for (String value : arr) {
             Role role = Role.findByValue(value);

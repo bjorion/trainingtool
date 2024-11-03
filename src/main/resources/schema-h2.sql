@@ -6,10 +6,10 @@
 --   use 255 by default
 --   use 1000 for free texts
 
-CREATE SCHEMA IF NOT EXISTS trainingtool;
+-- CREATE SCHEMA IF NOT EXISTS TRAININGTOOL;
 
 -- User
-CREATE TABLE trainingtool.user (
+CREATE TABLE myuser (
   id INT AUTO_INCREMENT PRIMARY KEY, 
   version INT DEFAULT 0,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -30,10 +30,10 @@ CREATE TABLE trainingtool.user (
 
 -- index
 CREATE UNIQUE INDEX idx_user_username
-ON trainingtool.user (username);
+ON myuser (username);
 
 -- Registration
-CREATE TABLE trainingtool.registration (
+CREATE TABLE registration (
   id INT AUTO_INCREMENT PRIMARY KEY,
   version INT DEFAULT 0,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -66,15 +66,15 @@ CREATE TABLE trainingtool.registration (
   comment VARCHAR(2000) NULL,
   motivation VARCHAR(2000) NULL,
   
-  FOREIGN KEY (user_id) REFERENCES trainingtool.user(id) -- define FK link
+  FOREIGN KEY (user_id) REFERENCES myuser(id) -- define FK link
 );
 
 -- index
 CREATE INDEX idx_registration_status
-ON trainingtool.registration (status);
+ON registration (status);
 
 -- Training
-CREATE TABLE trainingtool.training (
+CREATE TABLE training (
   id INT AUTO_INCREMENT PRIMARY KEY,
   version INT DEFAULT 0,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -109,4 +109,4 @@ CREATE TABLE trainingtool.training (
 
 -- index
 CREATE INDEX idx_training_enabled
-ON trainingtool.training (enabled);
+ON training (enabled);
