@@ -2,6 +2,7 @@
 target/
 bin/
 logs/
+tmp/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**

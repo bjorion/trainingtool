@@ -9,5 +9,4 @@
 			<property name="guardsMethods" value="isTraceEnabled" />
 		</properties>
 	</rule>
-
 </ruleset>
