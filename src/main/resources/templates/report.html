@@ -31,16 +31,16 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="lastname">Lastname</label>
-                                <input class="form-control" maxlength="50" placeholder="Lastname" th:field="*{lastName}"
+                                <input class="form-control" maxlength="50" placeholder="Lastname" th:field="*{lastname}"
                                        type="text">
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="lastname">Start date after</label>
+                                <label for="startDate">Start date after</label>
                                 <input class="form-control" min="2020-01-01" placeholder="" th:field="*{startDate}"
                                        type="date">
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="lastname">Status</label>
+                                <label for="status">Status</label>
                                 <select class="form-control" th:field="*{status}">
                                     <option selected value="">-- select a status --</option>
                                     <option th:each="elem : ${T(org.jorion.trainingtool.type.RegistrationStatus).values()}"

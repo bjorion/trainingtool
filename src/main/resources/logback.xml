@@ -23,13 +23,10 @@
 
     <!-- Loggers -->
     <logger name="org.jorion.trainingtool" level="DEBUG"/>
-
     <logger name="org.springframework.web" level="INFO"/>
 
-    <logger name="org.springframework.security" level="INFO"/>
-
+    <logger name="org.springframework.security" level="DEBUG"/>
     <logger name="org.springframework.security.ldap" level="INFO"/>
-
     <logger name="org.springframework.data" level="INFO"/>
 
     <logger name="org.h2" level="INFO"/>

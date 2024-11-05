@@ -85,7 +85,7 @@ public class SecurityConfig {
                         .requestMatchers("/export-report/**").hasAnyRole(Role.getSupervisors())
                         .requestMatchers("/select-member**").hasAnyRole(Role.getSupervisors())
                         .requestMatchers("/save-registrations").hasAnyRole(Role.getSupervisors())
-                        .requestMatchers("/actuator/**").hasAnyRole(Role.getSupervisors())
+                        .requestMatchers("/actuator/**").permitAll()
 
                         // trainings
                         .requestMatchers("/trainings/**").hasAnyRole(Role.getOffices())
@@ -109,14 +109,13 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID"));
 
         if (usersLdap) {
-            log.debug("LDAP enabled");
+            log.info("LDAP enabled");
             http.authenticationProvider(authenticationProvider());
-            // TODO deprecated ?
-            // http.eraseCredentials(false);
+            // http.eraseCredentials(false); (move to manager)
         }
 
         if (usersInMem) {
-            log.debug("InMemory enabled");
+            log.info("Add InMemory users");
             http.userDetailsService(inMemoryUsers());
         }
 
@@ -126,15 +125,12 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService inMemoryUsers() {
 
-        // TODO check this
-        log.debug("Add InMemory users");
-
         @SuppressWarnings("deprecation")
         User.UserBuilder userBuilder = User.withDefaultPasswordEncoder();
 
         UserDetails admin = userBuilder
                 .username("admin")
-                .password("{noop}admin")
+                .password("admin")
                 .roles(MEMBER.toString(), ADMIN.toString())
                 .build();
         UserDetails hr = userBuilder
@@ -194,33 +190,6 @@ public class SecurityConfig {
     }
 
     /**
-     * Alternate authentication source useful for some tests. Here the DN and password are hard-coded.
-     */
-    @Bean
-    @Deprecated
-    public AuthenticationSource authenticationSourceAlt() {
-
-        final String username = "username";
-        final String password = "xxxxxxxx";
-        final String baseDn = this.ldapBaseDn;
-
-        return new SpringSecurityAuthenticationSource() {
-
-            @Override
-            public String getPrincipal() {
-
-                log.warn("Use of the alternate authentication source. Use it only locally for testing purposes.");
-                return "CN=" + username + "," + baseDn;
-            }
-
-            @Override
-            public String getCredentials() {
-                return password;
-            }
-        };
-    }
-
-    /**
      * Create an LDAP Context Source.
      */
     @Bean
@@ -231,7 +200,7 @@ public class SecurityConfig {
         ctx.setBase(ldapBaseDn);
         ctx.setAuthenticationSource(authenticationSource());
         ctx.afterPropertiesSet();
-        log.debug("ContextSource URL {}, baseDn [{}]", ctx.getUrls(), ctx.getBaseLdapName());
+        log.info("ContextSource URL {}, baseDn [{}]", ctx.getUrls(), ctx.getBaseLdapName());
         return ctx;
     }
 
