@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 >
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Registration</title>
 </head>
 
 <body>
-<div th:replace="fragments/layout :: menu-nav"></div>
+<div th:replace="~{fragments/layout :: menu-nav}"></div>
 
 <main role="main">
     <!-- lower main div below the fixed menu bar -->
@@ -117,7 +117,7 @@
                         <tr th:if="${registration.provider.ssinMandatory}">
                             <td>Member SSIN *
                                 <span class="mytooltip" data-toggle="tooltip" th:data-original-title="#{tooltip.ssin}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </td>
                             <td><span th:text="${registration.ssinFormatted}"> SSIN </span></td>
@@ -175,7 +175,7 @@
                             <td>Affects billability <span th:if="${user.supervisor}">*</span>
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.billable}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </td>
                             <td><span th:text="${(registration.billable == null) ? '' : registration.billable.title}"> Billable </span>
@@ -186,7 +186,7 @@
                                 CBA compliant
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.cbaCompliant}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </td>
                             <td><span
@@ -206,7 +206,7 @@
                                 Justification <span th:if="${user.supervisor}">*</span>
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.justification}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </td>
                             <td><span th:text="${registration.justification}"> Justification </span></td>
@@ -432,8 +432,8 @@
     </div>
 </div>
 
-<div th:replace="fragments/layout :: footer"></div>
-<div th:replace="fragments/layout :: tooltip"></div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: tooltip}"></div>
 
 <script type="text/javascript">
 	$('#refuseModal').on('shown.bs.modal', function () {

@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 >
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Registrations (Edit)</title>
 </head>
 
 <body>
-<div th:replace="fragments/layout :: menu-nav"></div>
+<div th:replace="~{fragments/layout :: menu-nav}"></div>
 
 <main role="main">
     <div class="jumbotron upper-space">
@@ -303,7 +303,7 @@
                             <label class="col-sm-2 col-form-label" for="billable">Affects billability
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.billable}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </label>
                             <div class="col-sm-4">
@@ -328,7 +328,7 @@
                             <label class="col-sm-2 col-form-label" for="billable">CBA Compliant &nbsp;
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.cbaCompliant}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </label>
                             <div class="col-sm-4">
@@ -428,8 +428,8 @@
     </div>
 </div>
 
-<div th:replace="fragments/layout :: footer"></div>
-<div th:replace="fragments/layout :: tooltip"></div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: tooltip}"></div>
 
 <script type="text/javascript">
 		$(function() {

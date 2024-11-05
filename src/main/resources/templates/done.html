@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle">Logout</title>
 </head>
 
 <body>
-<div th:replace="fragments/layout :: empty-nav"></div>
+<div th:replace="~{fragments/layout :: empty-nav}"></div>
 
 <main role="main">
     <div class="jumbotron upper-space">

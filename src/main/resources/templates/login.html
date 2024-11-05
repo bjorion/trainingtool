@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Training Tool</title>
 </head>
 
 <body class="login">
-<div th:replace="fragments/layout :: empty-nav"></div>
+<div th:replace="~{fragments/layout :: empty-nav}"></div>
 
 <main role="main">
     <!-- lower main div below the fixed menu bar -->
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-row no-side-margin">
-                                <span>Username</span>
+                                <span><label for="usernameId">Username</label></span>
                             </div>
                             <div class="form-row no-side-margin	">
                                 <input autocomplete="username" class="form-control" id="usernameId" name="username"
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-row no-side-margin">
-                                <span>Password</span>
+                                <span><label for="passwordId">Password</label></span>
                             </div>
                             <div class="form-row no-side-margin">
                                 <input autocomplete="current-password" class="form-control" id="passwordId" name="password"

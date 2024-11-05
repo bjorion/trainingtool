@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 >
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Registration (Edit)</title>
 </head>
 
 <body>
-<div th:replace="fragments/layout :: menu-nav"></div>
+<div th:replace="~{fragments/layout :: menu-nav}"></div>
 
 <main role="main">
     <div class="jumbotron upper-space">
@@ -182,7 +182,8 @@
                             <div class="form-group row" th:with="err=${#lists.contains(errors, 'provider.other')}">
                                 <label class="col-sm-2 col-form-label" for="providerOther">Provider name *</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" maxlength="250" th:classappend="${err} ? 'is-invalid' : ''"
+                                    <input class="form-control" maxlength="250"
+                                           th:classappend="${err} ? 'is-invalid' : ''"
                                            th:field="*{providerOther}" type="text">
                                     <div class="invalid-feedback" th:if="${err}">Mandatory for the selected provider
                                     </div>
@@ -201,8 +202,9 @@
                                 <label class="col-sm-2 col-form-label" for="ssin">Member SSIN <span
                                         th:if="${!user.supervisor}">*</span>
                                     <span class="mytooltip" data-toggle="tooltip"
-                                          th:data-original-title="#{tooltip.ssin}"><img height="25"
-                                                                                        th:src="@{/img/qm.png}" width="25"/></span>
+                                          th:data-original-title="#{tooltip.ssin}">
+                                        <img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
+                                    </span>
                                 </label>
                                 <div class="col-sm-4">
                                     <input class="form-control" maxlength="11" placeholder="00000000000"
@@ -225,7 +227,8 @@
                             <div class="col-sm-8">
                                 <input class="form-control" id="url" maxlength="500"
                                        pattern="^https?:\/\/.*" placeholder="http(s)://"
-                                       required th:classappend="${err} ? 'is-invalid' : ''" th:field="*{url}" type="text"/>
+                                       required th:classappend="${err} ? 'is-invalid' : ''" th:field="*{url}"
+                                       type="text"/>
                                 <div class="invalid-feedback" th:if="${err}">URL must start with http(s)://</div>
                             </div>
                         </div>
@@ -261,7 +264,8 @@
                             <label class="col-sm-2 col-form-label" for="startDate">Start date <span
                                     th:if="${user.training}">*</span></label>
                             <div class="col-sm-4">
-                                <input class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{startDate}"
+                                <input class="form-control" th:classappend="${err} ? 'is-invalid' : ''"
+                                       th:field="*{startDate}"
                                        th:min="${@environment.getProperty('app.date.min')}"
                                        th:required="${user.training}"
                                        type="date"/>
@@ -274,7 +278,8 @@
                             <label class="col-sm-2 col-form-label" for="endDate">End date <span
                                     th:if="${user.training}">*</span></label>
                             <div class="col-sm-4">
-                                <input class="form-control" th:classappend="${err} ? 'is-invalid' : ''" th:field="*{endDate}"
+                                <input class="form-control" th:classappend="${err} ? 'is-invalid' : ''"
+                                       th:field="*{endDate}"
                                        th:min="${@environment.getProperty('app.date.min')}"
                                        th:required="${user.training}"
                                        type="date"/>
@@ -373,7 +378,7 @@
                                     th:if="${user.supervisor}">*</span>
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.billable}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </label>
                             <div class="col-sm-4">
@@ -401,7 +406,7 @@
                                 CBA compliant
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.cbaCompliant}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </label>
                             <div class="col-sm-4">
@@ -440,7 +445,7 @@
                                 Justification <span th:if="${user.supervisor}">*</span>
                                 <span class="mytooltip" data-toggle="tooltip"
                                       th:data-original-title="#{tooltip.justification}">
-										<img height="25" th:src="@{/img/qm.png}" width="25"/>
+										<img height="25" th:src="@{/img/qm.png}" width="25" alt=""/>
 									</span>
                             </label>
                             <div class="col-sm-8">
@@ -474,7 +479,8 @@
                                 <button class="btn btn-outline-primary" th:if="${!assign}" type="submit">
                                     <span th:replace="fragments/button :: save (title='')"></span>
                                 </button>
-                                <a class="btn btn-outline-primary" data-target="#assignModal" data-toggle="modal" href=""
+                                <a class="btn btn-outline-primary" data-target="#assignModal" data-toggle="modal"
+                                   href=""
                                    th:if="${assign}" type="button">
                                     <span th:replace="fragments/button :: assign (title='')">Assign</span>
                                 </a>
@@ -521,84 +527,84 @@
     </div>
 </div>
 
-<div th:replace="fragments/layout :: footer"></div>
-<div th:replace="fragments/layout :: tooltip"></div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: tooltip}"></div>
 
 <script type="text/javascript">
-		const PROVIDER_CEVORA = "CEVORA";
-		const PROVIDER_ = "_INTERNAL";
-		const PROVIDER_OTHER = "OTHER";
-		
-		$(function() {
-			let selectedProvider = $("#provider").children("option:selected").val();
-			toggleProviderOther(selectedProvider);
-			toggleSsin(selectedProvider);
-			toggleURL(selectedProvider);
-			toggleWarningBillability();
-		});
-		
-		// add a 'onChange' event handler on the provider element
-		$("#provider").change(function() {
-			let selectedProvider = $(this).children("option:selected").val();
-			toggleProviderOther(selectedProvider);
-			toggleSsin(selectedProvider);
-			toggleURL(selectedProvider);
-        });
-		
-		$("#period").change(function() {
-			toggleWarningBillability();
-		})
-		
-		$("#billable").change(function() {
-			toggleWarningBillability();
-		})
-		
-		// Warning if business hours and not billable
-		function toggleWarningBillability() {
-			let period = $("#period"); 
-			let billable = $("#billable");
-			let warn = (period.val() === 'DAY') && (billable.val() === 'NO');
-			let warning = $("#warningBillable"); 
-			if (warn) { warning.show(); } else { warning.hide(); }
-		}
-		
-		// if Provider == OTHER, display field 'other-name'
-		function toggleProviderOther(selectedProvider) {
-			let elem = $("#div-providerOther");
-			if (selectedProvider == PROVIDER_OTHER) {
-				elem.show();
-			}
-			else {
-				elem.hide();
-			}
-		}
-		
-		// SSIN is request only for CEVORA
-		function toggleSsin(selectedProvider) {
-			let elem = $("#div-ssin");
-			if (selectedProvider == PROVIDER_CEVORA) {
-				elem.show();
-			}
-			else {
-				elem.hide();
-			}
-		}
-		
-		// If Provider =  INTERNAL, prefill URL value
-		function toggleURL(selectedProvider) {
-			let elem = $("#url");
-			if (selectedProvider == PROVIDER_) {
-				elem.val('http://www.example.org');
-			}
-		}
-		
-		// submit the form is validation is ok
-		function submitRegistration() {
-			$("#assignModal").modal('hide');
-			let frm = document.getElementById("frmRegistration");
-			frm.submit();
-		}
-		
+    const PROVIDER_CEVORA = "CEVORA";
+    const PROVIDER_ = "_INTERNAL";
+    const PROVIDER_OTHER = "OTHER";
+
+    $(function() {
+        let selectedProvider = $("#provider").children("option:selected").val();
+        toggleProviderOther(selectedProvider);
+        toggleSsin(selectedProvider);
+        toggleURL(selectedProvider);
+        toggleWarningBillability();
+    });
+
+    // add a 'onChange' event handler on the provider element
+    $("#provider").change(function() {
+        let selectedProvider = $(this).children("option:selected").val();
+        toggleProviderOther(selectedProvider);
+        toggleSsin(selectedProvider);
+        toggleURL(selectedProvider);
+    });
+
+    $("#period").change(function() {
+        toggleWarningBillability();
+    })
+
+    $("#billable").change(function() {
+        toggleWarningBillability();
+    })
+
+    // Warning if business hours and not billable
+    function toggleWarningBillability() {
+        let period = $("#period");
+        let billable = $("#billable");
+        let warn = (period.val() === 'DAY') && (billable.val() === 'NO');
+        let warning = $("#warningBillable");
+        if (warn) { warning.show(); } else { warning.hide(); }
+    }
+
+    // if Provider == OTHER, display field 'other-name'
+    function toggleProviderOther(selectedProvider) {
+        let elem = $("#div-providerOther");
+        if (selectedProvider == PROVIDER_OTHER) {
+            elem.show();
+        }
+        else {
+            elem.hide();
+        }
+    }
+
+    // SSIN is request only for CEVORA
+    function toggleSsin(selectedProvider) {
+        let elem = $("#div-ssin");
+        if (selectedProvider == PROVIDER_CEVORA) {
+            elem.show();
+        }
+        else {
+            elem.hide();
+        }
+    }
+
+    // If Provider =  INTERNAL, prefill URL value
+    function toggleURL(selectedProvider) {
+        let elem = $("#url");
+        if (selectedProvider == PROVIDER_) {
+            elem.val('http://www.example.org');
+        }
+    }
+
+    // submit the form is validation is ok
+    function submitRegistration() {
+        $("#assignModal").modal('hide');
+        let frm = document.getElementById("frmRegistration");
+        frm.submit();
+    }
+
 
 </script>
 </body>

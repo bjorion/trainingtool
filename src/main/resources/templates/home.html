@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 >
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Home</title>
 </head>
 
 <body>
-<div th:replace="fragments/layout :: menu-nav"></div>
+<div th:replace="~{fragments/layout :: menu-nav}"></div>
 
 <main role="main">
     <!-- lower main div below the fixed menu bar -->
@@ -229,7 +229,7 @@
 
 </script>
 
-<div th:replace="fragments/layout :: footer"></div>
+<div th:replace="~{fragments/layout :: footer}"></div>
 </body>
 
 </html>

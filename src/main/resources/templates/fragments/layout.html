@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <!-- header -->
 <head th:fragment="header">
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title th:include=":: #pageTitle">Default Title</title>
 
     <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/1.16.1/dist/umd/popper.min.js}"></script>
@@ -23,6 +23,7 @@
 -    <!-- nav: simple menu bar -->
 -
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-indigo" id="empty-nav" th:fragment="empty-nav">
+    <span>&nbsp;</span>
     <span class="navbar-brand mr-auto" th:text="#{common.title}"></span>
     <span class="navbar-nav ml-auto white" th:text="'v'+${@environment.getProperty('build.version')}"></span>
     -
@@ -30,6 +31,7 @@
 
 <!-- nav: fixed menu bar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-indigo" id="menu-nav" th:fragment="menu-nav">
+    <span>&nbsp;</span>
     <a class="navbar-brand" th:href="@{/home}"><span th:text="#{common.title}"></span></a>
     <!-- M button -->
     <button class="navbar-toggler" data-target="#navbarsExampleDefault" data-toggle="collapse" type="button">

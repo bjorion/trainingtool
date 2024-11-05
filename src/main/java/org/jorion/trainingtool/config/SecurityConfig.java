@@ -186,7 +186,7 @@ public class SecurityConfig {
                 } else if (principal instanceof User user) {
                     dn = user.getUsername();
                 } else {
-                    dn = null;
+                    dn = "";
                 }
                 return dn;
             }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="fragments/layout :: header">
+<head th:replace="~{fragments/layout :: header}">
     <title id="pageTitle" th:text="#{common.title}">Training Tool</title>
 </head>
 
 <body class="">
-<div th:replace="fragments/layout :: empty-nav"></div>
+<div th:replace="~{fragments/layout :: empty-nav}"></div>
 
 <main role="main">
     <!-- lower main div below the fixed menu bar -->

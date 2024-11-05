@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <!-- header -->
 <head th:fragment="header">
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title th:include=":: #pageTitle">Default Title</title>
+    <title th:insert="~{:: #pageTitle}">Default Title</title>
 
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           rel="stylesheet">
