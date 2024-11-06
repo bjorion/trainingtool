@@ -135,22 +135,22 @@ public class SecurityConfig {
                 .build();
         UserDetails hr = userBuilder
                 .username("hr")
-                .password("{noop}hr")
+                .password("hr")
                 .roles(MEMBER.toString(), MANAGER.toString(), Role.HR.toString())
                 .build();
         UserDetails training = userBuilder
                 .username("training")
-                .password("{noop}training")
+                .password("training")
                 .roles(MEMBER.toString(), TRAINING.toString())
                 .build();
         UserDetails manager = userBuilder
                 .username("manager")
-                .password("{noop}manager")
+                .password("manager")
                 .roles(MEMBER.toString(), MANAGER.toString())
                 .build();
         UserDetails john = userBuilder
                 .username("john.doe")
-                .password("{noop}john")
+                .password("john")
                 .roles(MEMBER.toString())
                 .build();
 

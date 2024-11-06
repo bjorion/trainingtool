@@ -71,6 +71,7 @@
 
 ## 1.4.0 (2024-10-28)
 - update spring boot (to 3.3.5) and other dependencies
+- update thymeleaf
 
 ### Reminder
 
