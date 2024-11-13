@@ -1,12 +1,13 @@
 package org.jorion.trainingtool.common;
 
-import org.jorion.trainingtool.entity.Registration;
-import org.jorion.trainingtool.entity.Training;
-import org.jorion.trainingtool.entity.User;
+import org.jorion.trainingtool.registration.Registration;
+import org.jorion.trainingtool.training.Training;
+import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.Provider;
 import org.jorion.trainingtool.type.RegistrationStatus;
 
 public class EntityUtils {
+
     public static User createUser(String username) {
 
         User user = new User();

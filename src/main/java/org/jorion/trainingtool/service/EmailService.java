@@ -5,10 +5,11 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jorion.trainingtool.dto.UpdateEventDTO;
-import org.jorion.trainingtool.entity.User;
+import org.jorion.trainingtool.event.UpdateEventDTO;
+import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
+import org.jorion.trainingtool.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -209,6 +210,7 @@ public class EmailService {
      *
      * @throws MessagingException Failure to send the mail
      */
+    @SuppressWarnings("unused")
     protected void doSendEmailWithAttachment(String from, String to, String subject, String htmlTemplate,
                                              String attachmentFileName, String attachmentFilePath)
             throws MessagingException {

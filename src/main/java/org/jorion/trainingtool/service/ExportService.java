@@ -3,8 +3,9 @@ package org.jorion.trainingtool.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.jorion.trainingtool.dto.ReportDTO;
-import org.jorion.trainingtool.entity.Registration;
+import org.jorion.trainingtool.report.ReportDTO;
+import org.jorion.trainingtool.registration.Registration;
+import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.type.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,7 +49,6 @@ public class ExportService {
                         providerTitle = r.getProviderOther();
                     }
 
-
                     printer.printRecord(
                             r.getStartDate(),
                             r.getEndDate(),
@@ -71,7 +71,6 @@ public class ExportService {
                             r.getMandatory(),
                             r.getCbaCompliant()
                     );
-
                 } catch (IOException e) {
                     log.error("Could not export {}", r);
                 }
@@ -85,7 +84,7 @@ public class ExportService {
 
         Start_Date, End_Date, Month, Tot_Hours, Training, Providers, IE, Price_EUR, Employee_ID, Supervisor, Sector,
         Name, Firstname, Lastname, Day_Evening, Classroom_office_hours, Classroom_after_office_hours, Self_study,
-        Mandatory_training, CBA_Compliant;
+        Mandatory_training, CBA_Compliant
 
     }
 }

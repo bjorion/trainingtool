@@ -336,12 +336,12 @@
                         <div class="row">
                             <div class="col-sm-10">
                                 <button class="btn btn-outline-primary" type="submit">
-                                    <span th:replace="fragments/button :: save (title='')">Save</span>
+                                    <span th:replace="~{fragments/button :: save (title='')}">Save</span>
                                 </button>
                                 &nbsp;
                                 <a class="btn btn-outline-primary" data-target="#deleteModal" data-toggle="modal" href=""
                                    th:if="${training.id ne empty}" type="button">
-                                    <span th:replace="fragments/button :: delete (title='This training will be permanently deleted')">Delete</span>
+                                    <span th:replace="~{fragments/button :: delete (title='This training will be permanently deleted')}">Delete</span>
                                 </a>
                                 &nbsp;
                                 <a class="btn btn-outline-info" th:href="@{/trainings}" type="button">Cancel</a>

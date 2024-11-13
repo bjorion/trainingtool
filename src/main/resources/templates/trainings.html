@@ -64,7 +64,7 @@
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <a class="btn btn-outline-primary" th:href="@{/edit-training}" type="button">
-                            <span th:replace="fragments/button :: create (title='', label='New training')">New training</span>
+                            <span th:replace="~{fragments/button :: create (title='', label='New training')}">New training</span>
                         </a>
                         <span>&nbsp;</span>
                         <a class="btn btn-outline-info" th:href="@{/}" type="button">Home</a>

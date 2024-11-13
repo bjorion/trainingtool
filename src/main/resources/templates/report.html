@@ -53,7 +53,7 @@
                     <div class="form-group row">
                         <div class="col-sm-10">
                             <button class="btn btn-outline-primary" type="submit">
-                                <span th:replace="fragments/button :: filter (title='Apply the filter')">Filter</span>
+                                <span th:replace="~{fragments/button :: filter (title='Apply the filter')}">Filter</span>
                             </button>
                             &nbsp;
                             <a class="btn btn-outline-primary" th:href="@{/report}" type="button">
@@ -62,7 +62,7 @@
                             &nbsp;
                             <a class="btn btn-outline-primary" data-target="#exportModal" data-toggle="modal" href=""
                                type="button">
-                                <span th:replace="fragments/button :: export (title='Export to CSV')">Export</span>
+                                <span th:replace="~{fragments/button :: export (title='Export to CSV')}">Export</span>
                             </a>
                             &nbsp;
                             <a class="btn btn-outline-info" th:href="@{/home}" type="button">
@@ -110,10 +110,9 @@
             <div class="col-md-12">
                 Number of requests found: <span th:text="${registrations.totalElements}">-</span>
             </div>
-
         </div>
     </div>
-    <div th:replace="fragments/paginator :: paginator-registrations (mylink='report')"></div>
+    <div th:replace="~{fragments/paginator :: paginator-registrations (mylink='report')}"></div>
 </main>
 
 <!-- Export -->

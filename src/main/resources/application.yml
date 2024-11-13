@@ -52,8 +52,7 @@ spring:
         javax:
           cache:
             provider: org.ehcache.jsr107.EhcacheCachingProvider
-        session_factory:
-          interceptor: org.jorion.trainingtool.dao.TrackingInterceptor
+
   h2:
     console:
       enabled: true

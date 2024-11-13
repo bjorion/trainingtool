@@ -2,9 +2,10 @@ package org.jorion.trainingtool.service;
 
 import org.assertj.core.util.Arrays;
 import org.jorion.trainingtool.common.EntityUtils;
-import org.jorion.trainingtool.dto.ReportDTO;
-import org.jorion.trainingtool.entity.Registration;
-import org.jorion.trainingtool.entity.User;
+import org.jorion.trainingtool.report.ReportDTO;
+import org.jorion.trainingtool.registration.Registration;
+import org.jorion.trainingtool.registration.RegistrationService;
+import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.service.ExportService.RegistrationCsvHeaders;
 import org.jorion.trainingtool.type.Provider;
 import org.junit.jupiter.api.Test;

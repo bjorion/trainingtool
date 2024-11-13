@@ -79,7 +79,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-default">
                     <a class="dropdown-item" th:href="@{/logout}">
-                        <span th:replace="fragments/button :: logout (title='Exit the application')">Logout</span>
+                        <span th:replace="~{fragments/button :: logout (title='Exit the application')}">Logout</span>
                     </a>
                 </div>
             </li>

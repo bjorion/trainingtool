@@ -83,7 +83,7 @@
                 <div class="col-md-6 text-right">
                     <a class="btn btn-outline-primary" th:href="@{/edit-registration(id=${registration.id})}" th:if="${editable}"
                        type="button">
-                        <span th:replace="fragments/button :: edit (title='')"></span>
+                        <span th:replace="~{fragments/button :: edit (title='')}"></span>
                     </a>
                 </div>
                 <div class="em col-md-6 text-left">
@@ -273,7 +273,7 @@
                     <!-- Edit -->
                     <a class="btn btn-outline-primary" th:href="@{/edit-registration(id=${registration.id})}" th:if="${editable}"
                        type="button">
-                        <span th:replace="fragments/button :: edit (title='')">Edit</span>
+                        <span th:replace="~{fragments/button :: edit (title='')}">Edit</span>
                     </a>
                     <span th:if="${editable}">&nbsp;</span>
 
@@ -281,28 +281,28 @@
                     <a class="btn btn-outline-primary" data-target="#submitModal" data-toggle="modal" href="" th:if="${approvable}"
                        th:with="label=${submittable} ? (${acceptable} ? 'Accept' : 'Submit') : 'Approve'"
                        type="button">
-                        <span th:replace="fragments/button :: approve (title='Submit/Approve this request', label=${label})">Approve</span>
+                        <span th:replace="~{fragments/button :: approve (title='Submit/Approve this request', label=${label})}">Approve</span>
                     </a>
                     <span th:if="${approvable}">&nbsp;</span>
 
                     <!-- Delete -->
                     <a class="btn btn-outline-primary" data-target="#deleteModal" data-toggle="modal" href="" th:if="${deletable}"
                        type="button">
-                        <span th:replace="fragments/button :: delete (title='This request will be permanently deleted')">Delete</span>
+                        <span th:replace="~{fragments/button :: delete (title='This request will be permanently deleted')}">Delete</span>
                     </a>
                     <span th:if="${deletable}">&nbsp;</span>
 
                     <!-- Reject -->
                     <a class="btn btn-outline-primary" data-target="#rejectModal" data-toggle="modal" href="" th:if="${rejectable}"
                        type="button">
-                        <span th:replace="fragments/button :: sendBack (title='Send this request back to the member for a change')">Send Back</span>
+                        <span th:replace="~{fragments/button :: sendBack (title='Send this request back to the member for a change')}">Send Back</span>
                     </a>
                     <span th:if="${rejectable}">&nbsp;</span>
 
                     <!-- Refuse -->
                     <a class="btn btn-outline-primary" data-target="#refuseModal" data-toggle="modal" href="" th:if="${refusable}"
                        type="button">
-                        <span th:replace="fragments/button :: refuse (title='Refuse this request')">Refuse</span>
+                        <span th:replace="~{fragments/button :: refuse (title='Refuse this request')}">Refuse</span>
                     </a>
                     <span th:if="${refusable}">&nbsp;</span>
                 </div>

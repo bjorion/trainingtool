@@ -1,7 +1,7 @@
 package org.jorion.trainingtool.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.config.ldap.CustomLdapAuthoritiesPopulator;
+import org.jorion.trainingtool.ldap.CustomLdapAuthoritiesPopulator;
 import org.jorion.trainingtool.type.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

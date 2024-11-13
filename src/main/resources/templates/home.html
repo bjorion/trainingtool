@@ -86,11 +86,11 @@
             <div>&nbsp;</div>
             <div class="col-md-12">
                 <a class="btn btn-outline-primary" th:href="@{/report}" type="button">
-                    <span th:replace="fragments/button :: report (title='Generate a report with registration requests')">Report</span>
+                    <span th:replace="~{fragments/button :: report (title='Generate a report with registration requests')}">Report</span>
                 </a>
                 <span style="margin: 0 10px;"></span>
                 <a class="btn btn-outline-primary" th:href="@{/trainings}" th:if="${user.office}" type="button">
-                    <span th:replace="fragments/button :: training (title='Manage trainings available to members')">Trainings</span>
+                    <span th:replace="~{fragments/button :: training (title='Manage trainings available to members')}">Trainings</span>
                 </a>
             </div>
         </div>
@@ -121,7 +121,7 @@
             <div class="col-md-12 d-flex w-100 justify-content-between">
                 <h4>Upcoming trainings</h4>
                 <a class="" data-target="#trainings" data-toggle="collapse">
-                    <span th:replace="fragments/button :: toggle (title='open/close')"></span>
+                    <span th:replace="~{fragments/button :: toggle (title='open/close')}"></span>
                 </a>
             </div>
             <div class="col-md-12 collapse show" id="trainings">
@@ -195,7 +195,7 @@
             <div>&nbsp;</div>
             <div class="col-md-12">
                 <a class="btn btn-outline-primary" th:href="@{/edit-registration}" type="button">
-                    <span th:replace="fragments/button :: create (title='Request a training for yourself', label='New Registration')">New Registration</span>
+                    <span th:replace="~{fragments/button :: create (title='Request a training for yourself', label='New Registration')}">New Registration</span>
                 </a>
             </div>
         </div>

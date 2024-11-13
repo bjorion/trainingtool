@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Slf4j
 @SpringBootApplication
-@EnableJpaRepositories(basePackageClasses = org.jorion.trainingtool.repository.INoOpRepository.class)
-@EntityScan(basePackageClasses = org.jorion.trainingtool.entity.NoOp.class)
+@EnableJpaRepositories
+@EntityScan
 @PropertySources({
         @PropertySource("classpath:META-INF/build-info.properties")
 })

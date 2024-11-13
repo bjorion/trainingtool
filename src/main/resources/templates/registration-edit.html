@@ -57,7 +57,7 @@
                                 <label class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-8">
                                     <button class="btn btn-outline-primary" type="submit">
-                                        <span th:replace="fragments/button :: apply (title='Apply the selected training')">Apply</span>
+                                        <span th:replace="~{fragments/button :: apply (title='Apply the selected training')}">Apply</span>
                                     </button>
                                 </div>
                             </div>
@@ -477,12 +477,12 @@
                         <div class="row">
                             <div class="col-sm-10">
                                 <button class="btn btn-outline-primary" th:if="${!assign}" type="submit">
-                                    <span th:replace="fragments/button :: save (title='')"></span>
+                                    <span th:replace="~{fragments/button :: save (title='')}"></span>
                                 </button>
                                 <a class="btn btn-outline-primary" data-target="#assignModal" data-toggle="modal"
                                    href=""
                                    th:if="${assign}" type="button">
-                                    <span th:replace="fragments/button :: assign (title='')">Assign</span>
+                                    <span th:replace="~{fragments/button :: assign (title='')}">Assign</span>
                                 </a>
                                 &nbsp;
                                 <a class="btn btn-outline-info" th:href="@{/registration(id=${registration.id})}"

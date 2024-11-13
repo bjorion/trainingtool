@@ -3,9 +3,10 @@ package org.jorion.trainingtool.controller;
 import jakarta.servlet.http.HttpSession;
 import org.jorion.trainingtool.common.AuthenticationUtils;
 import org.jorion.trainingtool.common.EntityUtils;
-import org.jorion.trainingtool.entity.User;
-import org.jorion.trainingtool.service.RegistrationService;
-import org.jorion.trainingtool.service.TrainingService;
+import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.user.User;
+import org.jorion.trainingtool.registration.RegistrationService;
+import org.jorion.trainingtool.training.TrainingService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,6 @@ import org.springframework.ui.ExtendedModelMap;
 
 import java.util.Collections;
 
-import static org.jorion.trainingtool.controller.AbstractController.SESSION_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -61,7 +61,7 @@ public class HomeControllerTest {
 
         HttpSession session = new MockHttpSession();
         User user = EntityUtils.createUser(USERNAME);
-        session.setAttribute(SESSION_USER, user);
+        session.setAttribute("user", user);
         ExtendedModelMap model = new ExtendedModelMap();
 
         when(registrationService.findPendingByUser(user)).thenReturn(Collections.emptyList());

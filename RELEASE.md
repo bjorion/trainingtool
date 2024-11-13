@@ -73,10 +73,5 @@
 - update spring boot (to 3.3.5) and other dependencies
 - update thymeleaf
 
-### Reminder
-
-BUGS:
-- if a manager assign a training to himself, SSIN should be required
-
-
-
+## 1.5.0 (2024-xx-xx)
+- refactor all packages
