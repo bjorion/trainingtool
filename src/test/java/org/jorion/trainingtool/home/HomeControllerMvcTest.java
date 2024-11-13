@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.controller;
+package org.jorion.trainingtool.home;
 
 // import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 

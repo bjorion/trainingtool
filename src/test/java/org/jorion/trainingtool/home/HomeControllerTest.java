@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.controller;
+package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
 import org.jorion.trainingtool.common.AuthenticationUtils;

@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.controller;
+package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
 import org.jorion.trainingtool.common.controller.AbstractController;
@@ -6,17 +6,14 @@ import org.jorion.trainingtool.common.controller.Constants;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.TrainingService;
-import org.jorion.trainingtool.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Set;
 import java.util.TreeSet;
 
 @Controller
@@ -48,12 +45,12 @@ public class HomeController extends AbstractController {
     @GetMapping("/home")
     public String showHome(Model model, HttpSession session) {
 
-        User user = findUser(session);
+        var user = findUser(session);
         setMemberToSession(session, user);
 
         // retrieve registrations, sort them by ID desc
-        Set<Registration> registrations = user.getRegistrations();
-        Set<Registration> sortedRegistrations = new TreeSet<>((o1, o2) -> o2.getId().compareTo(o1.getId()));
+        var registrations = user.getRegistrations();
+        var sortedRegistrations = new TreeSet<Registration>((o1, o2) -> o2.getId().compareTo(o1.getId()));
         sortedRegistrations.addAll(registrations);
 
         model.addAttribute(Constants.MD_USER, user);
@@ -79,7 +76,7 @@ public class HomeController extends AbstractController {
     public String showLogin() {
 
         String result;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             result = "login";
         } else {
@@ -94,7 +91,7 @@ public class HomeController extends AbstractController {
     @GetMapping("/test-error")
     public String testError() {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             throw new IllegalArgumentException("IllegalArgumentException for: " + auth.getName());
         }
@@ -107,7 +104,7 @@ public class HomeController extends AbstractController {
     @GetMapping("/test-denied")
     public String testDenied() {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             throw new AccessDeniedException("AccessDeniedException for: " + auth.getName());
         }
