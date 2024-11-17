@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.event;
+package org.jorion.trainingtool.export;
 
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;

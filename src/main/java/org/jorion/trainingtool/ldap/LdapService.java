@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserMapper;
-import org.jorion.trainingtool.ldap.profile.DemoUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.LdapTemplate;
@@ -32,9 +31,6 @@ public class LdapService {
 
     @Autowired
     private IdentityAttributeMapper identityAttributeMapper;
-
-    @Autowired(required = false)
-    private DemoUserProvider demoUserProvider;
 
     /**
      * Search the LDAP to return the user whose CN (common name) equals the given username.
@@ -126,10 +122,6 @@ public class LdapService {
             user.setLastName(dto.getLastname());
             user.setFunction(dto.getFunction());
             users.add(user);
-        }
-
-        if (demoUserProvider != null) {
-            users.addAll(demoUserProvider.provideShortUsers());
         }
 
         return users;

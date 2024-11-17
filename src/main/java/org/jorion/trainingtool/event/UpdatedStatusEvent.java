@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.event;
 
 import lombok.Getter;
+import org.jorion.trainingtool.export.UpdateEventDTO;
 import org.springframework.context.ApplicationEvent;
 
 /**

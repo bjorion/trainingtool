@@ -43,6 +43,7 @@ class UserTest {
 
     @Test
     void testMember() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.MEMBER);
         assertFalse(user.isSupervisor());
@@ -53,6 +54,7 @@ class UserTest {
 
     @Test
     void testManager() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.MANAGER);
         assertTrue(user.isSupervisor());
@@ -63,6 +65,7 @@ class UserTest {
 
     @Test
     void testHR() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.HR);
         assertTrue(user.isSupervisor());
@@ -73,6 +76,7 @@ class UserTest {
 
     @Test
     void testTraining() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.TRAINING);
         assertTrue(user.isSupervisor());
@@ -83,6 +87,7 @@ class UserTest {
 
     @Test
     void testAdmin() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.ADMIN);
         assertTrue(user.isSupervisor());
@@ -93,6 +98,7 @@ class UserTest {
 
     @Test
     void testGetRegistrations() {
+
         User user = RandomUser.createUser(USERNAME);
         assertNotNull(user.getRegistrations());
         assertTrue(user.getRegistrations().isEmpty());
@@ -100,6 +106,7 @@ class UserTest {
 
     @Test
     void testGetFullname() {
+
         User user = RandomUser.createUser(USERNAME);
         user.setLastName("doe");
         user.setFirstName("john");
@@ -108,6 +115,7 @@ class UserTest {
 
     @Test
     void testConvertFrom() {
+
         User userFrom = RandomUser.createUser(USERNAME);
         userFrom.setSector("mysector");
 
@@ -126,6 +134,7 @@ class UserTest {
 
     @Test
     void testAddRegistrationOk() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         assertNotNull(user.findRegistrationById(1L));
@@ -133,6 +142,7 @@ class UserTest {
 
     @Test
     void testAddRegistrationNok() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         assertThrows(IllegalArgumentException.class, () -> user.addRegistration(new Registration(1L)));
@@ -140,6 +150,7 @@ class UserTest {
 
     @Test
     void testFindRegistrationById() {
+
         User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         user.addRegistration(new Registration(2L));
@@ -152,6 +163,7 @@ class UserTest {
 
     @Test
     void testRemoveRegistration() {
+
         User user = RandomUser.createUser(USERNAME);
         Registration r = new Registration(1L);
         user.addRegistration(r);
@@ -161,6 +173,7 @@ class UserTest {
 
     @Test
     void testReplaceRegistration() {
+
         User user = RandomUser.createUser(USERNAME);
         Registration r = new Registration(1L);
         r.setTitle("TITLE_1");

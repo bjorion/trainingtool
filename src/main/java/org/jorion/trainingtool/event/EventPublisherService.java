@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jorion.trainingtool.export.UpdateEventDTO;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.user.User;

@@ -1,11 +1,9 @@
 package org.jorion.trainingtool.export;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jorion.trainingtool.event.UpdateEventDTO;
 import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
@@ -71,7 +69,7 @@ public class EmailService {
      *
      * @throws MessagingException Failure to send the mail
      */
-    private static MimeMessageHelper prepareEmail(
+    private static void prepareEmail(
             MimeMessageHelper msgHelper, String from, String to,
             String subject, String htmlTemplate)
             throws MessagingException {
@@ -87,7 +85,6 @@ public class EmailService {
         msgHelper.setText(htmlTemplate, true);
 
         // javaMailSender.send(msg);
-        return msgHelper;
     }
 
     /**
@@ -130,7 +127,8 @@ public class EmailService {
     }
 
     /**
-     * return the full application path (eg. <i><a href="http://localhost:8080/">...</a></i> or <i>https://www.example.org/trainingtool/</i>).
+     * return the full application path (e.g. <i><a href="http://localhost:8080/">...</a></i>
+     * or <i>https://www.example.org/trainingtool/</i>).
      * This method takes care of the trailing slashes.
      *
      * @param domain  the application domain - trailing slash is optional (ex: <a href="https://www.example.org">...</a>)
@@ -139,7 +137,7 @@ public class EmailService {
      */
     static String getServerContextPath(String domain, String context) {
 
-        StringBuilder sb = new StringBuilder(domain);
+        var sb = new StringBuilder(domain);
         if (sb.charAt(sb.length() - 1) == '/') {
             sb.deleteCharAt(sb.length() - 1);
         }
@@ -172,8 +170,9 @@ public class EmailService {
         }
 
         // find the recipient addresses
-        String[] infos = getMailInfo(dto);
-        String recipient = infos[0], toAddress = infos[1];
+        var mailInfo = getMailInfo(dto);
+        var recipient = mailInfo.recipient();
+        var toAddress = mailInfo.toAddress();
 
         if (StringUtils.isBlank(toAddress)) {
             log.debug("Mail not sent because the 'to' address is empty. Recipient [{}]", recipient);
@@ -181,13 +180,13 @@ public class EmailService {
         }
 
         // input for the template
-        String link = getServerContextPath(this.serverDomain, this.serverContext) + LINK_REGISTRATION_ID + dto.getRegId();
-        HashMap<String, Object> model = new HashMap<>();
+        var link = getServerContextPath(this.serverDomain, this.serverContext) + LINK_REGISTRATION_ID + dto.getRegId();
+        var model = new HashMap<String, Object>();
         model.put("recipient", recipient);
         model.put("dto", dto);
         model.put("reqLink", link);
 
-        String mail = this.buildMail(template, model);
+        var mail = this.buildMail(template, model);
         log.info("Send mail from [{}] to [{}], template [{}]", fromAddress, toAddress, template);
         this.doSendEmail(fromAddress, toAddress, mail);
     }
@@ -198,9 +197,9 @@ public class EmailService {
     protected void doSendEmail(String from, String to, String htmlTemplate)
             throws MessagingException {
 
-        MimeMessage msg = javaMailSender.createMimeMessage();
+        var msg = javaMailSender.createMimeMessage();
         // true = multipart message
-        MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true);
+        var msgHelper = new MimeMessageHelper(msg, true);
         prepareEmail(msgHelper, from, to, "TrainingTool registration request", htmlTemplate);
         javaMailSender.send(msg);
     }
@@ -215,9 +214,9 @@ public class EmailService {
                                              String attachmentFileName, String attachmentFilePath)
             throws MessagingException {
 
-        MimeMessage msg = javaMailSender.createMimeMessage();
+        var msg = javaMailSender.createMimeMessage();
         // true = multipart message
-        MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true);
+        var msgHelper = new MimeMessageHelper(msg, true);
         prepareEmailWithAttachment(msgHelper, from, to, subject, htmlTemplate, attachmentFileName, attachmentFilePath);
         javaMailSender.send(msg);
     }
@@ -227,18 +226,17 @@ public class EmailService {
      */
     protected String buildMail(String filename, Map<String, Object> model) {
 
-        Context ctx = new Context(java.util.Locale.ENGLISH, model);
+        var ctx = new Context(java.util.Locale.ENGLISH, model);
         return templateEngine.process(filename, ctx);
     }
 
-    // TODO use record
-    protected String[] getMailInfo(UpdateEventDTO dto) {
+    protected MailInfo getMailInfo(UpdateEventDTO dto) {
 
         // find the recipient addresses
         String toAddress = null;
         String recipient = "(recipient)";
         switch (dto.getRegStatus()) {
-            case DRAFT:
+            case DRAFT, APPROVED_BY_PROVIDER:
                 recipient = dto.getMemberFirstname();
                 toAddress = dto.getMemberEmail();
                 break;
@@ -258,10 +256,6 @@ public class EmailService {
             case SUBMITTED_TO_PROVIDER:
                 recipient = "Provider";
                 break;
-            case APPROVED_BY_PROVIDER:
-                recipient = dto.getMemberFirstname();
-                toAddress = dto.getMemberEmail();
-                break;
             default:
                 if (RegistrationStatus.REFUSED_SET.contains(dto.getRegStatus()) ||
                         dto.getRegEvent() == RegistrationEvent.SEND_BACK) {
@@ -270,7 +264,10 @@ public class EmailService {
                 }
                 break;
         }
-        return new String[]{recipient, toAddress};
+        return new MailInfo(recipient, toAddress);
+    }
+
+    protected record MailInfo(String recipient, String toAddress) {
     }
 
 }

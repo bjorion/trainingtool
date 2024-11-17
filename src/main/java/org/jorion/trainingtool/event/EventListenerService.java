@@ -2,6 +2,7 @@ package org.jorion.trainingtool.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.export.EmailService;
+import org.jorion.trainingtool.export.UpdateEventDTO;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  * some Spring annotations (by starting a new thread). This is a possible evolution to be studied.
  * <p>
  * Currently, there is only one listener whose only action is to call the Email service. If additional actions need to
- * be implemented (ie: send a SMS, save information in a log file...), we can implement them all in this listener, or
+ * be implemented (ie: send an SMS, save information in a log file...), we can implement them all in this listener, or
  * have one listener per action. This will have to be investigated.
  */
 @Slf4j

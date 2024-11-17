@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.event;
 
 import org.jorion.trainingtool.export.EmailService;
+import org.jorion.trainingtool.export.UpdateEventDTO;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.junit.jupiter.api.Test;

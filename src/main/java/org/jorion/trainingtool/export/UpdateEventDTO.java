@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.event;
+package org.jorion.trainingtool.export;
 
 import jakarta.annotation.Nonnull;
 import lombok.*;

@@ -3,8 +3,7 @@ package org.jorion.trainingtool.export;
 import jakarta.mail.MessagingException;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.jorion.trainingtool.event.UpdateEventDTO;
-import org.jorion.trainingtool.event.UpdateEventDTO.UpdateEventDTOBuilder;
+import org.jorion.trainingtool.export.UpdateEventDTO.UpdateEventDTOBuilder;
 import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
@@ -164,7 +163,7 @@ class EmailServiceTest {
     @Test
     void testGetMailInfos() {
 
-        String[] results;
+        EmailService.MailInfo mailInfo;
         EmailService service = new EmailService();
         ReflectionTestUtils.setField(service, "ldapService", mockLdapService);
         ReflectionTestUtils.setField(service, "mgtMailAddress", "mgt@example.org");
@@ -177,44 +176,44 @@ class EmailServiceTest {
         when(mockLdapService.searchByName("manager")).thenReturn(builder.build());
 
         UpdateEventDTO dto = buildUpdateEventDTO(DRAFT).build();
-        results = service.getMailInfo(dto);
-        assertEquals("John", results[0]);
-        assertEquals("john.doe@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("John", mailInfo.recipient());
+        assertEquals("john.doe@example.org", mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER).manager("manager").build();
-        results = service.getMailInfo(dto);
-        assertEquals("my MANAGER", results[0]);
-        assertEquals("my.manager@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("my MANAGER", mailInfo.recipient());
+        assertEquals("my.manager@example.org", mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(SUBMITTED_TO_MANAGER).manager(null).build();
-        results = service.getMailInfo(dto);
-        assertNull(results[0]);
-        assertNull(results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertNull(mailInfo.recipient());
+        assertNull(mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(SUBMITTED_TO_HR).build();
-        results = service.getMailInfo(dto);
-        assertEquals("Management", results[0]);
-        assertEquals("mgt@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("Management", mailInfo.recipient());
+        assertEquals("mgt@example.org", mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(SUBMITTED_TO_TRAINING).build();
-        results = service.getMailInfo(dto);
-        assertEquals("BeTraining Team", results[0]);
-        assertEquals("training@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("BeTraining Team", mailInfo.recipient());
+        assertEquals("training@example.org", mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(SUBMITTED_TO_PROVIDER).build();
-        results = service.getMailInfo(dto);
-        assertEquals("Provider", results[0]);
-        assertNull(results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("Provider", mailInfo.recipient());
+        assertNull(mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(APPROVED_BY_PROVIDER).build();
-        results = service.getMailInfo(dto);
-        assertEquals("John", results[0]);
-        assertEquals("john.doe@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("John", mailInfo.recipient());
+        assertEquals("john.doe@example.org", mailInfo.toAddress());
 
         dto = buildUpdateEventDTO(REFUSED_BY_MANAGER).build();
-        results = service.getMailInfo(dto);
-        assertEquals("John", results[0]);
-        assertEquals("john.doe@example.org", results[1]);
+        mailInfo = service.getMailInfo(dto);
+        assertEquals("John", mailInfo.recipient());
+        assertEquals("john.doe@example.org", mailInfo.toAddress());
     }
 
 }
