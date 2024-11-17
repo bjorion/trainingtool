@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common;
+package org.jorion.trainingtool.ldap;
 
 public interface LdapConstants {
 

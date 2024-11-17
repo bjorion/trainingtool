@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common.controller;
+package org.jorion.trainingtool.infra;
 
 import org.jorion.trainingtool.support.AuthenticationUtils;
 import org.jorion.trainingtool.user.RandomUser;
@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpSession;
 
-import static org.jorion.trainingtool.common.controller.AbstractController.SESSION_USER;
+import static org.jorion.trainingtool.infra.AbstractController.SESSION_USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

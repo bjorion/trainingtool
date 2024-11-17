@@ -4,7 +4,7 @@ import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.jorion.trainingtool.common.entity.AbstractTimeTrackingEntity;
+import org.jorion.trainingtool.domain.AbstractTimeTrackingEntity;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.type.Role;
 import org.springframework.util.Assert;

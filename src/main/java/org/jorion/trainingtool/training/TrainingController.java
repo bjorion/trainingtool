@@ -1,8 +1,8 @@
 package org.jorion.trainingtool.training;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.common.controller.AbstractController;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.AbstractController;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class TrainingController extends AbstractController {
     public String showTrainings(Model model) {
 
         List<Training> trainings = trainingService.findAllTrainings(false);
-        model.addAttribute(Constants.MD_TRAININGS, trainings);
+        model.addAttribute(ControllerConstants.MD_TRAININGS, trainings);
         return "trainings";
     }
 
@@ -61,8 +61,8 @@ public class TrainingController extends AbstractController {
             training = new Training();
         }
 
-        model.addAttribute(Constants.MD_TRAINING, training);
-        model.addAttribute(Constants.MD_ERRORS, Collections.EMPTY_LIST);
+        model.addAttribute(ControllerConstants.MD_TRAINING, training);
+        model.addAttribute(ControllerConstants.MD_ERRORS, Collections.EMPTY_LIST);
         return "training-edit";
     }
 
@@ -85,8 +85,8 @@ public class TrainingController extends AbstractController {
 
         List<String> errors = trainingService.checkBusinessErrors(frmTraining);
         if (!errors.isEmpty()) {
-            model.addAttribute(Constants.MD_TRAINING, frmTraining);
-            model.addAttribute(Constants.MD_ERRORS, errors);
+            model.addAttribute(ControllerConstants.MD_TRAINING, frmTraining);
+            model.addAttribute(ControllerConstants.MD_ERRORS, errors);
             return "training-edit";
         }
 

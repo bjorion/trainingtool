@@ -1,6 +1,6 @@
 package org.jorion.trainingtool.training;
 
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class TrainingControllerTest {
         when(trainingService.findAllTrainings(false)).thenReturn(trainings);
 
         assertEquals("trainings", trainingController.showTrainings(model));
-        var result = (List<Training>) model.getAttribute(Constants.MD_TRAININGS);
+        var result = (List<Training>) model.getAttribute(ControllerConstants.MD_TRAININGS);
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(training.getId(), result.getFirst().getId());

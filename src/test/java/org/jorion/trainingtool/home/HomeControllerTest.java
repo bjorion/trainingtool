@@ -2,7 +2,7 @@ package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
 import org.jorion.trainingtool.support.AuthenticationUtils;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.registration.RegistrationService;
@@ -68,9 +68,9 @@ class HomeControllerTest {
         when(trainingService.findAllTrainings(true)).thenReturn(Collections.emptyList());
 
         assertEquals(home, homeController.showHome(model, session));
-        assertEquals(user, model.getAttribute(Constants.MD_USER));
-        assertNotNull(model.getAttribute(Constants.MD_REGISTRATIONS));
-        assertNotNull(model.getAttribute(Constants.MD_PENDING_REGISTRATIONS));
+        assertEquals(user, model.getAttribute(ControllerConstants.MD_USER));
+        assertNotNull(model.getAttribute(ControllerConstants.MD_REGISTRATIONS));
+        assertNotNull(model.getAttribute(ControllerConstants.MD_PENDING_REGISTRATIONS));
     }
 
     @Test

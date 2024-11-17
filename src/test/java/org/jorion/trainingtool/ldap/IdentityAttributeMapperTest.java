@@ -1,7 +1,6 @@
 package org.jorion.trainingtool.ldap;
 
 import org.jorion.trainingtool.support.AssertUtils;
-import org.jorion.trainingtool.common.LdapConstants;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

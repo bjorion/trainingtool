@@ -3,8 +3,8 @@ package org.jorion.trainingtool.report;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.common.controller.AbstractController;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.AbstractController;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.export.CsvService;
@@ -55,8 +55,8 @@ public class ReportController extends AbstractController {
     @GetMapping("/report")
     public String showReport(Model model, HttpServletRequest request) {
 
-        int page = StrUtils.getParameterAsInt(request, Constants.PAGE, 1) - 1;
-        int size = StrUtils.getParameterAsInt(request, Constants.SIZE, Constants.SIZE_DEF);
+        int page = StrUtils.getParameterAsInt(request, ControllerConstants.PAGE, 1) - 1;
+        int size = StrUtils.getParameterAsInt(request, ControllerConstants.SIZE, ControllerConstants.SIZE_DEF);
 
         // User is a manager (or above)
         User user = findUser(request.getSession());
@@ -64,9 +64,9 @@ public class ReportController extends AbstractController {
         Page<Registration> registrations = registrationService.findAllByManager(user.getUserName(), pr);
 
         request.getSession().removeAttribute(SESSION_REPORT);
-        model.addAttribute(Constants.MD_REPORT, new ReportDTO());
-        model.addAttribute(Constants.MD_REGISTRATIONS, registrations);
-        model.addAttribute(Constants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_REPORT, new ReportDTO());
+        model.addAttribute(ControllerConstants.MD_REGISTRATIONS, registrations);
+        model.addAttribute(ControllerConstants.MD_USER, user);
         return "report";
     }
 
@@ -96,9 +96,9 @@ public class ReportController extends AbstractController {
         request.getSession().setAttribute(SESSION_REPORT, report);
         log.debug("selectReport {}", report);
 
-        model.addAttribute(Constants.MD_REPORT, report);
-        model.addAttribute(Constants.MD_REGISTRATIONS, registrations);
-        model.addAttribute(Constants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_REPORT, report);
+        model.addAttribute(ControllerConstants.MD_REGISTRATIONS, registrations);
+        model.addAttribute(ControllerConstants.MD_USER, user);
         return "report";
     }
 

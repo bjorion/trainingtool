@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common.entity;
+package org.jorion.trainingtool.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;

@@ -3,7 +3,7 @@ package org.jorion.trainingtool.training;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.jorion.trainingtool.common.entity.AbstractTrackingEntity;
+import org.jorion.trainingtool.domain.AbstractTrackingEntity;
 import org.jorion.trainingtool.type.Location;
 import org.jorion.trainingtool.type.Period;
 import org.jorion.trainingtool.type.Provider;

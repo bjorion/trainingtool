@@ -1,8 +1,9 @@
 package org.jorion.trainingtool.user;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.common.controller.AbstractController;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.AbstractController;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 import java.util.Set;
@@ -36,8 +35,8 @@ public class UserController extends AbstractController {
     public String selectMemberInit(Model model, HttpSession session) {
 
         User user = findUser(session);
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_MEMBER, new User());
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_MEMBER, new User());
         return "member-select";
     }
 
@@ -55,17 +54,17 @@ public class UserController extends AbstractController {
         User user = findUser(session);
         List<String> errors = userService.checkBusinessErrors(member);
         if (!errors.isEmpty()) {
-            model.addAttribute(Constants.MD_USER, user);
-            model.addAttribute(Constants.MD_MEMBER, new User());
-            model.addAttribute(Constants.MD_ERRORS, errors);
+            model.addAttribute(ControllerConstants.MD_USER, user);
+            model.addAttribute(ControllerConstants.MD_MEMBER, new User());
+            model.addAttribute(ControllerConstants.MD_ERRORS, errors);
             return "member-select";
         }
 
         Set<User> members = userService.findUsersByExample(member, MAX_USERS);
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_MEMBERS, members);
-        model.addAttribute(Constants.MD_MEMBER, member);
-        model.addAttribute(Constants.MD_MEMBER_SEARCHED, true);
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_MEMBERS, members);
+        model.addAttribute(ControllerConstants.MD_MEMBER, member);
+        model.addAttribute(ControllerConstants.MD_MEMBER_SEARCHED, true);
         return "member-select";
     }
 
@@ -101,8 +100,8 @@ public class UserController extends AbstractController {
         String newUsername = (username == null) ? user.getUserName() : username;
         Set<User> members = userService.findUsersByManager(newUsername);
 
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_MEMBERS, members);
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_MEMBERS, members);
         return "members-select";
     }
 
@@ -132,6 +131,7 @@ public class UserController extends AbstractController {
      * Add attributes to the model. This method will be invoked <b>before</b> all the other controllers in the class.
      */
     @ModelAttribute
+    @SuppressWarnings("unused")
     public void addAttributes(Model model, HttpSession session) {
 
         // best to leave this empty, specially if you have redirections

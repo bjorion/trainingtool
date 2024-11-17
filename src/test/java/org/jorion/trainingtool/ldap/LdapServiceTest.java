@@ -1,6 +1,5 @@
 package org.jorion.trainingtool.ldap;
 
-import org.jorion.trainingtool.common.LdapConstants;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.Test;

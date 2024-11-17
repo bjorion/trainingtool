@@ -3,8 +3,8 @@ package org.jorion.trainingtool.registration;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jorion.trainingtool.common.controller.AbstractController;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.AbstractController;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.jorion.trainingtool.training.Training;
 import org.jorion.trainingtool.training.TrainingService;
 import org.jorion.trainingtool.type.RegistrationEvent;
@@ -57,9 +57,9 @@ public class RegistrationController extends AbstractController {
         }
         User member = registration.getMember();
 
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_MEMBER, member);
-        model.addAttribute(Constants.MD_REGISTRATION, registration);
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_MEMBER, member);
+        model.addAttribute(ControllerConstants.MD_REGISTRATION, registration);
 
         // possible actions
         model.addAttribute("approvable", RegistrationService.isApprovable(user, registration));
@@ -97,7 +97,7 @@ public class RegistrationController extends AbstractController {
     @GetMapping("/select-training-registration")
     public String selectTrainings(@RequestParam("id") Long trainingId, Model model, HttpSession session) {
 
-        model.addAttribute(Constants.MD_TRAINING_ID, trainingId);
+        model.addAttribute(ControllerConstants.MD_TRAINING_ID, trainingId);
         return "redirect:edit-registration";
     }
 
@@ -159,14 +159,14 @@ public class RegistrationController extends AbstractController {
         }
         setMemberToSession(session, member);
 
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_MEMBER, member);
-        model.addAttribute(Constants.MD_REGISTRATION, registration);
-        model.addAttribute(Constants.MD_TRAINING_ID, trainingId);
-        model.addAttribute(Constants.MD_TRAINING_CONTENT, (training == null) ? null : training.getContent());
-        model.addAttribute(Constants.MD_TRAININGS, findAllTrainings(regId));
-        model.addAttribute(Constants.MD_SECTORS, userService.getSectors());
-        model.addAttribute(Constants.MD_ERRORS, Collections.EMPTY_LIST);
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_MEMBER, member);
+        model.addAttribute(ControllerConstants.MD_REGISTRATION, registration);
+        model.addAttribute(ControllerConstants.MD_TRAINING_ID, trainingId);
+        model.addAttribute(ControllerConstants.MD_TRAINING_CONTENT, (training == null) ? null : training.getContent());
+        model.addAttribute(ControllerConstants.MD_TRAININGS, findAllTrainings(regId));
+        model.addAttribute(ControllerConstants.MD_SECTORS, userService.getSectors());
+        model.addAttribute(ControllerConstants.MD_ERRORS, Collections.EMPTY_LIST);
         return "registration-edit";
     }
 
@@ -211,13 +211,13 @@ public class RegistrationController extends AbstractController {
         List<String> errors = registrationService.checkBusinessErrors(user, frmMember, frmRegistration);
         if (!errors.isEmpty()) {
             member.convertFrom(frmMember);
-            model.addAttribute(Constants.MD_USER, user);
-            model.addAttribute(Constants.MD_MEMBER, member);
-            model.addAttribute(Constants.MD_TRAINING_ID, frmRegistration.getTrainingId());
-            model.addAttribute(Constants.MD_TRAININGS, findAllTrainings(regId));
-            model.addAttribute(Constants.MD_SECTORS, userService.getSectors());
-            model.addAttribute(Constants.MD_REGISTRATION, frmRegistration);
-            model.addAttribute(Constants.MD_ERRORS, errors);
+            model.addAttribute(ControllerConstants.MD_USER, user);
+            model.addAttribute(ControllerConstants.MD_MEMBER, member);
+            model.addAttribute(ControllerConstants.MD_TRAINING_ID, frmRegistration.getTrainingId());
+            model.addAttribute(ControllerConstants.MD_TRAININGS, findAllTrainings(regId));
+            model.addAttribute(ControllerConstants.MD_SECTORS, userService.getSectors());
+            model.addAttribute(ControllerConstants.MD_REGISTRATION, frmRegistration);
+            model.addAttribute(ControllerConstants.MD_ERRORS, errors);
             return "registration-edit";
         }
 
@@ -244,7 +244,7 @@ public class RegistrationController extends AbstractController {
     @GetMapping("/select-training-registrations")
     public String selectTraining(@RequestParam("id") Long trainingId, Model model, HttpSession session) {
 
-        model.addAttribute(Constants.MD_TRAINING_ID, trainingId);
+        model.addAttribute(ControllerConstants.MD_TRAINING_ID, trainingId);
         return "redirect:edit-registrations";
     }
 
@@ -280,13 +280,13 @@ public class RegistrationController extends AbstractController {
             registration.setTrainingId(trainingId);
         }
 
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_USERNAMES, usernames);
-        model.addAttribute(Constants.MD_TRAINING_ID, trainingId);
-        model.addAttribute(Constants.MD_TRAININGS, trainingService.findAllTrainings(true));
-        model.addAttribute(Constants.MD_TRAINING_CONTENT, (training == null) ? null : training.getContent());
-        model.addAttribute(Constants.MD_REGISTRATION, registration);
-        model.addAttribute(Constants.MD_ERRORS, new ArrayList<>());
+        model.addAttribute(ControllerConstants.MD_USER, user);
+        model.addAttribute(ControllerConstants.MD_USERNAMES, usernames);
+        model.addAttribute(ControllerConstants.MD_TRAINING_ID, trainingId);
+        model.addAttribute(ControllerConstants.MD_TRAININGS, trainingService.findAllTrainings(true));
+        model.addAttribute(ControllerConstants.MD_TRAINING_CONTENT, (training == null) ? null : training.getContent());
+        model.addAttribute(ControllerConstants.MD_REGISTRATION, registration);
+        model.addAttribute(ControllerConstants.MD_ERRORS, new ArrayList<>());
         return "registrations-edit";
     }
 
@@ -314,12 +314,12 @@ public class RegistrationController extends AbstractController {
         List<String> errors = registrationService.checkBusinessErrors(user, null, frmRegistration);
         errors.remove("billable");
         if (!errors.isEmpty()) {
-            model.addAttribute(Constants.MD_USER, user);
-            model.addAttribute(Constants.MD_USERNAMES, usernames);
-            model.addAttribute(Constants.MD_TRAINING_ID, frmRegistration.getTrainingId());
-            model.addAttribute(Constants.MD_TRAININGS, trainingService.findAllTrainings(true));
-            model.addAttribute(Constants.MD_REGISTRATION, frmRegistration);
-            model.addAttribute(Constants.MD_ERRORS, errors);
+            model.addAttribute(ControllerConstants.MD_USER, user);
+            model.addAttribute(ControllerConstants.MD_USERNAMES, usernames);
+            model.addAttribute(ControllerConstants.MD_TRAINING_ID, frmRegistration.getTrainingId());
+            model.addAttribute(ControllerConstants.MD_TRAININGS, trainingService.findAllTrainings(true));
+            model.addAttribute(ControllerConstants.MD_REGISTRATION, frmRegistration);
+            model.addAttribute(ControllerConstants.MD_ERRORS, errors);
             return "registrations-edit";
         }
 

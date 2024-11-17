@@ -1,7 +1,6 @@
 package org.jorion.trainingtool.ldap;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.common.LdapConstants;
 import org.jorion.trainingtool.type.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;

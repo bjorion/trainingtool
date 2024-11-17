@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common.controller;
+package org.jorion.trainingtool.infra;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.user.User;
@@ -38,7 +38,7 @@ public abstract class AbstractController {
     private UserService userService;
 
     /**
-     * Handle the AccessDeniedException exception: redirect to a "access-denied" page.
+     * Handle the AccessDeniedException exception: redirect to an "access-denied" page.
      *
      * @param e         an instance of AccessDeniedException
      * @param principal the current Principal

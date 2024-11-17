@@ -1,8 +1,7 @@
 package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
-import org.jorion.trainingtool.common.controller.AbstractController;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.AbstractController;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.TrainingService;
@@ -15,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.TreeSet;
+
+import static org.jorion.trainingtool.infra.ControllerConstants.*;
 
 @Controller
 public class HomeController extends AbstractController {
@@ -53,15 +54,15 @@ public class HomeController extends AbstractController {
         var sortedRegistrations = new TreeSet<Registration>((o1, o2) -> o2.getId().compareTo(o1.getId()));
         sortedRegistrations.addAll(registrations);
 
-        model.addAttribute(Constants.MD_USER, user);
-        model.addAttribute(Constants.MD_PENDING_REGISTRATIONS, registrationService.findPendingByUser(user));
-        model.addAttribute(Constants.MD_REGISTRATIONS, sortedRegistrations);
-        model.addAttribute(Constants.MD_TRAININGS, trainingService.findAllTrainings(true));
+        model.addAttribute(MD_USER, user);
+        model.addAttribute(MD_PENDING_REGISTRATIONS, registrationService.findPendingByUser(user));
+        model.addAttribute(MD_REGISTRATIONS, sortedRegistrations);
+        model.addAttribute(MD_TRAININGS, trainingService.findAllTrainings(true));
 
         String event = getSessionEvent(session);
         if (event != null) {
             // the value must correspond to a key in the file message.properties
-            model.addAttribute(Constants.MD_EVENT_LABEL, "msg.event." + event.toLowerCase());
+            model.addAttribute(MD_EVENT_LABEL, "msg.event." + event.toLowerCase());
         }
 
         return "home";

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.jorion.trainingtool.common.entity.AbstractTrackingEntity;
+import org.jorion.trainingtool.domain.AbstractTrackingEntity;
 import org.jorion.trainingtool.type.*;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.util.SsinUtils;

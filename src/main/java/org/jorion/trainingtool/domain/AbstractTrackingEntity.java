@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common.entity;
+package org.jorion.trainingtool.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

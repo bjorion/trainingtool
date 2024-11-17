@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.common.entity;
+package org.jorion.trainingtool.domain;
 
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;

@@ -2,7 +2,6 @@ package org.jorion.trainingtool.ldap;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jorion.trainingtool.common.LdapConstants;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserMapper;
 import org.jorion.trainingtool.ldap.profile.DemoUserProvider;

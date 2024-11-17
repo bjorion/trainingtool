@@ -5,13 +5,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
-import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.infra.ControllerConstants;
 import org.jorion.trainingtool.report.json.StatDTO;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationDTO;
 import org.jorion.trainingtool.registration.RegistrationMapper;
 import org.jorion.trainingtool.registration.RegistrationService;
-import org.jorion.trainingtool.training.Training;
 import org.jorion.trainingtool.training.TrainingDTO;
 import org.jorion.trainingtool.training.TrainingMapper;
 import org.jorion.trainingtool.training.TrainingService;
@@ -91,7 +90,7 @@ public class WSController {
             @RequestParam(required = false) Integer page) {
 
         int start = (page == null) ? 0 : page;
-        int size = Constants.SIZE_DEF;
+        int size = ControllerConstants.SIZE_DEF;
         var pr = PageRequest.of(start, size, Sort.by(Direction.DESC, "id"));
 
         var user = userService.findPrincipalAsUser();

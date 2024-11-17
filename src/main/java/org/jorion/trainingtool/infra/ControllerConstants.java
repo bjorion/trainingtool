@@ -1,6 +1,6 @@
-package org.jorion.trainingtool.common.controller;
+package org.jorion.trainingtool.infra;
 
-public interface Constants {
+public interface ControllerConstants {
 
     int SIZE_DEF = 10;
 
