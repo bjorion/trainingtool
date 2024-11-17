@@ -1,7 +1,6 @@
 package org.jorion.trainingtool.user;
 
-import org.jorion.trainingtool.common.AuthenticationUtils;
-import org.jorion.trainingtool.common.EntityUtils;
+import org.jorion.trainingtool.support.AuthenticationUtils;
 import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.AfterEach;
@@ -20,14 +19,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.jorion.trainingtool.user.RandomUser.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     private static final String USERNAME = "jdoe";
-    private static final String MANAGERNAME = "manager";
+    private static final String MANAGER_NAME = "manager";
     private static final String DN = "basedn=OU=Users,OU=BE,OU=Landlord NL,OU=Corporate,DC=groupinfra,DC=com";
 
     @Mock
@@ -65,7 +65,7 @@ public class UserServiceTest {
     @Test
     void testFindUserByUserNameOrCreate_NewUser() {
 
-        User user = EntityUtils.createUser(USERNAME);
+        User user = createUser(USERNAME);
         user.setFirstName("John");
         user.setLastName("Doe");
 
@@ -82,7 +82,7 @@ public class UserServiceTest {
     @Test
     void testFindUserByUserNameOrCreate_ExistingUser() {
 
-        User user = EntityUtils.createUser(USERNAME);
+        User user = createUser(USERNAME);
         user.setFirstName("John");
         user.setLastName("Doe");
         ReflectionTestUtils.setField(user, "modifiedOn", LocalDateTime.of(1970, 1, 1, 0, 0));
@@ -117,10 +117,10 @@ public class UserServiceTest {
 
         assertFalse(UserService.isAuthorized(null, null));
 
-        User hr = EntityUtils.createUserBuilder("hr").build().addRole(Role.HR);
-        User manager = EntityUtils.createUserBuilder(MANAGERNAME).build().addRole(Role.MANAGER);
-        User member = EntityUtils.createUserBuilder(USERNAME).managerName(MANAGERNAME).build().addRole(Role.MEMBER);
-        User member2 = EntityUtils.createUserBuilder(USERNAME + "2").managerName(MANAGERNAME).build().addRole(Role.MEMBER);
+        User hr = RandomUser.buildUser("hr").build().addRole(Role.HR);
+        User manager = RandomUser.buildUser(MANAGER_NAME).build().addRole(Role.MANAGER);
+        User member = RandomUser.buildUser(USERNAME).managerName(MANAGER_NAME).build().addRole(Role.MEMBER);
+        User member2 = RandomUser.buildUser(USERNAME + "2").managerName(MANAGER_NAME).build().addRole(Role.MEMBER);
 
         assertTrue(UserService.isAuthorized(hr, member));
         assertTrue(UserService.isAuthorized(manager, manager));

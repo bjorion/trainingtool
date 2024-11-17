@@ -1,6 +1,5 @@
 package org.jorion.trainingtool.training;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,13 +10,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.jorion.trainingtool.training.RandomTraining.buildTraining;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TrainingServiceTest {
+class TrainingServiceTest {
 
     @Mock
     private ITrainingRepository mockTrainingRepository;
@@ -25,8 +25,8 @@ public class TrainingServiceTest {
     @Test
     void testFindAvailableTrainingById_found() {
 
-        Training training = EntityUtils.createTrainingBuilder().id(100L).build();
-        TrainingService service = new TrainingService();
+        var training = buildTraining().id(100L).build();
+        var service = new TrainingService();
         ReflectionTestUtils.setField(service, "trainingRepository", mockTrainingRepository);
         when(mockTrainingRepository.findById(eq(100L))).thenReturn(Optional.of(training));
         assertEquals(100L, service.findAvailableTrainingById(100L).getId().longValue());
@@ -35,7 +35,7 @@ public class TrainingServiceTest {
     @Test
     void testFindAvailableTrainingById_notFound() {
 
-        TrainingService service = new TrainingService();
+        var service = new TrainingService();
         ReflectionTestUtils.setField(service, "trainingRepository", mockTrainingRepository);
         when(mockTrainingRepository.findById(eq(100L))).thenReturn(Optional.empty());
         assertNull(service.findAvailableTrainingById(100L));
@@ -44,9 +44,9 @@ public class TrainingServiceTest {
     @Test
     void testFindAvailableTrainingById_foundNotAvailable() {
 
-        LocalDate old = LocalDate.of(2000, 1, 1);
-        Training training = EntityUtils.createTrainingBuilder().id(100L).enabledFrom(old).enabledUntil(old).build();
-        TrainingService service = new TrainingService();
+        var oldDate = LocalDate.of(2000, 1, 1);
+        var training = buildTraining().id(100L).enabledFrom(oldDate).enabledUntil(oldDate).build();
+        var service = new TrainingService();
         ReflectionTestUtils.setField(service, "trainingRepository", mockTrainingRepository);
         when(mockTrainingRepository.findById(eq(100L))).thenReturn(Optional.of(training));
         assertNull(service.findAvailableTrainingById(100L));
@@ -55,7 +55,7 @@ public class TrainingServiceTest {
     @Test
     void testFindAllTrainings_availableOnly() {
 
-        TrainingService service = new TrainingService();
+        var service = new TrainingService();
         ReflectionTestUtils.setField(service, "trainingRepository", mockTrainingRepository);
 
         when(mockTrainingRepository.findAvailableTrainings(any())).thenReturn(new ArrayList<>());
@@ -66,7 +66,7 @@ public class TrainingServiceTest {
     @Test
     void testFindAllTrainings_availableOrNot() {
 
-        TrainingService service = new TrainingService();
+        var service = new TrainingService();
         ReflectionTestUtils.setField(service, "trainingRepository", mockTrainingRepository);
 
         when(mockTrainingRepository.findAll()).thenReturn(new ArrayList<>());

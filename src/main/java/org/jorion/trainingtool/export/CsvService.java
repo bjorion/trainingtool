@@ -1,14 +1,12 @@
-package org.jorion.trainingtool.service;
+package org.jorion.trainingtool.export;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.jorion.trainingtool.report.ReportDTO;
-import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
+import org.jorion.trainingtool.report.ReportDTO;
 import org.jorion.trainingtool.type.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -17,7 +15,7 @@ import java.io.StringWriter;
 
 @Slf4j
 @Service
-public class ExportService {
+public class CsvService {
 
     public static final char CSV_DELIM = ';';
 
@@ -37,11 +35,15 @@ public class ExportService {
 
         log.debug("exportCsv {}", dto);
         Assert.notNull(dto, "ReportDTO cannot be null");
-        Page<Registration> registrations = registrationService.findAllByExample(dto);
 
-        StringWriter sw = new StringWriter();
-        CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(RegistrationCsvHeaders.class).setDelimiter(delimiter).build();
-        try (CSVPrinter printer = new CSVPrinter(sw, csvFormat)) {
+        var registrations = registrationService.findAllByExample(dto);
+        var stringWriter = new StringWriter();
+        var csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader(RegistrationCsvHeaders.class)
+                .setDelimiter(delimiter)
+                .build();
+
+        try (var csvPrinter = new CSVPrinter(stringWriter, csvFormat)) {
             registrations.forEach(r -> {
                 try {
                     String providerTitle = r.getProvider().getTitle();
@@ -49,7 +51,7 @@ public class ExportService {
                         providerTitle = r.getProviderOther();
                     }
 
-                    printer.printRecord(
+                    csvPrinter.printRecord(
                             r.getStartDate(),
                             r.getEndDate(),
                             (r.getStartDate() != null) ? r.getStartDate().getMonth().getValue() : null,
@@ -77,7 +79,7 @@ public class ExportService {
             });
         }
 
-        return sw.toString();
+        return stringWriter.toString();
     }
 
     enum RegistrationCsvHeaders {

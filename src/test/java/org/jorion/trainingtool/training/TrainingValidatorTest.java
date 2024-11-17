@@ -12,9 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Unit test for {@link Training}.
  */
-public class TrainingValidatorTest {
+class TrainingValidatorTest {
+
     @Test
     void testCheckBusinessErrors_OK() {
+
         Training t;
         List<String> errors;
 
@@ -46,6 +48,7 @@ public class TrainingValidatorTest {
 
     @Test
     void testCheckBusinessError_NOK() {
+
         Training t;
         List<String> errors;
 

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AbstractTrackingEntityTest {
+class AbstractTrackingEntityTest {
 
     private static final String USERNAME = "username";
     private static final LocalDateTime TIME = LocalDateTime.now();

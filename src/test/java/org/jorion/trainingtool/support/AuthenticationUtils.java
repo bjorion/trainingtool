@@ -1,11 +1,10 @@
-package org.jorion.trainingtool.common;
+package org.jorion.trainingtool.support;
 
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AuthenticationUtils {
 
@@ -16,10 +15,10 @@ public class AuthenticationUtils {
      */
     public static void setAuthentication(String username) {
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(username, PASSWORD, authorities);
-        TestingAuthenticationToken authentication = new TestingAuthenticationToken(user, null);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        var authorities = new ArrayList<GrantedAuthority>();
+        var user = new org.springframework.security.core.userdetails.User(username, PASSWORD, authorities);
+        var authenticationToken = new TestingAuthenticationToken(user, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
     /**

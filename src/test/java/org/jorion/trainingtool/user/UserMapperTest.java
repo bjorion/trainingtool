@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserMapperTest {
+class UserMapperTest {
 
     private static final String USERNAME = "Alice";
 

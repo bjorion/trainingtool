@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("local")
-public class TrainingRepositoryTest {
+class TrainingRepositoryTest {
 
     @Autowired
     private ITrainingRepository repo;

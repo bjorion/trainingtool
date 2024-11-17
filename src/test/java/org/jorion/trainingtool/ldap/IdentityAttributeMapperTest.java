@@ -1,6 +1,6 @@
 package org.jorion.trainingtool.ldap;
 
-import org.jorion.trainingtool.common.AssertUtils;
+import org.jorion.trainingtool.support.AssertUtils;
 import org.jorion.trainingtool.common.LdapConstants;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IdentityAttributeMapperTest {
+class IdentityAttributeMapperTest {
 
     private static final String[] ROLES_ADMIN = new String[]{"admin"};
     private static final String[] ROLES_TRAINING = new String[]{"training"};

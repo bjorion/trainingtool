@@ -73,5 +73,6 @@
 - update spring boot (to 3.3.5) and other dependencies
 - update thymeleaf
 
-## 1.5.0 (2024-xx-xx)
+## 1.5.0 (2024-11-xx)
 - refactor all packages
+- add ArchUnit tests

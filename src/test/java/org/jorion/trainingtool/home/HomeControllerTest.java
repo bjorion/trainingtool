@@ -1,9 +1,9 @@
 package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
-import org.jorion.trainingtool.common.AuthenticationUtils;
-import org.jorion.trainingtool.common.EntityUtils;
+import org.jorion.trainingtool.support.AuthenticationUtils;
 import org.jorion.trainingtool.common.controller.Constants;
+import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.TrainingService;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class HomeControllerTest {
+class HomeControllerTest {
 
     private static final String USERNAME = "jdoe";
 
@@ -60,7 +60,7 @@ public class HomeControllerTest {
         final String home = "home";
 
         HttpSession session = new MockHttpSession();
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         session.setAttribute("user", user);
         ExtendedModelMap model = new ExtendedModelMap();
 

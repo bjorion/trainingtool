@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class LdapServiceTest {
+class LdapServiceTest {
 
     private static final String FIRSTNAME = "John";
     private static final String LASTNAME = "DOE";

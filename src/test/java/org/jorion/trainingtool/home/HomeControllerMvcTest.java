@@ -2,13 +2,13 @@ package org.jorion.trainingtool.home;
 
 // import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.ldap.CustomLdapAuthoritiesPopulator;
 import org.jorion.trainingtool.registration.IRegistrationRepository;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.ITrainingRepository;
 import org.jorion.trainingtool.training.TrainingService;
 import org.jorion.trainingtool.user.IUserRepository;
+import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserService;
 import org.junit.jupiter.api.Disabled;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </ul>
  */
 // @WebMvcTest(controllers = HomeController.class)
-public class HomeControllerMvcTest {
+class HomeControllerMvcTest {
 
     private static final String USERNAME = "john";
 
@@ -85,7 +85,7 @@ public class HomeControllerMvcTest {
             throws Exception {
 
         final String extract = "<title>Home</title>";
-        final User user = EntityUtils.createUser(USERNAME);
+        final User user = RandomUser.createUser(USERNAME);
         Mockito.when(userService.findUserByUserNameOrCreate(USERNAME)).thenReturn(user);
 
         mockMvc.perform(get("/home"))

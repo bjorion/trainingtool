@@ -2,7 +2,7 @@ package org.jorion.trainingtool.ldap.profile;
 
 import org.jorion.trainingtool.user.User;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This service is useful only for testing purposes and should NOT be instantiated in production.
  */
-@Service
+@Component
 @Profile("local")
 public class DemoUserProvider {
 

@@ -1,7 +1,7 @@
 package org.jorion.trainingtool.registration;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.type.Provider;
+import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegistrationTest {
+class RegistrationTest {
 
     private static final String USERNAME = "username";
 
@@ -26,7 +26,7 @@ public class RegistrationTest {
     void testBelongsTo() {
 
         Registration reg = new Registration();
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         reg.setMember(user);
 
         assertFalse(reg.belongsTo(null));

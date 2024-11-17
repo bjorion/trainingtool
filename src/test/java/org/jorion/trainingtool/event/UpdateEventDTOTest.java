@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UpdateEventDTOTest {
+class UpdateEventDTOTest {
 
     @Test
     void testBuildMissingValues() {

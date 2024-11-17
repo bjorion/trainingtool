@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("local")
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
     private IUserRepository userRepository;

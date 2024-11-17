@@ -1,6 +1,5 @@
 package org.jorion.trainingtool.registration;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.Period;
 import org.jorion.trainingtool.type.Provider;
@@ -14,13 +13,14 @@ import java.util.List;
 
 import static org.jorion.trainingtool.type.RegistrationStatus.SUBMITTED_TO_PROVIDER;
 import static org.jorion.trainingtool.type.RegistrationStatus.SUBMITTED_TO_TRAINING;
+import static org.jorion.trainingtool.user.RandomUser.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegistrationValidatorTest {
+class RegistrationValidatorTest {
     
-    private static final User USER_MEMBER = EntityUtils.createUser("ALICE");
-    private static final User USER_MANAGER = EntityUtils.createUser("BOB");
-    private static final User USER_TRAINING = EntityUtils.createUser("TOM");
+    private static final User USER_MEMBER = createUser("ALICE");
+    private static final User USER_MANAGER = createUser("BOB");
+    private static final User USER_TRAINING = createUser("TOM");
 
     private RegistrationValidator rv;
 
@@ -43,9 +43,9 @@ public class RegistrationValidatorTest {
         List<String> errors;
 
         // User = MANAGER (everything ok)
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         user.addRole(Role.MANAGER);
-        member = EntityUtils.createUser("BOB");
+        member = createUser("BOB");
         member.setSector("sector");
         r = new Registration();
         r.setTitle("title");
@@ -59,7 +59,7 @@ public class RegistrationValidatorTest {
         assertEquals(0, errors.size());
 
         // User = Member, dates in the past
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         user.addRole(Role.MEMBER);
         user.setSector("mysector");
 
@@ -89,7 +89,7 @@ public class RegistrationValidatorTest {
         List<String> errors;
 
         // Provider = NONE
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         r = new Registration();
         r.setPeriod(Period.DAY);
         errors = rv.validate(user, null, r);
@@ -99,7 +99,7 @@ public class RegistrationValidatorTest {
         assertEquals(3, errors.size());
 
         // Provider = CEVORA
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         r = new Registration();
         r.setProvider(Provider.CEVORA);
         r.setUrl("http://www.example.org");
@@ -113,7 +113,7 @@ public class RegistrationValidatorTest {
         assertEquals(6, errors.size());
 
         // Provider = OTHER
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         r = new Registration();
         r.setProvider(Provider.OTHER);
         r.setUrl("https://www.example.org");
@@ -125,9 +125,9 @@ public class RegistrationValidatorTest {
         assertEquals(3, errors.size());
 
         // User = MANAGER
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         user.addRole(Role.MANAGER);
-        member = EntityUtils.createUser("BOB");
+        member = createUser("BOB");
         r = new Registration();
         r.setProvider(Provider.INTERNAL);
         r.setUrl("ldap://www.example.org");
@@ -143,7 +143,7 @@ public class RegistrationValidatorTest {
         assertEquals(7, errors.size());
 
         // User = ADMIN
-        user = EntityUtils.createUser("ALICE");
+        user = createUser("ALICE");
         user.addRole(Role.TRAINING);
         r = new Registration();
         r.setProvider(Provider.OTHER);

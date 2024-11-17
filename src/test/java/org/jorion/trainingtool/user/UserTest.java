@@ -1,13 +1,12 @@
 package org.jorion.trainingtool.user;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTest {
+class UserTest {
 
     private static final String USERNAME = "hari.seldon";
 
@@ -23,17 +22,17 @@ public class UserTest {
     @Test
     void testHashCode() {
 
-        User user1 = EntityUtils.createUser(USERNAME);
-        User user2 = EntityUtils.createUser("dummy");
+        User user1 = RandomUser.createUser(USERNAME);
+        User user2 = RandomUser.createUser("dummy");
         assertNotEquals(user1.hashCode(), user2.hashCode());
     }
 
     @Test
     void testEquals() {
 
-        User user1 = EntityUtils.createUser(USERNAME);
-        User user2 = EntityUtils.createUser("dummy");
-        User user3 = EntityUtils.createUser(USERNAME);
+        User user1 = RandomUser.createUser(USERNAME);
+        User user2 = RandomUser.createUser("dummy");
+        User user3 = RandomUser.createUser(USERNAME);
 
         assertNotEquals(null, user1);
         assertNotEquals(user1, new Object());
@@ -44,7 +43,7 @@ public class UserTest {
 
     @Test
     void testMember() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.MEMBER);
         assertFalse(user.isSupervisor());
         assertFalse(user.isHr());
@@ -54,7 +53,7 @@ public class UserTest {
 
     @Test
     void testManager() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.MANAGER);
         assertTrue(user.isSupervisor());
         assertFalse(user.isHr());
@@ -64,7 +63,7 @@ public class UserTest {
 
     @Test
     void testHR() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.HR);
         assertTrue(user.isSupervisor());
         assertTrue(user.isHr());
@@ -74,7 +73,7 @@ public class UserTest {
 
     @Test
     void testTraining() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.TRAINING);
         assertTrue(user.isSupervisor());
         assertFalse(user.isHr());
@@ -84,7 +83,7 @@ public class UserTest {
 
     @Test
     void testAdmin() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRole(Role.ADMIN);
         assertTrue(user.isSupervisor());
         assertFalse(user.isHr());
@@ -94,14 +93,14 @@ public class UserTest {
 
     @Test
     void testGetRegistrations() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         assertNotNull(user.getRegistrations());
         assertTrue(user.getRegistrations().isEmpty());
     }
 
     @Test
     void testGetFullname() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.setLastName("doe");
         user.setFirstName("john");
         assertEquals("john DOE", user.getFullName());
@@ -109,17 +108,17 @@ public class UserTest {
 
     @Test
     void testConvertFrom() {
-        User userFrom = EntityUtils.createUser(USERNAME);
+        User userFrom = RandomUser.createUser(USERNAME);
         userFrom.setSector("mysector");
 
         // check that not-empty fields are copied
-        User userTo = EntityUtils.createUser(USERNAME);
+        User userTo = RandomUser.createUser(USERNAME);
         userTo.convertFrom(userFrom);
         assertEquals("mysector", userTo.getSector());
 
         // check that empty fields are not copied
-        userFrom = EntityUtils.createUser(USERNAME);
-        userTo = EntityUtils.createUser(USERNAME);
+        userFrom = RandomUser.createUser(USERNAME);
+        userTo = RandomUser.createUser(USERNAME);
         userTo.setSector("mysector");
         userTo.convertFrom(userFrom);
         assertEquals("mysector", userTo.getSector());
@@ -127,20 +126,21 @@ public class UserTest {
 
     @Test
     void testAddRegistrationOk() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         assertNotNull(user.findRegistrationById(1L));
     }
 
+    @Test
     void testAddRegistrationNok() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         assertThrows(IllegalArgumentException.class, () -> user.addRegistration(new Registration(1L)));
     }
 
     @Test
     void testFindRegistrationById() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         user.addRegistration(new Registration(1L));
         user.addRegistration(new Registration(2L));
 
@@ -152,7 +152,7 @@ public class UserTest {
 
     @Test
     void testRemoveRegistration() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         Registration r = new Registration(1L);
         user.addRegistration(r);
         assertTrue(user.removeRegistration(r));
@@ -161,7 +161,7 @@ public class UserTest {
 
     @Test
     void testReplaceRegistration() {
-        User user = EntityUtils.createUser(USERNAME);
+        User user = RandomUser.createUser(USERNAME);
         Registration r = new Registration(1L);
         r.setTitle("TITLE_1");
         user.addRegistration(r);

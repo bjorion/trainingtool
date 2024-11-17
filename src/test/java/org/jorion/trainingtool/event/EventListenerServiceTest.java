@@ -1,6 +1,6 @@
 package org.jorion.trainingtool.event;
 
-import org.jorion.trainingtool.service.EmailService;
+import org.jorion.trainingtool.export.EmailService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EventListenerServiceTest {
+class EventListenerServiceTest {
 
     @Mock
     private EmailService mockEmailService;

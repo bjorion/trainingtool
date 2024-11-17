@@ -1,12 +1,12 @@
-package org.jorion.trainingtool.service;
+package org.jorion.trainingtool.export;
 
 import jakarta.mail.MessagingException;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.event.UpdateEventDTO;
 import org.jorion.trainingtool.event.UpdateEventDTO.UpdateEventDTOBuilder;
 import org.jorion.trainingtool.ldap.LdapService;
+import org.jorion.trainingtool.user.RandomUser;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceTest {
+class EmailServiceTest {
 
     @Mock
     private LdapService mockLdapService;
@@ -170,7 +170,7 @@ public class EmailServiceTest {
         ReflectionTestUtils.setField(service, "mgtMailAddress", "mgt@example.org");
         ReflectionTestUtils.setField(service, "trainingMailAddress", "training@example.org");
 
-        User.UserBuilder builder = EntityUtils.createUserBuilder("manager");
+        User.UserBuilder builder = RandomUser.buildUser("manager");
         builder.email("my.manager@example.org");
         builder.firstName("my");
         builder.lastName("manager");

@@ -1,6 +1,5 @@
 package org.jorion.trainingtool.training;
 
-import org.jorion.trainingtool.common.EntityUtils;
 import org.jorion.trainingtool.common.controller.Constants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +11,12 @@ import org.springframework.ui.ExtendedModelMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.jorion.trainingtool.training.RandomTraining.buildTraining;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TrainingControllerTest {
+class TrainingControllerTest {
 
     @Mock
     private TrainingService trainingService;
@@ -29,15 +28,15 @@ public class TrainingControllerTest {
     @SuppressWarnings("unchecked")
     void testShowTraining() {
 
-        Training training = EntityUtils.createTrainingBuilder().build();
-        List<Training> trainings = new ArrayList<>();
+        var training = buildTraining().build();
+        var trainings = new ArrayList<Training>();
         trainings.add(training);
-        ExtendedModelMap model = new ExtendedModelMap();
+        var model = new ExtendedModelMap();
         when(trainingService.findAllTrainings(false)).thenReturn(trainings);
 
         assertEquals("trainings", trainingController.showTrainings(model));
-        List<Training> result = (List<Training>) model.getAttribute(Constants.MD_TRAININGS);
-        assert result != null;
+        var result = (List<Training>) model.getAttribute(Constants.MD_TRAININGS);
+        assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(training.getId(), result.getFirst().getId());
     }

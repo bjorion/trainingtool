@@ -1,15 +1,16 @@
-package org.jorion.trainingtool.common;
+package org.jorion.trainingtool.support;
 
 import java.util.Set;
 
 public class AssertUtils {
 
-    public static <T> boolean containsExactly(Set<T> objects, Object... expectedObjects) {
+    @SafeVarargs
+    public static <T> boolean containsExactly(Set<T> objects, T... expectedObjects) {
 
         if (objects.size() != expectedObjects.length) {
             return false;
         }
-        for (Object expectedObj : expectedObjects) {
+        for (var expectedObj : expectedObjects) {
             if (!objects.contains(expectedObj)) {
                 return false;
             }

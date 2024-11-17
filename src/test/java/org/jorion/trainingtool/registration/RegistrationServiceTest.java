@@ -1,10 +1,10 @@
 package org.jorion.trainingtool.registration;
 
 import org.jorion.trainingtool.event.EventPublisherService;
-import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.jorion.trainingtool.type.Role;
+import org.jorion.trainingtool.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,14 +14,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static org.jorion.trainingtool.common.EntityUtils.createRegistration;
-import static org.jorion.trainingtool.common.EntityUtils.createUser;
+import static org.jorion.trainingtool.registration.RandomRegistration.createRegistration;
 import static org.jorion.trainingtool.type.RegistrationStatus.*;
+import static org.jorion.trainingtool.user.RandomUser.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RegistrationServiceTest {
+class RegistrationServiceTest {
 
     private static final User USER_MEMBER = createUser("ALICE");
     private static final User USER_MANAGER = createUser("BOB");

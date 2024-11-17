@@ -1,7 +1,7 @@
 package org.jorion.trainingtool.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.service.EmailService;
+import org.jorion.trainingtool.export.EmailService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

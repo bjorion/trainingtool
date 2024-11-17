@@ -1,4 +1,4 @@
-package org.jorion.trainingtool.service;
+package org.jorion.trainingtool.export;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -263,7 +263,8 @@ public class EmailService {
                 toAddress = dto.getMemberEmail();
                 break;
             default:
-                if (RegistrationStatus.REFUSED_SET.contains(dto.getRegStatus()) || dto.getRegEvent() == RegistrationEvent.SEND_BACK) {
+                if (RegistrationStatus.REFUSED_SET.contains(dto.getRegStatus()) ||
+                        dto.getRegEvent() == RegistrationEvent.SEND_BACK) {
                     recipient = dto.getMemberFirstname();
                     toAddress = dto.getMemberEmail();
                 }

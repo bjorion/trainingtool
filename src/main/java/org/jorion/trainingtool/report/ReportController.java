@@ -7,7 +7,7 @@ import org.jorion.trainingtool.common.controller.AbstractController;
 import org.jorion.trainingtool.common.controller.Constants;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
-import org.jorion.trainingtool.service.ExportService;
+import org.jorion.trainingtool.export.CsvService;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.util.StrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class ReportController extends AbstractController {
     private RegistrationService registrationService;
 
     @Autowired
-    private ExportService exportService;
+    private CsvService exportService;
 
     /**
      * Display all training requests (paginated).
@@ -123,7 +123,7 @@ public class ReportController extends AbstractController {
             report.setManagerName(user.isOffice() ? null : user.getUserName());
             report.setUserName(user.getUserName());
         }
-        String csv = exportService.exportRegistrationsToCSV(report, ExportService.CSV_DELIM);
+        String csv = exportService.exportRegistrationsToCSV(report, CsvService.CSV_DELIM);
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(csv.getBytes(StandardCharsets.ISO_8859_1)));
 
         return ResponseEntity
