@@ -76,3 +76,6 @@
 ## 1.5.0 (2024-11-xx)
 - refactor all packages
 - add ArchUnit tests
+
+## 1.6.0 (2025-05-xx)
+- upgrade spring boot (to 3.5.0)

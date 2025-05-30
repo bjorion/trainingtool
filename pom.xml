@@ -27,7 +27,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <ognl.version>3.4.3</ognl.version>
         <org-mapstruct.version>1.6.2</org-mapstruct.version>
-        <spring-boot.version>3.3.5</spring-boot.version>
+        <spring-boot.version>3.5.0</spring-boot.version>
         <spring-modulith.version>1.2.5</spring-modulith.version>
         <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
         <thymeleaf-extras-springsecurity.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity.version>

@@ -155,14 +155,14 @@ public class User extends AbstractTimeTrackingEntity {
     }
 
     /**
-     * @return True if the user is a HR or TRAINING
+     * @return True if the user is an HR or TRAINING
      */
     public boolean isOffice() {
         return roles.stream().anyMatch(Role::isOffice);
     }
 
     /**
-     * @return True if the user is a HR
+     * @return True if the user is an HR
      */
     public boolean isHr() {
         return roles.stream().anyMatch(Role::isHr);
@@ -252,7 +252,7 @@ public class User extends AbstractTimeTrackingEntity {
      * Replace the given registration but only if it already exists.
      *
      * @param registration the registration
-     * @return true if a replace did happen, false otherwise
+     * @return true if a replacement did happen, false otherwise
      */
     public boolean replaceRegistration(Registration registration) {
 

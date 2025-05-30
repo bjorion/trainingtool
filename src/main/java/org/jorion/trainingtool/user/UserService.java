@@ -59,7 +59,7 @@ public class UserService {
      * <ul>
      * <li>the principal has the rank "office"
      * <li>the principal is a manager, and is responsible for the given user
-     * <li>the principal is the same entity than the user
+     * <li>the principal is the same entity as the user
      * </ul>
      */
     public static boolean isAuthorized(User principal, User user) {

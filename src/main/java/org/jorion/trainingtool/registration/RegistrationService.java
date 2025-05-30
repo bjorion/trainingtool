@@ -61,7 +61,7 @@ public class RegistrationService {
     }
 
     /**
-     * A registration is submittable if it's DRAFT and it belongs to the current user.
+     * A registration is submittable if it's DRAFT, and it belongs to the current user.
      *
      * @return true if the registration can be submitted by the current user
      */
@@ -186,7 +186,7 @@ public class RegistrationService {
     }
 
     /**
-     * Returns a {@link Page} of {@link Registration}s belonging to the given manager, ie. registrations for users the
+     * Returns a {@link Page} of {@link Registration}s belonging to the given manager, i.e. registrations for users the
      * manager is responsible for, or for the manager himself.
      *
      * @param managerName the manager name
@@ -220,7 +220,7 @@ public class RegistrationService {
     // static methods
 
     /**
-     * Find all registrations submitted to the current user (in other words, pending), ie. registrations for which he
+     * Find all registrations submitted to the current user (in other words, pending), i.e. registrations for which he
      * must take an action.
      * <ul>
      * <li>MEMBER will not see anything
@@ -235,7 +235,7 @@ public class RegistrationService {
 
         List<Registration> results = new ArrayList<>();
 
-        // As a manager, you can only see registrations for member you're responsible of
+        // As a manager, you can only see registrations for member you're responsible for
         if (user.isManager()) {
             String manager = user.getUserName();
             EnumSet<RegistrationStatus> statuses = EnumSet.of(RegistrationStatus.SUBMITTED_TO_MANAGER);

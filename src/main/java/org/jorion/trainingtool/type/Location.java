@@ -2,7 +2,6 @@ package org.jorion.trainingtool.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 /**
  * Enumeration of providers.

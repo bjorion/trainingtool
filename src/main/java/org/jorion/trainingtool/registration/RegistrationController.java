@@ -269,7 +269,7 @@ public class RegistrationController extends AbstractController {
         if (trainingId != null) {
             training = trainingService.findAvailableTrainingById(trainingId);
             if (training == null) {
-                log.warn("Cannot find training [{}]. Is it enabled?", trainingId);
+                log.warn("Cannot find training [{}]", trainingId);
             }
         }
 

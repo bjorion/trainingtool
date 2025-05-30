@@ -36,7 +36,7 @@ public class LdapService {
      * Search the LDAP to return the user whose CN (common name) equals the given username.
      *
      * @param username the username used for the search
-     * @return a LDAP user with the given username, or null if not found
+     * @return an LDAP user with the given username, or null if not found
      */
     public User searchByName(String username) {
 
