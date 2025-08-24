@@ -37,7 +37,7 @@ public class TrainingToolAppTest {
 
         var modules = ApplicationModules.of(TrainingToolApp.class);
         for (var m : modules) {
-            log.info("Name [{}], Base Package [{}]", m.getName(), m.getBasePackage());
+            log.info("Name [{}], Base Package [{}]", m.getIdentifier(), m.getBasePackage());
         }
     }
 }

@@ -3,7 +3,7 @@
 LDAP Connection information
 
 * Use JXplorer as a LDAP client: [http://jxplorer.org/](http://jxplorer.org/)
-* Open a LDAP Connection (File > Connect) with the following parameters:
+* Open an LDAP Connection (File > Connect) with the following parameters:
 
 ```
 Host: 000.000.000.000  (alt: ldap://fr-ldap.resultinfra.com:389)

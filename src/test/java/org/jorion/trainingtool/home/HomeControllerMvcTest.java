@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
@@ -41,25 +41,25 @@ class HomeControllerMvcTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private UserService userService;
 
-    @MockBean
+    @MockitoBean
     private RegistrationService registrationService;
 
-    @MockBean
+    @MockitoBean
     private TrainingService trainingService;
 
-    @MockBean
+    @MockitoBean
     private CustomLdapAuthoritiesPopulator customLdapAuthoritiesPopulator;
 
-    @MockBean
+    @MockitoBean
     private IUserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private ITrainingRepository trainingRepository;
 
-    @MockBean
+    @MockitoBean
     private IRegistrationRepository registrationRepository;
 
     /**

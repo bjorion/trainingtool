@@ -94,7 +94,7 @@ public class LdapService {
     }
 
     /**
-     * Retrieve a list of users for the given manager. Sub-contractor are excluded from this list.
+     * Retrieve a list of users for the given manager. Subcontractor are excluded from this list.
      *
      * @return A list of LDAP users.
      */

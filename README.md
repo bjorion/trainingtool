@@ -57,7 +57,7 @@ Note that the members of the HR or TRAINING TEAM groups are defined in the prope
 * You can log in using a pre-defined user (see below) if the flag `app.users.inMemory` is true
 * You can also log in by giving your username and password if the flag `app.users.ldap` is true
 
-## How to login with pre-defined users
+## How to log in with pre-defined users
 
 * MEMBER: john.doe/john
 * MANAGER: manager/manager

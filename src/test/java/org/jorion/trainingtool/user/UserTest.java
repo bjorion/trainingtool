@@ -35,7 +35,7 @@ class UserTest {
         User user3 = RandomUser.createUser(USERNAME);
 
         assertNotEquals(null, user1);
-        assertNotEquals(user1, new Object());
+        assertNotEquals(new Object(), user1);
         assertNotEquals(user1, user2);
         assertNotSame(user1, user3);
         assertEquals(user1, user3);

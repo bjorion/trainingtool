@@ -70,25 +70,7 @@ class EmailServiceTest {
         MutableObject<Map<String, Object>> ctnModel = new MutableObject<>();
         MutableBoolean ctnBool = new MutableBoolean();
 
-        EmailService service = new EmailService() {
-
-            @Override
-            protected String buildMail(String filename, Map<String, Object> model) {
-                sbFilename.append(filename);
-                ctnModel.setValue(model);
-                return "";
-            }
-
-            @Override
-            public void doSendEmail(String from, String to, String htmlTemplate) {
-                ctnBool.setTrue();
-            }
-        };
-
-        service.setSendMail(true);
-        service.setFromAddress("donotreply@example.org");
-        service.setServerDomain("http://www.example.org");
-        service.setServerContext("/trainingtool");
+        EmailService service = getEmailService(sbFilename, ctnModel, ctnBool);
 
         // execute the test
         service.sendEmail(buildUpdateEventDTO(DRAFT).build());
@@ -216,4 +198,28 @@ class EmailServiceTest {
         assertEquals("john.doe@example.org", mailInfo.toAddress());
     }
 
+    private static EmailService getEmailService(
+            StringBuilder sbFilename, MutableObject<Map<String, Object>> ctnModel, MutableBoolean ctnBool) {
+
+        EmailService service = new EmailService() {
+
+            @Override
+            protected String buildMail(String filename, Map<String, Object> model) {
+                sbFilename.append(filename);
+                ctnModel.setValue(model);
+                return "";
+            }
+
+            @Override
+            public void doSendEmail(String from, String to, String htmlTemplate) {
+                ctnBool.setTrue();
+            }
+        };
+
+        service.setSendMail(true);
+        service.setFromAddress("donotreply@example.org");
+        service.setServerDomain("http://www.example.org");
+        service.setServerContext("/trainingtool");
+        return service;
+    }
 }

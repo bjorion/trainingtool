@@ -37,7 +37,7 @@
 - username in login page set to lowercase before being sent to the server (avoid issues with LDAP)
 - refactoring: use of "userName" and "managerName" made more consistent
 - page 404 added, page 403 refactored
-- bugfix: if a HR person was also manager, he could not see registrations in the state 'SUBMITTED_TO_HR'
+- bugfix: if an HR person was also manager, he could not see registrations in the state 'SUBMITTED_TO_HR'
 
 ### v1.2.2 (not released)
 
@@ -79,3 +79,7 @@
 
 ## 1.6.0 (2025-05-xx)
 - upgrade spring boot (to 3.5.0)
+
+## 1.6.1. (2025-08-xx)
+- upgrade spring boot (to 3.5.5)
+- upgrade spring modulith (1.4.3)

@@ -28,8 +28,8 @@ class UpdateEventDTOTest {
                 .build();
         assertEquals(1L, (long) dto.getRegId());
         assertEquals("title", dto.getRegTitle());
-        assertSame(dto.getRegStatus(), RegistrationStatus.DRAFT);
-        assertSame(dto.getRegEvent(), RegistrationEvent.SAVE);
+        assertSame(RegistrationStatus.DRAFT, dto.getRegStatus());
+        assertSame(RegistrationEvent.SAVE, dto.getRegEvent());
     }
 
     @Test
@@ -56,8 +56,8 @@ class UpdateEventDTOTest {
 
         assertEquals(1L, (long) dto.getRegId());
         assertEquals("title", dto.getRegTitle());
-        assertSame(dto.getRegStatus(), RegistrationStatus.DRAFT);
-        assertSame(dto.getRegEvent(), RegistrationEvent.SAVE);
+        assertSame(RegistrationStatus.DRAFT, dto.getRegStatus());
+        assertSame(RegistrationEvent.SAVE, dto.getRegEvent());
         assertEquals("justification", dto.getRegJustification());
         assertEquals(now, dto.getRegStartDate());
 

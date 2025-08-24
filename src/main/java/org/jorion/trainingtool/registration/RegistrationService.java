@@ -133,7 +133,7 @@ public class RegistrationService {
     }
 
     /**
-     * A registration is deletable only by its creator and it's DRAFT or REFUSED.
+     * A registration is deletable only by its creator, and it's DRAFT or REFUSED.
      *
      * @return true if the registration can be deleted by the current user
      */

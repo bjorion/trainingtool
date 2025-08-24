@@ -9,7 +9,7 @@
 * Maven POM
 
 ```xml
-    ...
+<project>
 <dependencies>
     <dependency>
         <groupId>io.swagger.core.v3</groupId>
@@ -29,39 +29,39 @@
 </dependencies>
 
 <build>
-<plugins>
-    <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-    </plugin>
-
-    <plugin>
-        <groupId>io.swagger.codegen.v3</groupId>
-        <artifactId>swagger-codegen-maven-plugin</artifactId>
-        <version>3.0.26</version>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>generate</goal>
-                </goals>
-                <configuration>
-                    <inputSpec>${project.basedir}/src/main/resources/v3.api-docs.json</inputSpec>
-                    <language>java</language>
-                    <library>resttemplate</library>
-                    <configOptions>
-                        <sourceFolder>src/gen/java/main</sourceFolder>
-                        <apiPackage>${default.package}.api</apiPackage>
-                        <modelPackage>${default.package}.model</modelPackage>
-                        <invokerPackage>${default.package}.handler</invokerPackage>
-                        <dateLibrary>java8</dateLibrary>
-                    </configOptions>
-                </configuration>
-            </execution>
-        </executions>
-    </plugin>
-</plugins>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    
+        <plugin>
+            <groupId>io.swagger.codegen.v3</groupId>
+            <artifactId>swagger-codegen-maven-plugin</artifactId>
+            <version>3.0.26</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                    <configuration>
+                        <inputSpec>${project.basedir}/src/main/resources/v3.api-docs.json</inputSpec>
+                        <language>java</language>
+                        <library>resttemplate</library>
+                        <configOptions>
+                            <sourceFolder>src/gen/java/main</sourceFolder>
+                            <apiPackage>${default.package}.api</apiPackage>
+                            <modelPackage>${default.package}.model</modelPackage>
+                            <invokerPackage>${default.package}.handler</invokerPackage>
+                            <dateLibrary>java8</dateLibrary>
+                        </configOptions>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
 </build>
-        ...
+</project>
 ```
 
 * Configuration class example (using basic authentication)
@@ -111,7 +111,6 @@ public class ClientConfig {
 <version>2.10.5</version>
 </dependency>
 
-        ...
 
 <plugin>
 <groupId>org.openapitools</groupId>

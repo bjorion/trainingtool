@@ -99,7 +99,7 @@ class RegistrationServiceTest {
 
         EnumSet<RegistrationStatus> statuses;
 
-        // check for a HR that's not a manager
+        // check for an HR that's not a manager
         statuses = EnumSet.of(SUBMITTED_TO_HR);
         List<Registration> list = registrationService.findPendingByUser(USER_HR);
         assertTrue(list.isEmpty());
@@ -117,7 +117,7 @@ class RegistrationServiceTest {
         List<Registration> list2 = new ArrayList<>();
         list1.add(r2);
 
-        // check for a HR that's also a manager
+        // check for an HR that's also a manager
         EnumSet<RegistrationStatus> managerStatuses = EnumSet.of(SUBMITTED_TO_MANAGER);
         EnumSet<RegistrationStatus> hrStatuses = EnumSet.of(SUBMITTED_TO_HR);
         when(registrationRepository.findRegistrationsByStatusesAndManager(managerStatuses, USER_MANAGER_HR.getUserName())).thenReturn(list1);
