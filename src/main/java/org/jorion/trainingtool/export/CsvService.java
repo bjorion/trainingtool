@@ -7,7 +7,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.report.ReportDTO;
 import org.jorion.trainingtool.type.Provider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 

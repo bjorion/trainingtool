@@ -1,13 +1,11 @@
 package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.jorion.trainingtool.infra.AbstractController;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.TrainingService;
 import org.jorion.trainingtool.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

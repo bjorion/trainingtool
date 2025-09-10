@@ -1,7 +1,6 @@
 package org.jorion.trainingtool.registration;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.infra.AbstractController;
