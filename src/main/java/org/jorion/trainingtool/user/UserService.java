@@ -1,9 +1,9 @@
 package org.jorion.trainingtool.user;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.registration.RegistrationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -26,13 +26,11 @@ import static org.jorion.trainingtool.util.StrUtils.likeSqlString;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private IUserRepository userRepository;
-
-    @Autowired
-    private LdapService ldapService;
+    private final IUserRepository userRepository;
+    private final LdapService ldapService;
 
     @Value("${app.reg.sectors}")
     private String[] sectors;

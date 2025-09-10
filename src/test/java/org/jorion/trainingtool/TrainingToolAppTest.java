@@ -22,14 +22,29 @@ public class TrainingToolAppTest {
     void contextLoads(ApplicationContext context) {
 
         assertNotNull(context);
+    }
 
-        var modules = ApplicationModules.of(TrainingToolApp.class);
-        new Documenter(modules)
-                .writeIndividualModulesAsPlantUml()
-                .writeModulesAsPlantUml()
-                //.writeModuleCanvases()
-        ;
-        // modules.verify();
+    /**
+     * Verify the <a href="https://www.baeldung.com/java-archunit-intro">architectural rules</a> are followed
+     */
+    @Test
+    void createApplicationModuleModel() {
+
+        var applicationModules = ApplicationModules.of(TrainingToolApp.class);
+        // applicationModules.forEach(System.out::println);
+        applicationModules.verify();
+    }
+
+    /**
+     * Generate PlantUml diagrams
+     */
+    @Test
+    void createModuleDocumentation() {
+
+        var applicationModules = ApplicationModules.of(TrainingToolApp.class);
+        new Documenter(applicationModules)
+                .writeDocumentation()
+                .writeIndividualModulesAsPlantUml();
     }
 
     @SuppressWarnings("unused")

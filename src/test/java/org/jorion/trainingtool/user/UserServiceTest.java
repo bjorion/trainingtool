@@ -6,6 +6,7 @@ import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.TestingAuthenticationToken;
@@ -36,6 +37,9 @@ class UserServiceTest {
     @Mock
     private LdapService mockLdapService;
 
+    @InjectMocks
+    private UserService service;
+
     @AfterEach
     void cleanUp() {
         AuthenticationUtils.cleanAuthentication();
@@ -44,7 +48,6 @@ class UserServiceTest {
     @Test
     void testGetSectors() {
 
-        UserService service = new UserService();
         String[] sectors = {"Governement", "Defense"};
         ReflectionTestUtils.setField(service, "sectors", sectors);
         List<String> list = service.getSectors();
@@ -56,8 +59,6 @@ class UserServiceTest {
     @Test
     void testFindUserByUserName() {
 
-        UserService service = new UserService();
-        ReflectionTestUtils.setField(service, "userRepository", mockUserRepository);
         when(mockUserRepository.findUserByUserName("jdoe")).thenReturn(Optional.empty());
         assertNull(service.findUserByUserName("jdoe"));
     }
@@ -69,9 +70,6 @@ class UserServiceTest {
         user.setFirstName("John");
         user.setLastName("Doe");
 
-        UserService service = new UserService();
-        ReflectionTestUtils.setField(service, "userRepository", mockUserRepository);
-        ReflectionTestUtils.setField(service, "ldapService", mockLdapService);
         when(mockUserRepository.findUserByUserName("jdoe")).thenReturn(Optional.empty());
         when(mockLdapService.searchByName(USERNAME)).thenReturn(user);
         when(mockUserRepository.save(user)).thenReturn(user);
@@ -87,9 +85,6 @@ class UserServiceTest {
         user.setLastName("Doe");
         ReflectionTestUtils.setField(user, "modifiedOn", LocalDateTime.of(1970, 1, 1, 0, 0));
 
-        UserService service = new UserService();
-        ReflectionTestUtils.setField(service, "userRepository", mockUserRepository);
-        ReflectionTestUtils.setField(service, "ldapService", mockLdapService);
         when(mockUserRepository.findUserByUserName("jdoe")).thenReturn(Optional.of(user));
         when(mockLdapService.searchByName(USERNAME)).thenReturn(user);
         when(mockUserRepository.save(user)).thenReturn(user);

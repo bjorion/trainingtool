@@ -1,17 +1,17 @@
 package org.jorion.trainingtool.event;
 
 import org.jorion.trainingtool.registration.Registration;
-import org.jorion.trainingtool.user.RandomUser;
-import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
+import org.jorion.trainingtool.user.RandomUser;
+import org.jorion.trainingtool.user.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -22,11 +22,11 @@ class EventPublisherServiceTest {
     @Mock
     private ApplicationEventPublisher mockEventPublisher;
 
+    @InjectMocks
+    private EventPublisherService service;
+
     @Test
     void testPublishUpdateEvent() {
-
-        EventPublisherService service = new EventPublisherService();
-        ReflectionTestUtils.setField(service, "applicationPublisher", mockEventPublisher);
 
         User actor = RandomUser.createUser("actor");
         actor.setEmail("actor@example.org");

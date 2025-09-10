@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.registration;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.infra.AbstractController;
@@ -11,7 +12,6 @@ import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserService;
 import org.jorion.trainingtool.util.StrUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -28,14 +28,17 @@ import java.util.Map;
 @Controller
 public class RegistrationController extends AbstractController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final RegistrationService registrationService;
+    private final TrainingService trainingService;
 
-    @Autowired
-    private RegistrationService registrationService;
+    public RegistrationController(UserService userService, RegistrationService registrationService, TrainingService trainingService) {
 
-    @Autowired
-    private TrainingService trainingService;
+        super(userService);
+        this.userService = userService;
+        this.registrationService = registrationService;
+        this.trainingService = trainingService;
+    }
 
     /**
      * Show an existing registration.

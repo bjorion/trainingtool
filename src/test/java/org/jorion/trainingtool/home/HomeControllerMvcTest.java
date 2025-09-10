@@ -2,6 +2,7 @@ package org.jorion.trainingtool.home;
 
 // import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import lombok.RequiredArgsConstructor;
 import org.jorion.trainingtool.ldap.CustomLdapAuthoritiesPopulator;
 import org.jorion.trainingtool.registration.IRegistrationRepository;
 import org.jorion.trainingtool.registration.RegistrationService;
@@ -14,7 +15,6 @@ import org.jorion.trainingtool.user.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,12 +34,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </ul>
  */
 // @WebMvcTest(controllers = HomeController.class)
+@RequiredArgsConstructor
 class HomeControllerMvcTest {
 
     private static final String USERNAME = "john";
 
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
 
     @MockitoBean
     private UserService userService;

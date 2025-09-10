@@ -3,6 +3,7 @@ package org.jorion.trainingtool.training;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.infra.AbstractController;
 import org.jorion.trainingtool.infra.ControllerConstants;
+import org.jorion.trainingtool.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +20,13 @@ import java.util.List;
 @Controller
 public class TrainingController extends AbstractController {
 
-    @Autowired
-    private TrainingService trainingService;
+    private final TrainingService trainingService;
+
+    public TrainingController(UserService userService, TrainingService trainingService) {
+
+        super(userService);
+        this.trainingService = trainingService;
+    }
 
     /**
      * Show all the existing trainings.

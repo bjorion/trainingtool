@@ -1,10 +1,12 @@
 package org.jorion.trainingtool.home;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.jorion.trainingtool.infra.AbstractController;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
 import org.jorion.trainingtool.training.TrainingService;
+import org.jorion.trainingtool.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -20,11 +22,15 @@ import static org.jorion.trainingtool.infra.ControllerConstants.*;
 @Controller
 public class HomeController extends AbstractController {
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
+    private final TrainingService trainingService;
 
-    @Autowired
-    private TrainingService trainingService;
+    public HomeController(UserService userService, RegistrationService registrationService, TrainingService trainingService) {
+
+        super(userService);
+        this.registrationService = registrationService;
+        this.trainingService = trainingService;
+    }
 
     /**
      * Alternate mapping for the home page.

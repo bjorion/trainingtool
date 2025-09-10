@@ -29,7 +29,6 @@
         <org-mapstruct.version>1.6.2</org-mapstruct.version>
 
         <spring-boot.version>3.5.5</spring-boot.version>
-        <spring-modulith.version>1.4.3</spring-modulith.version>
         <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
         <thymeleaf-extras-springsecurity.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity.version>
 
@@ -54,6 +53,14 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.modulith</groupId>
+                <artifactId>spring-modulith-bom</artifactId>
+                <version>1.4.3</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -161,19 +168,16 @@
         <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-starter-core</artifactId>
-            <version>${spring-modulith.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-docs</artifactId>
-            <version>${spring-modulith.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-actuator</artifactId>
-            <version>${spring-modulith.version}</version>
             <scope>runtime</scope>
         </dependency>
 

@@ -1,5 +1,6 @@
 package org.jorion.trainingtool.export;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -15,12 +16,12 @@ import java.io.StringWriter;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CsvService {
 
     public static final char CSV_DELIM = ';';
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
 
     /**
      * Export the registrations to a CSV string.

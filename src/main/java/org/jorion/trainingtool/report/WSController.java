@@ -3,14 +3,15 @@ package org.jorion.trainingtool.report;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.jorion.trainingtool.infra.ControllerConstants;
-import org.jorion.trainingtool.report.json.StatDTO;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationDTO;
 import org.jorion.trainingtool.registration.RegistrationMapper;
 import org.jorion.trainingtool.registration.RegistrationService;
+import org.jorion.trainingtool.report.json.StatDTO;
 import org.jorion.trainingtool.training.TrainingDTO;
 import org.jorion.trainingtool.training.TrainingMapper;
 import org.jorion.trainingtool.training.TrainingService;
@@ -19,7 +20,6 @@ import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserDTO;
 import org.jorion.trainingtool.user.UserMapper;
 import org.jorion.trainingtool.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,16 +40,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/REST/v1")
+@RequiredArgsConstructor
 public class WSController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
-    private TrainingService trainingService;
+    private final UserService userService;
+    private final RegistrationService registrationService;
+    private final TrainingService trainingService;
 
     @Operation(tags = "users", summary = "Return all users (without their registrations)")
     @GetMapping(value = "/users", produces = "application/json")
@@ -58,7 +54,6 @@ public class WSController {
         var users = userService.findAll();
         return new CollectionResource<>(UserMapper.INSTANCE.toUserDTO(users));
     }
-
 
     @Operation(tags = "users", summary = "Return a specific user", responses = {
             @ApiResponse(responseCode = "200"),

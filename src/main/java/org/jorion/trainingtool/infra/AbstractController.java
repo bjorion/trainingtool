@@ -1,17 +1,16 @@
 package org.jorion.trainingtool.infra;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.user.User;
-import org.jorion.trainingtool.user.UserService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.SessionEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jorion.trainingtool.user.User;
+import org.jorion.trainingtool.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-
-import jakarta.servlet.http.HttpSession;
 
 import java.security.Principal;
 
@@ -27,6 +26,7 @@ import java.security.Principal;
  * </ul>
  */
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractController {
 
     protected static final String SESSION_USER = "user";
@@ -34,8 +34,7 @@ public abstract class AbstractController {
     protected static final String SESSION_USERNAMES = "usernames";
     private static final String SESSION_EVENT = "event";
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * Handle the AccessDeniedException exception: redirect to an "access-denied" page.

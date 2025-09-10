@@ -10,6 +10,7 @@ import org.jorion.trainingtool.export.CsvService.RegistrationCsvHeaders;
 import org.jorion.trainingtool.type.Provider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
@@ -30,11 +31,13 @@ class CsvServiceTest {
     @Mock
     private RegistrationService mockRegistrationService;
 
+    @InjectMocks
+    private CsvService service;
+
     @Test
     void testExportRegistrationsToCSV_Empty()
             throws IOException {
 
-        CsvService service = new CsvService();
         ReflectionTestUtils.setField(service, "registrationService", mockRegistrationService);
 
         List<Registration> list = new ArrayList<>();
@@ -45,7 +48,6 @@ class CsvServiceTest {
         assertNotNull(csv);
 
         // check that each enum value is contained in the header
-
         Arrays.asList(RegistrationCsvHeaders.values())
                 .stream()
                 .map(e -> (CsvService.RegistrationCsvHeaders) e)
@@ -56,9 +58,6 @@ class CsvServiceTest {
     @Test
     void testExportRegistrationsToCSV_NotEmpty()
             throws IOException {
-
-        CsvService service = new CsvService();
-        ReflectionTestUtils.setField(service, "registrationService", mockRegistrationService);
 
         User member = RandomUser.createUser("jdoe");
         member.setFirstName("John");

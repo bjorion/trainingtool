@@ -1,9 +1,9 @@
 package org.jorion.trainingtool.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.ldap.CustomLdapAuthoritiesPopulator;
 import org.jorion.trainingtool.type.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +35,10 @@ import static org.jorion.trainingtool.type.Role.*;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-// @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomLdapAuthoritiesPopulator ldapAuthoritiesPopulator;
 
     @Value("${app.users.ldap:false}")
     private boolean usersLdap;
@@ -49,9 +51,6 @@ public class SecurityConfig {
 
     @Value("${ldap.baseDn}")
     private String ldapBaseDn;
-
-    @Autowired
-    private CustomLdapAuthoritiesPopulator ldapAuthoritiesPopulator;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http)

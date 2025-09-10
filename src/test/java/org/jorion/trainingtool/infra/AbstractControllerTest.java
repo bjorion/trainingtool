@@ -25,8 +25,7 @@ class AbstractControllerTest {
     private UserService userService;
 
     @InjectMocks
-    private AbstractController abstractController = new AbstractController() {
-    };
+    private AbstractController abstractController;
 
     @AfterEach
     public void cleanUp() {

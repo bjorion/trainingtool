@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.export;
 
 import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +9,6 @@ import org.jorion.trainingtool.ldap.LdapService;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.jorion.trainingtool.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,6 +23,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EmailService {
 
     private static final String LINK_REGISTRATION_ID = "registration?id=";
@@ -55,14 +56,9 @@ public class EmailService {
     @Value("${server.servlet.context-path}")
     private String serverContext;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    private SpringTemplateEngine templateEngine;
-
-    @Autowired
-    private LdapService ldapService;
+    private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine templateEngine;
+    private final LdapService ldapService;
 
     /**
      * Method to prepare the email.

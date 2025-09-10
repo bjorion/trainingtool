@@ -1,5 +1,6 @@
 package org.jorion.trainingtool.event;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.export.EmailService;
 import org.jorion.trainingtool.export.UpdateEventDTO;
@@ -29,10 +30,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EventListenerService {
 
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
     private static String joinAuthorities(Collection<? extends GrantedAuthority> auths) {
 

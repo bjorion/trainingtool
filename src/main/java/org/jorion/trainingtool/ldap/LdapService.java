@@ -1,10 +1,10 @@
 package org.jorion.trainingtool.ldap;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.AndFilter;
@@ -18,19 +18,17 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LdapService {
+
+    private final LdapTemplate ldapTemplate;
+    private final IdentityAttributeMapper identityAttributeMapper;
 
     @Value("${app.users.ldap:true}")
     private boolean ldap;
 
     @Value("${ldap.basedn}")
     private String ldapBaseDn;
-
-    @Autowired
-    private LdapTemplate ldapTemplate;
-
-    @Autowired
-    private IdentityAttributeMapper identityAttributeMapper;
 
     /**
      * Search the LDAP to return the user whose CN (common name) equals the given username.

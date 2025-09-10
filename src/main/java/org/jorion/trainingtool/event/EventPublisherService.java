@@ -1,11 +1,11 @@
 package org.jorion.trainingtool.event;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.export.UpdateEventDTO;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EventPublisherService {
 
-    @Autowired
-    private ApplicationEventPublisher applicationPublisher;
+    private final ApplicationEventPublisher applicationPublisher;
 
     public void publishUpdateEvent(RegistrationEvent regEvent, Registration reg, User actor) {
 

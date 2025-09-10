@@ -11,6 +11,7 @@ import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -30,6 +31,9 @@ class EmailServiceTest {
 
     @Mock
     private LdapService mockLdapService;
+
+    @InjectMocks
+    private EmailService service;
 
     /**
      * Utility method that pre-fills the {@link UpdateEventDTOBuilder} object.
@@ -92,7 +96,6 @@ class EmailServiceTest {
 
         final String link = "http://www.example.org/trainingtool/registration?id=1";
 
-        EmailService service = new EmailService();
         SpringTemplateEngine templateEngine = buildTemplateEngine();
         ReflectionTestUtils.setField(service, "templateEngine", templateEngine);
 
@@ -146,8 +149,6 @@ class EmailServiceTest {
     void testGetMailInfos() {
 
         EmailService.MailInfo mailInfo;
-        EmailService service = new EmailService();
-        ReflectionTestUtils.setField(service, "ldapService", mockLdapService);
         ReflectionTestUtils.setField(service, "mgtMailAddress", "mgt@example.org");
         ReflectionTestUtils.setField(service, "trainingMailAddress", "training@example.org");
 
@@ -201,7 +202,7 @@ class EmailServiceTest {
     private static EmailService getEmailService(
             StringBuilder sbFilename, MutableObject<Map<String, Object>> ctnModel, MutableBoolean ctnBool) {
 
-        EmailService service = new EmailService() {
+        EmailService service = new EmailService(null, null, null) {
 
             @Override
             protected String buildMail(String filename, Map<String, Object> model) {

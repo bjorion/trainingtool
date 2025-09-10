@@ -4,6 +4,7 @@ import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.type.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ldap.core.LdapTemplate;
@@ -32,14 +33,14 @@ class LdapServiceTest {
     @Mock
     private IdentityAttributeMapper mockMapper;
 
+    @InjectMocks
+    private LdapService service;
+
     @Test
     void testSearchByName() {
 
-        LdapService service = new LdapService();
         List<GroupInfraIdentityDTO> dtos;
         ReflectionTestUtils.setField(service, "ldap", true);
-        ReflectionTestUtils.setField(service, "ldapTemplate", mockLdapTemplate);
-        ReflectionTestUtils.setField(service, "identityAttributeMapper", mockMapper);
 
         // not found
         AndFilter filter = new AndFilter();
@@ -71,11 +72,8 @@ class LdapServiceTest {
     @Test
     void testSearchByExample() {
 
-        LdapService service = new LdapService();
         List<GroupInfraIdentityDTO> dtos;
         ReflectionTestUtils.setField(service, "ldap", true);
-        ReflectionTestUtils.setField(service, "ldapTemplate", mockLdapTemplate);
-        ReflectionTestUtils.setField(service, "identityAttributeMapper", mockMapper);
 
         User srcUser = new User();
         srcUser.setFirstName(FIRSTNAME);

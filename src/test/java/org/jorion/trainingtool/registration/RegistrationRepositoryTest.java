@@ -1,9 +1,9 @@
 package org.jorion.trainingtool.registration;
 
+import lombok.RequiredArgsConstructor;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("local")
+@RequiredArgsConstructor
 public class RegistrationRepositoryTest {
 
     private static final String USER_NAME = "john.doe";
     private static final String MANAGER_NAME = "manager";
 
-    @Autowired
-    private IRegistrationRepository repo;
+    private final IRegistrationRepository repo;
 
     @Test
     void testFindRegistrationByIdAndUser() {

@@ -1,8 +1,8 @@
 package org.jorion.trainingtool.ldap;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jorion.trainingtool.type.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomLdapAuthoritiesPopulator implements LdapAuthoritiesPopulator {
 
-    @Autowired
-    private IdentityAttributeMapper identityAttributeMapper;
+    private final IdentityAttributeMapper identityAttributeMapper;
 
     /**
      * Associate for the given username a role. This is delegated to

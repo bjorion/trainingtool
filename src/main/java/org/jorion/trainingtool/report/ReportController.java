@@ -3,14 +3,14 @@ package org.jorion.trainingtool.report;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.jorion.trainingtool.export.CsvService;
 import org.jorion.trainingtool.infra.AbstractController;
 import org.jorion.trainingtool.infra.ControllerConstants;
 import org.jorion.trainingtool.registration.Registration;
 import org.jorion.trainingtool.registration.RegistrationService;
-import org.jorion.trainingtool.export.CsvService;
 import org.jorion.trainingtool.user.User;
+import org.jorion.trainingtool.user.UserService;
 import org.jorion.trainingtool.util.StrUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -34,11 +34,15 @@ public class ReportController extends AbstractController {
 
     private static final String SESSION_REPORT = "report";
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
+    private final CsvService exportService;
 
-    @Autowired
-    private CsvService exportService;
+    public ReportController(UserService userService, RegistrationService registrationService, CsvService exportService) {
+
+        super(userService);
+        this.registrationService = registrationService;
+        this.exportService = exportService;
+    }
 
     /**
      * Display all training requests (paginated).

@@ -1,15 +1,15 @@
 package org.jorion.trainingtool.registration;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jorion.trainingtool.report.ReportDTO;
 import org.jorion.trainingtool.event.EventPublisherService;
+import org.jorion.trainingtool.report.ReportDTO;
 import org.jorion.trainingtool.type.RegistrationEvent;
 import org.jorion.trainingtool.type.RegistrationStatus;
 import org.jorion.trainingtool.type.YesNo;
 import org.jorion.trainingtool.user.User;
 import org.jorion.trainingtool.user.UserService;
 import org.jorion.trainingtool.util.StrUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,22 +27,16 @@ import java.util.*;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class RegistrationService {
+
+    private final IRegistrationRepository registrationRepository;
+    private final EventPublisherService eventPublisher;
+    private final UserService userService;
+    private final RegistrationValidator validator;
 
     @Value("${app.workflow.hrIfBillable:false}")
     private boolean hrIfBillable;
-
-    @Autowired
-    private IRegistrationRepository registrationRepository;
-
-    @Autowired
-    private EventPublisherService eventPublisher;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RegistrationValidator validator;
 
     /**
      * A registration is editable if
