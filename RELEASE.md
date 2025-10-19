@@ -55,31 +55,34 @@
 - bugfix: justification deleted after an edit (by a member)
 - button 'Cancel' renamed 'Home' if it redirects to the home page
 
-### 1.3.1 (2022-xx-xx)
+### v1.3.1 (2022-xx-xx)
 
 - update spring boot (to 2.6.2) and other dependencies
 - @Param annotation added for queries
 - unit tests added (context loader; controllers)
 - tt-dbcr-1.3.1.sql
 
-## 1.3.2 (2022-xx-xx)
+### v1.3.2 (2022-xx-xx)
 
 - update spring boot (to 2.6.11) and other dependencies
 - rename firstname/lastname to firstName/lastName for consistency
 - @Transactional moved to Service layer
 - update login page (todo)
 
-## 1.4.0 (2024-10-28)
+### v1.4.0 (2024-10-28)
 - update spring boot (to 3.3.5) and other dependencies
 - update thymeleaf
 
-## 1.5.0 (2024-11-xx)
+### v1.5.0 (2024-11-xx)
 - refactor all packages
 - add ArchUnit tests
 
-## 1.6.0 (2025-05-xx)
+### v1.6.0 (2025-05-xx)
 - upgrade spring boot (to 3.5.0)
 
-## 1.6.1. (2025-08-xx)
+### v1.6.1. (2025-08-xx)
 - upgrade spring boot (to 3.5.5)
 - upgrade spring modulith (1.4.3)
+
+### v1.7.0 (2025-10-xx)
+- upgrade to JDK 25
