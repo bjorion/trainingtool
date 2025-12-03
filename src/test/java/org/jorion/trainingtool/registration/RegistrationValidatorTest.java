@@ -61,7 +61,7 @@ class RegistrationValidatorTest {
         // User = Member, dates in the past
         user = createUser("ALICE");
         user.addRole(Role.MEMBER);
-        user.setSector("mysector");
+        user.setSector("my-sector");
 
         r = new Registration();
         r.setTitle("title");

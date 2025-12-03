@@ -1,6 +1,7 @@
 package org.jorion.trainingtool.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -111,7 +112,7 @@ public class StrUtils {
         int index = -1;
         for (int i = 0; i < propertyNames.length; i++) {
             String name = propertyNames[i];
-            if (StringUtils.equals(name, search)) {
+            if (Strings.CS.equals(name, search)) {
                 index = i;
                 break;
             }

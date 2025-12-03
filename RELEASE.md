@@ -86,3 +86,6 @@
 
 ### v1.7.0 (2025-10-xx)
 - upgrade to JDK 25
+
+### v1.8.0 (2025-12-xx)
+- upgrade to Spring Boot 4.0.0
