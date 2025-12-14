@@ -89,3 +89,6 @@
 
 ### v1.8.0 (2025-12-xx)
 - upgrade to Spring Boot 4.0.0
+
+### v1.8.1 (2025-12-xx)
+- Fix issue with Spring Boot 4 (missing h2 dep)

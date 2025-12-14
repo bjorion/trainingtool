@@ -53,8 +53,7 @@ public class SecurityConfig {
     private String ldapBaseDn;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
 
         http
                 // necessary to display the H2 console
@@ -174,6 +173,7 @@ public class SecurityConfig {
             public String getPrincipal() {
 
                 var authentication = SecurityContextHolder.getContext().getAuthentication();
+                assert authentication != null;
                 var principal = authentication.getPrincipal();
                 String dn;
                 if (principal instanceof LdapUserDetails) {
